@@ -314,4 +314,764 @@
                     <div class="flex gap-2">
                         <input type="text" id="room-code-input" placeholder="ENTER ROOM CODE (E.G. APEX11)" class="flex-1 bg-white text-slate-800 px-4 py-2.5 rounded-xl text-xs font-medium focus:outline-none placeholder:text-slate-400 uppercase">
                         <button onclick="joinFriendRoom()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all">Join</button>
-                        <button onclick="createFriendRoom()" cla
+                        <button onclick="createFriendRoom()" class="bg-white text-amber-600 hover:bg-amber-50 px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all">Create</button>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function setTestMode(mode) {
+            testMode = mode;
+            renderContent();
+        }
+
+        function renderNeetTestUI() {
+            return `
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-900 text-sm">NEET UG Test Generator (हिंदी माध्यम)</h3>
+                    <span class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium">20 Questions</span>
+                </div>
+                <p class="text-xs text-slate-500">विषय चुनें और हिंदी में मॉक टेस्ट प्रारंभ करें:</p>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="startAiTestProcess('NEET - Physics')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all group">
+                        <i class="fa-solid fa-atom text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-xs font-bold text-slate-800">Physics</p>
+                    </button>
+                    <button onclick="startAiTestProcess('NEET - Chemistry')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all group">
+                        <i class="fa-solid fa-flask text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-xs font-bold text-slate-800">Chemistry</p>
+                    </button>
+                    <button onclick="startAiTestProcess('NEET - Biology')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all group">
+                        <i class="fa-solid fa-dna text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-xs font-bold text-slate-800">Biology</p>
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderJeeTestUI() {
+            return `
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-900 text-sm">JEE Mains / Advanced Test Generator</h3>
+                    <span class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium">20 Questions each</span>
+                </div>
+                <p class="text-xs text-slate-500">विषय या तीनों विषयों का मिक्सर टेस्ट चुनें:</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="startAiTestProcess('JEE - Physics')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all">
+                        <p class="text-xs font-bold text-slate-800">Physics (20 Qs)</p>
+                    </button>
+                    <button onclick="startAiTestProcess('JEE - Chemistry')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all">
+                        <p class="text-xs font-bold text-slate-800">Chemistry (20 Qs)</p>
+                    </button>
+                    <button onclick="startAiTestProcess('JEE - Maths')" class="p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-all">
+                        <p class="text-xs font-bold text-slate-800">Maths (20 Qs)</p>
+                    </button>
+                    <button onclick="startAiTestProcess('JEE - Mixed Test')" class="p-3 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-center transition-all shadow-sm">
+                        <p class="text-xs font-bold">🎯 Mixed Test (PCM)</p>
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderPyqTestUI() {
+            return `
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-900 text-sm">Previous Year Questions (PYQ) 2000-2026</h3>
+                    <span class="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">Year-wise</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-500 block mb-1">Select Year</label>
+                        <select id="pyq-year-select" class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-medium focus:outline-none">
+                            ${Array.from({length: 27}, (_, i) => 2026 - i).map(yr => `<option value="${yr}">${yr}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-500 block mb-1">Select Subject</label>
+                        <select id="pyq-subj-select" class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-medium focus:outline-none">
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Maths/Biology">Maths / Biology</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="startPyqTest()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-all">
+                    Start PYQ Test (20 Qs)
+                </button>
+            </div>
+            `;
+        }
+
+        function renderCbtTestUI() {
+            return `
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-900 text-sm">CBT Mock Test & AI Quiz Generator</h3>
+                    <span class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium">Advanced</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-500 block mb-1">Select Class</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-medium focus:outline-none">
+                            <option>Class 11th</option>
+                            <option>Class 12th</option>
+                            <option>Dropper</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-500 block mb-1">Select Subject</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-medium focus:outline-none">
+                            <option>Physics</option>
+                            <option>Chemistry</option>
+                            <option>Mathematics</option>
+                            <option>Biology</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[11px] font-semibold text-slate-500 block mb-1">Topic Name / Chapter</label>
+                    <input type="text" value="Complex Numbers / Mechanics" class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-medium focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                    <button onclick="startAiTestProcess('CBT Mock Test')" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-all">
+                        <i class="fa-solid fa-play mr-1"></i> Start CBT Test
+                    </button>
+                    <button onclick="startAiTestProcess('AI Quiz')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-all">
+                        <i class="fa-solid fa-robot mr-1"></i> AI Test (20 Qs)
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        function startAiTestProcess(testName) {
+            stats.testsGiven++;
+            stats.bestAccuracy = Math.floor(Math.random() * 25) + 75;
+            showNotification(`Starting ${testName} in Hindi Medium (20 Questions)...`);
+            setTimeout(() => {
+                showQuizRunnerModal(testName);
+            }, 500);
+        }
+
+        function startPyqTest() {
+            const yr = document.getElementById('pyq-year-select').value;
+            const subj = document.getElementById('pyq-subj-select').value;
+            startAiTestProcess(`PYQ ${yr} - ${subj}`);
+        }
+
+        // --- 3. COMMUNITY TAB ---
+        let communitySearchQuery = '';
+        let communityFilter = 'all'; // all, profile, post
+
+        function renderCommunity() {
+            return `
+            <div class="p-4 space-y-4 max-w-2xl mx-auto">
+                <!-- Doubt Wall Header & Live Wall Button -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm">Doubt Wall (Photo & Question)</h3>
+                        <p class="text-xs text-slate-500">Ask questions & connect with peers</p>
+                    </div>
+                    <button onclick="openLiveWall()" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-tower-broadcast mr-1"></i> Live Wall
+                    </button>
+                </div>
+
+                <!-- Search Bar with Filters (Profile vs Community Posts) -->
+                <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="community-search" oninput="onCommunitySearch(this.value)" value="${communitySearchQuery}" placeholder="Search student profiles or doubts..." class="w-full bg-slate-50 pl-10 pr-4 py-2.5 rounded-xl text-xs font-medium focus:outline-none border border-slate-200">
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="setCommunityFilter('all')" class="px-3 py-1.5 rounded-lg text-xs font-semibold ${communityFilter==='all' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}">All</button>
+                        <button onclick="setCommunityFilter('post')" class="px-3 py-1.5 rounded-lg text-xs font-semibold ${communityFilter==='post' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}">Community Posts</button>
+                        <button onclick="setCommunityFilter('profile')" class="px-3 py-1.5 rounded-lg text-xs font-semibold ${communityFilter==='profile' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}">Student Profiles</button>
+                    </div>
+                </div>
+
+                <!-- Post Doubt Box -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <textarea id="new-doubt-text" rows="2" placeholder="अपना सवाल या डाउट यहाँ लिखें (#hashtag के साथ)..." class="w-full bg-slate-50 p-3 rounded-xl text-xs font-medium focus:outline-none border border-slate-200 resize-none"></textarea>
+                    <div class="flex items-center justify-between">
+                        <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all">
+                            <i class="fa-solid fa-image"></i> Choose File <input type="file" class="hidden">
+                        </label>
+                        <button onclick="submitDoubtPost()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> Post Doubt
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Posts List -->
+                <div class="space-y-3">
+                    ${filteredPosts().map(p => `
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-9 h-9 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white font-bold rounded-full flex items-center justify-center text-xs">
+                                        ${p.author.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800 text-xs">${p.author}</h4>
+                                        <p class="text-[10px] text-slate-400">${p.classInfo}</p>
+                                    </div>
+                                </div>
+                                <button onclick="deletePost(${p.id})" class="text-slate-300 hover:text-red-500"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                            </div>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed">${p.text} <span class="text-emerald-600 font-semibold">${p.tag || ''}</span></p>
+                            
+                            <!-- Interaction Bar (Likes, Upvotes, Reply Single Tap) -->
+                            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-500">
+                                <div class="flex items-center space-x-4">
+                                    <button onclick="likePost(${p.id})" class="flex items-center gap-1 text-slate-600 hover:text-red-500 transition-colors font-medium">
+                                        <i class="fa-solid fa-heart text-red-500"></i> <span>${p.likes}</span>
+                                    </button>
+                                    <button onclick="upvotePost(${p.id})" class="flex items-center gap-1 text-slate-600 hover:text-amber-500 transition-colors font-medium">
+                                        <i class="fa-solid fa-arrow-up text-amber-500"></i> <span>${p.upvotes}</span> Upvotes
+                                    </button>
+                                </div>
+                                <button onclick="openReplyModal(${p.id})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg font-bold text-xs transition-colors flex items-center gap-1">
+                                    <i class="fa-solid fa-reply"></i> Reply (${p.comments.length})
+                                </button>
+                            </div>
+
+                            ${p.comments.length > 0 ? `
+                                <div class="bg-slate-50 p-2.5 rounded-xl space-y-1 mt-2">
+                                    ${p.comments.map(c => `<p class="text-[11px] text-slate-700"><strong>${c.author}:</strong> ${c.text}</p>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            `;
+        }
+
+        function onCommunitySearch(val) {
+            communitySearchQuery = val;
+            renderContent();
+        }
+
+        function setCommunityFilter(f) {
+            communityFilter = f;
+            renderContent();
+        }
+
+        function filteredPosts() {
+            if(!communitySearchQuery) return posts;
+            return posts.filter(p => p.text.toLowerCase().includes(communitySearchQuery.toLowerCase()) || p.author.toLowerCase().includes(communitySearchQuery.toLowerCase()));
+        }
+
+        function submitDoubtPost() {
+            const txt = document.getElementById('new-doubt-text').value.trim();
+            if(!txt) return showNotification("कृपया कुछ लिखकर पोस्ट करें!");
+            posts.unshift({
+                id: Date.now(),
+                author: userProfile.name,
+                classInfo: `${userProfile.class} • Roll ${userProfile.rollNo}`,
+                text: txt,
+                tag: "#Doubt #ApexStudy",
+                likes: 1,
+                upvotes: 1,
+                comments: []
+            });
+            document.getElementById('new-doubt-text').value = '';
+            showNotification("डاؤट सफलतापूर्वक पोस्ट हो गया!");
+            renderContent();
+        }
+
+        function likePost(id) {
+            const p = posts.find(x => x.id === id);
+            if(p) p.likes++;
+            renderContent();
+        }
+
+        function upvotePost(id) {
+            const p = posts.find(x => x.id === id);
+            if(p) p.upvotes++;
+            renderContent();
+        }
+
+        function deletePost(id) {
+            posts = posts.filter(x => x.id !== id);
+            renderContent();
+        }
+
+        // --- 4. PROFILE TAB ---
+        function renderProfile() {
+            return `
+            <div class="p-4 space-y-4 max-w-2xl mx-auto">
+                <!-- User Card -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-tr from-emerald-500 to-teal-500 text-white font-bold text-2xl rounded-2xl flex items-center justify-center shadow-md">
+                            ${userProfile.name.charAt(0)}
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">${userProfile.name}</h3>
+                            <p class="text-xs text-slate-500">Roll No: ${userProfile.rollNo} • ${userProfile.class}</p>
+                            <p class="text-xs text-emerald-600 font-semibold mt-1">IG/TG: ${userProfile.igTgStatus}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Links / Options -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 overflow-hidden">
+                    <button onclick="openEditProfileModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-pen text-slate-400"></i>
+                            <span class="text-xs font-bold text-slate-800">Edit Profile</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                    <button onclick="openLinkSocialModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-link text-slate-400"></i>
+                            <span class="text-xs font-bold text-slate-800">Add / Link Instagram or Telegram ID</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                    <button onclick="openApiThemeModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-sliders text-slate-400"></i>
+                            <span class="text-xs font-bold text-slate-800">API & Theme</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                    <button onclick="openFeedbackModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-comment-dots text-emerald-600"></i>
+                            <span class="text-xs font-bold text-slate-800">Feedback & Suggestions</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Saved / Bookmarked Questions -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-bookmark text-amber-500"></i> Saved / Bookmarked Questions
+                    </h3>
+                    <p class="text-xs text-slate-500">कोई बुकमार्क किया गया प्रश्न नहीं है। टेस्ट या क्विज़ के दौरान प्रश्नों को सेव करें।</p>
+                </div>
+
+                <!-- Live Group Chat & Video/Audio Call Trigger Option -->
+                <button onclick="openGroupChatModal()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 rounded-2xl font-bold text-xs shadow-md shadow-emerald-600/20 flex items-center justify-between transition-all hover:scale-[1.01]">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-headset text-lg"></i>
+                        <span class="text-left">Live Group Chat, Video/Audio Call & Public Groups</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+            `;
+        }
+
+        // --- 5. LEADERBOARD ---
+        function renderLeaderboard() {
+            return `
+            <div class="p-4 space-y-4 max-w-2xl mx-auto">
+                <div class="bg-gradient-to-tr from-amber-500 via-orange-500 to-red-500 p-6 rounded-3xl text-white shadow-xl text-center space-y-2">
+                    <div class="w-16 h-16 bg-white/20 rounded-full mx-auto flex items-center justify-center text-3xl shadow-inner">🏆</div>
+                    <h2 class="text-xl font-bold tracking-tight">Apex Study Leaderboard</h2>
+                    <p class="text-xs opacity-90">टॉप स्कोरर्स और मेहनती विद्यार्थियों की सूची</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden divide-y divide-slate-100">
+                    <div class="p-4 flex items-center justify-between bg-slate-50 font-bold text-xs text-slate-500">
+                        <span>Rank & Student</span>
+                        <span>Score / Points</span>
+                    </div>
+                    ${[
+                        {rank: 1, name: "Aman Verma", score: "2980 XP", badge: "🥇"},
+                        {rank: 2, name: "Satyam Kumar (You)", score: "2750 XP", badge: "🥈"},
+                        {rank: 3, name: "Neha Kumari", score: "2640 XP", badge: "🥉"},
+                        {rank: 4, name: "Rahul Raj", score: "2410 XP", badge: "4th"}
+                    ].map(u => `
+                        <div class="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-7 text-center font-bold text-sm text-slate-700">${u.badge}</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">${u.name}</h4>
+                                    <p class="text-[10px] text-slate-400">Class 11th • Roll ${u.rank+5}</p>
+                                </div>
+                            </div>
+                            <span class="font-bold text-emerald-600 text-xs bg-emerald-50 px-3 py-1 rounded-full">${u.score}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            `;
+        }
+
+        // --- MODALS & POPUPS SYSTEM ---
+        function showNotification(msg) {
+            const div = document.createElement('div');
+            div.className = "fixed top-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-2xl z-50 animate-bounce";
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 2500);
+        }
+
+        function openUploadModal(type) {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4 animate-scale-up">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">${type==='lecture' ? 'Add New Lecture' : 'Upload Notes / PDF'}</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600 block mb-1">Title</label>
+                            <input type="text" id="upload-title" placeholder="e.g. Chemical Kinetics Short Notes" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600 block mb-1">Subject</label>
+                                <select id="upload-subj" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                                    <option>Physics</option>
+                                    <option>Chemistry</option>
+                                    <option>Maths</option>
+                                    <option>Biology</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600 block mb-1">Class</label>
+                                <select id="upload-class" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                                    <option>Class 11th</option>
+                                    <option>Class 12th</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600 block mb-1">Description / Content</label>
+                            <textarea id="upload-desc" rows="3" placeholder="नोट विवरण या फॉर्मूला..." class="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-xs font-medium focus:outline-none resize-none"></textarea>
+                        </div>
+                        <button onclick="saveUploadItem('${type}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow-md shadow-emerald-600/30 transition-all">
+                            Upload Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function saveUploadItem(type) {
+            const title = document.getElementById('upload-title').value.trim();
+            const subj = document.getElementById('upload-subj').value;
+            const desc = document.getElementById('upload-desc').value.trim();
+            if(!title) return showNotification("कृपया शीर्षक दर्ज करें!");
+
+            if(type === 'lecture') {
+                lectures.unshift({ id: Date.now(), title: title, subject: subj, class: "Class 11th", videoId: "dQw4w9WgXcQ" });
+                showNotification("लेक्चर्स सफलतापूर्वक जुड़ गया!");
+            } else {
+                notesList.unshift({ id: Date.now(), title: title, subject: subj, type: "PDF", content: desc || "Study notes." });
+                showNotification("नोट्स / PDF सफलतापूर्वक जुड़ गया!");
+            }
+            closeModal();
+            renderContent();
+        }
+
+        function openNotesViewer() {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">Uploaded Study Notes & PDFs</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        ${notesList.map(n => `
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold text-slate-800 text-xs">${n.title}</h4>
+                                    <span class="bg-indigo-100 text-indigo-700 text-[10px] px-2 py-0.5 rounded font-bold">${n.subject}</span>
+                                </div>
+                                <p class="text-xs text-slate-600">${n.content}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function openGroupChatModal() {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-headset text-emerald-600"></i> Public Study Groups & Video Call
+                        </h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <input type="text" id="group-search-input" placeholder="सर्च पब्लिक ग्रुप (जैसे Physics 11th)..." class="flex-1 bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                        <button onclick="createNewPublicGroup()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap">+ Create Group</button>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${publicGroups.map(g => `
+                            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">${g.name} <span class="text-indigo-600 font-mono text-[10px]">(Code: ${g.code})</span></h4>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">${g.members} members</p>
+                                </div>
+                                <button onclick="joinGroupRoom('${g.name}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm">
+                                    Join Video/Mic
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    ${activeGroupRoom ? `
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-800">Room: ${activeGroupRoom}</span>
+                                <span class="flex items-center gap-1.5 text-xs font-semibold text-emerald-600"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Connected</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="toggleRoomMic()" id="mic-toggle-btn" class="flex-1 ${isMicOn ? 'bg-red-500 text-white' : 'bg-slate-900 text-white'} py-2 rounded-xl text-xs font-bold transition-all">
+                                    <i class="fa-solid ${isMicOn ? 'fa-microphone' : 'fa-microphone-slash'} mr-1"></i> ${isMicOn ? 'Mic On' : 'Mic Off'}
+                                </button>
+                                <button onclick="disconnectGroupRoom()" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-xl text-xs font-bold">Disconnect</button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+            `;
+        }
+
+        function joinGroupRoom(name) {
+            activeGroupRoom = name;
+            isMicOn = true;
+            showNotification(`Connected to ${name} audio room!`);
+            openGroupChatModal();
+        }
+
+        function toggleRoomMic() {
+            isMicOn = !isMicOn;
+            openGroupChatModal();
+        }
+
+        function disconnectGroupRoom() {
+            activeGroupRoom = null;
+            isMicOn = false;
+            openGroupChatModal();
+        }
+
+        function createNewPublicGroup() {
+            const name = document.getElementById('group-search-input').value.trim();
+            if(!name) return showNotification("कृपया ग्रुप का नाम दर्ज करें!");
+            publicGroups.push({ id: Date.now(), name: name, code: "APEX" + Math.floor(Math.random()*100), members: 1 });
+            showNotification("नया पब्लिक ग्रुप बन गया!");
+            openGroupChatModal();
+        }
+
+        function openFeedbackModal() {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">Feedback & Suggestions</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <textarea id="feedback-text" rows="4" placeholder="अपने मन से ऐप के बारे में सुझाव या फीडबैक यहाँ लिखें..." class="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-xs font-medium focus:outline-none resize-none"></textarea>
+                    <button onclick="submitFeedback()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow transition-all">Submit Feedback</button>
+                </div>
+            </div>
+            `;
+        }
+
+        function submitFeedback() {
+            const f = document.getElementById('feedback-text').value.trim();
+            if(!f) return showNotification("कृपया फीडबैक लिखें!");
+            showNotification("धन्यवाद! आपका फीडबैक दर्ज हो गया है।");
+            closeModal();
+        }
+
+        function openLinkSocialModal() {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">Link Instagram or Telegram</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-600 block mb-1">IG or TG Link / Username</label>
+                        <input type="text" id="social-link-input" value="${userProfile.igTgLink}" placeholder="e.g. t.me/satyam_kumar or @satyam" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                    </div>
+                    <button onclick="saveSocialLink()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow transition-all">Save Link</button>
+                </div>
+            </div>
+            `;
+        }
+
+        function saveSocialLink() {
+            const val = document.getElementById('social-link-input').value.trim();
+            userProfile.igTgLink = val;
+            userProfile.igTgStatus = val ? "Linked" : "Not Linked";
+            showNotification("सोशल मीडिया लिंक अपडेट हो गया!");
+            closeModal();
+            renderContent();
+        }
+
+        function openEditProfileModal() {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">Edit Profile</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600 block mb-1">Name</label>
+                            <input type="text" id="edit-name" value="${userProfile.name}" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600 block mb-1">Class</label>
+                                <input type="text" id="edit-class" value="${userProfile.class}" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600 block mb-1">Roll No</label>
+                                <input type="text" id="edit-roll" value="${userProfile.rollNo}" class="w-full bg-slate-50 border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none">
+                            </div>
+                        </div>
+                        <button onclick="saveProfileEdit()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow transition-all">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function saveProfileEdit() {
+            userProfile.name = document.getElementById('edit-name').value;
+            userProfile.class = document.getElementById('edit-class').value;
+            userProfile.rollNo = document.getElementById('edit-roll').value;
+            showNotification("प्रोफाइल सफलतापूर्वक अपडेट हो गया!");
+            closeModal();
+            renderContent();
+        }
+
+        function openApiThemeModal() {
+            showNotification("API & Theme Settings: Dark Mode & Custom AI Key configured.");
+        }
+
+        function openReplyModal(postId) {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 text-base">Reply to Doubt</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <textarea id="reply-text" rows="3" placeholder="अपना जवाब यहाँ लिखें..." class="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-xs font-medium focus:outline-none resize-none"></textarea>
+                    <button onclick="submitReply(${postId})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow transition-all">Send Reply</button>
+                </div>
+            </div>
+            `;
+        }
+
+        function submitReply(postId) {
+            const txt = document.getElementById('reply-text').value.trim();
+            if(!txt) return showNotification("कृपया जवाब लिखें!");
+            const p = posts.find(x => x.id === postId);
+            if(p) {
+                p.comments.push({ author: userProfile.name, text: txt });
+            }
+            showNotification("जवाब सफलतापूर्वक भेज दिया गया!");
+            closeModal();
+            renderContent();
+        }
+
+        function openLiveWall() {
+            showNotification("Live Wall: Real-time student doubt broadcasting active.");
+        }
+
+        function openAITutor() {
+            showNotification("AI Tutor 24x7 connected! Ask any doubt in Hindi.");
+        }
+
+        function playLecture(title) {
+            showNotification(`Playing Lecture: ${title}`);
+        }
+
+        function deleteLecture(id) {
+            lectures = lectures.filter(x => x.id !== id);
+            renderContent();
+        }
+
+        function showQuizRunnerModal(testName) {
+            const root = document.getElementById('modal-root');
+            root.innerHTML = `
+            <div class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+                <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-5 animate-scale-up">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Live CBT Mock Test</span>
+                            <h3 class="font-bold text-slate-900 text-base">${testName}</h3>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <p class="text-xs font-semibold text-slate-800">Q1. निम्नलिखित में से कौन सा आयाम (dimension) सही है? (Which of the following dimensions is correct?)</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-emerald-500 text-xs font-medium"><input type="radio" name="q1" class="text-emerald-600"> [MLT⁻²]</label>
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-emerald-500 text-xs font-medium"><input type="radio" name="q1" class="text-emerald-600"> [ML²T⁻²]</label>
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-emerald-500 text-xs font-medium"><input type="radio" name="q1" class="text-emerald-600"> [MLT⁻¹]</label>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-500">Question 1 of 20</span>
+                        <button onclick="closeModal(); showNotification('Test submitted successfully! Score: 85%');" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow">Submit & Finish</button>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function closeModal() {
+            document.getElementById('modal-root').innerHTML = '';
+        }
+
+        function joinFriendRoom() {
+            const code = document.getElementById('room-code-input').value.trim();
+            if(!code) return showNotification("कृपया सही रूम कोड दर्ज करें!");
+            showNotification(`Joining Room: ${code} with Mic & Audio Ready...`);
+        }
+
+        function createFriendRoom() {
+            const code = "APEX" + Math.floor(Math.random()*9000 + 1000);
+            showNotification(`Room Created! Code: ${code}`);
+            document.getElementById('room-code-input').value = code;
+        }
+
+        // Initialize App on load
+        window.onload = function() {
+            renderContent();
+        };
+    </script>
+</body>
+</html>
+```

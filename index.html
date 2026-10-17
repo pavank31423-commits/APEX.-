@@ -1,255 +1,1612 @@
 <!DOCTYPE html>
-<html lang="hi" class="light">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>APEX STUDY - Shikhar ki ore</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        apexPrimary: 'var(--theme-color, #2563eb)',
-                    }
-                }
-            }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>APEX STUDY - Towards the Peak...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            apexPrimary: 'var(--theme-color, #2563eb)',
+          }
         }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --theme-color: #2563eb; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { padding-bottom: 90px !important; margin: 0; font-family: system-ui, -apple-system, sans-serif; }
-        
-        .bg-apex { background-color: var(--theme-color) !important; }
-        .text-apex { color: var(--theme-color) !important; }
-        .border-apex { border-color: var(--theme-color) !important; }
-        .tap-effect:active { transform: scale(0.95); transition: transform 0.1s ease; }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --theme-color: #2563eb;
+      --theme-rgb: 37, 99, 235;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      padding-bottom: 84px !important;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .bg-apex { background-color: var(--theme-color) !important; }
+    .text-apex { color: var(--theme-color) !important; }
+    .border-apex { border-color: var(--theme-color) !important; }
+    .ring-apex:focus { --tw-ring-color: var(--theme-color) !important; }
 
-        .tab-page { display: none !important; }
-        .tab-page.active-page { display: block !important; animation: fadeIn 0.2s ease-in-out; }
+    .tap-effect {
+      transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s ease;
+    }
+    .tap-effect:active {
+      transform: scale(0.96);
+    }
 
-        .app-modal {
-            display: none !important;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .app-modal.active-modal { display: flex !important; }
+    .tab-page { display: none !important; }
+    .tab-page.active-page {
+      display: block !important;
+      animation: fadeIn 0.22s ease-out;
+    }
 
-        #bottomNavBar {
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            height: 68px !important;
-            z-index: 9990 !important;
-            display: flex !important;
-            justify-content: space-around !important;
-            align-items: center !important;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
-        }
-        .nav-item-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            height: 100%;
-            color: #64748b;
-            font-weight: 700;
-            font-size: 11px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
-        .nav-item-btn.active-nav { color: var(--theme-color) !important; }
-        .nav-item-btn i { font-size: 19px; margin-bottom: 4px; }
+    .app-modal {
+      display: none !important;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .app-modal.active-modal {
+      display: flex !important;
+    }
 
-        #toastBox {
-            position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20000;
-            display: none;
-            padding: 10px 18px;
-            border-radius: 14px;
-            background: #1e293b;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 90%;
-        }
+    #bottomNavBar {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 70px !important;
+      z-index: 9990 !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(12px);
+    }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    .nav-item-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      height: 100%;
+      color: #64748b;
+      font-weight: 700;
+      font-size: 11px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .dark .nav-item-btn { color: #94a3b8; }
+    .nav-item-btn.active-nav {
+      color: var(--theme-color) !important;
+    }
+    .nav-item-btn.active-nav .nav-pill {
+      background-color: rgba(var(--theme-rgb), 0.14);
+      padding: 4px 16px;
+      border-radius: 9999px;
+    }
+    .nav-item-btn i {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    #toastBox {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25000;
+      display: none;
+      padding: 11px 20px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      text-align: center;
+      max-width: 92%;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .yt-card-aspect {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 YouTube Feed Style */
+      overflow: hidden;
+      background: #0f172a;
+    }
+    .yt-card-aspect iframe,
+    .yt-card-aspect img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen select-none">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 
-    <div id="toastBox"></div>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastBox"></div>
 
-    <!-- STICKY TOP HEADER (Updated: Clean Logo, Tagline, No Name, No AI Button on Header) -->
-    <header class="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
-        <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchTab('home')">
-            <div class="w-10 h-10 rounded-2xl bg-apex flex items-center justify-center text-white font-bold shadow-md">
-                <i class="fa-solid fa-mountain text-lg"></i>
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-apex flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+        <i class="fa-solid fa-mountain-sun text-lg"></i>
+      </div>
+      <div>
+        <h1 class="text-lg font-extrabold tracking-tight text-apex leading-none">APEX STUDY</h1>
+        <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Towards the Peak...</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Active Class Badge (Clickable to switch 11th/12th quickly) -->
+      <button onclick="toggleUserClassQuick()" class="tap-effect px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold flex items-center gap-1.5">
+        <i class="fa-solid fa-graduation-cap text-apex"></i>
+        <span id="headerClassBadge">Class 11th</span>
+      </button>
+      <!-- Admin Badge if Admin -->
+      <span id="headerAdminBadge" class="hidden px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[10px] font-extrabold">
+        <i class="fa-solid fa-shield-halved mr-0.5"></i> ADMIN
+      </span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-xl mx-auto px-3.5 pt-3.5 pb-8">
+
+    <!-- ==================== TAB 1: HOME ==================== -->
+    <section id="page-home" class="tab-page active-page space-y-4">
+
+      <!-- Motivation Card (Matches Original Screenshot) -->
+      <div class="rounded-2xl p-4 text-white shadow-lg relative overflow-hidden" style="background: linear-gradient(135deg, #4f46e5 0%, #6366f1 55%, #8b5cf6 100%);">
+        <div class="flex items-center justify-between mb-2.5">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold">
+            <span>🔥</span> Motivation
+          </span>
+          <button onclick="nextQuote()" class="tap-effect inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs font-bold">
+            <i class="fa-solid fa-rotate"></i> Next
+          </button>
+        </div>
+        <h2 id="quoteMainText" class="text-base sm:text-lg font-extrabold leading-snug mb-1.5">
+          "रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"
+        </h2>
+        <p id="quoteSubText" class="text-xs text-indigo-100 font-medium">
+          सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!
+        </p>
+      </div>
+
+      <!-- 3 Stats Row -->
+      <div class="grid grid-cols-3 gap-2.5">
+        <div onclick="switchTab('tests')" class="tap-effect cursor-pointer bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 text-center shadow-sm">
+          <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400">Tests Given</p>
+          <p id="statTestsGiven" class="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1">0</p>
+        </div>
+        <div onclick="switchTab('tests')" class="tap-effect cursor-pointer bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 text-center shadow-sm">
+          <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400">Best Accuracy</p>
+          <p id="statBestAccuracy" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0%</p>
+        </div>
+        <div onclick="openSavedQuestionsModal()" class="tap-effect cursor-pointer bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 text-center shadow-sm">
+          <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400">Saved Qs</p>
+          <p id="statSavedQs" class="text-2xl font-black text-amber-500 mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Bar (AI Tutor Removed as requested, CBT & AI Test + Saved Bank kept clean) -->
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="switchTab('tests')" class="tap-effect bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 shadow-sm text-left">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">
+            <i class="fa-solid fa-laptop-code"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800 dark:text-slate-100">CBT & AI Test</h3>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Live Practice & PYQ</p>
+          </div>
+        </button>
+
+        <button onclick="openSavedQuestionsModal()" class="tap-effect bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3.5 flex items-center gap-3 shadow-md text-left">
+          <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-lg shrink-0">
+            <i class="fa-solid fa-bookmark"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold">Saved Qs Bank</h3>
+            <p class="text-[11px] font-semibold text-amber-100">बुकमार्क प्रश्न देखें</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- ONE-SHOT LECTURES SECTION (Dynamic 11th / 12th & YouTube Feed Style) -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <i class="fa-brands fa-youtube text-red-600 text-xl"></i>
+              <h2 id="lectureSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">
+                One-Shot Lectures (11th)
+              </h2>
+            </div>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
+              आपकी क्लास (<span class="currentClassText font-bold text-apex">11th</span>) के अनुसार क्यूरेटेड YouTube लेक्चर्स
+            </p>
+          </div>
+          <button onclick="openModal('addLectureModal')" class="tap-effect px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold shadow-sm shrink-0">
+            + Add Lecture
+          </button>
+        </div>
+
+        <!-- Subject Filter Pills for Lectures -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1" id="lectureSubjectTabs">
+          <button onclick="filterLectures('All')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-extrabold bg-apex text-white" data-sub="All">All</button>
+          <button onclick="filterLectures('Physics')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Physics">Physics</button>
+          <button onclick="filterLectures('Chemistry')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Chemistry">Chemistry</button>
+          <button onclick="filterLectures('Biology')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Biology">Biology</button>
+          <button onclick="filterLectures('Mathematics')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Mathematics">Mathematics</button>
+        </div>
+
+        <!-- YouTube Feed Style Wide Cards -->
+        <div id="lecturesContainer" class="space-y-4"></div>
+      </div>
+
+      <!-- PDF & NOTES LIBRARY SECTION (Dynamic 11th / 12th) -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-file-pdf text-rose-500 text-lg"></i>
+              <h2 id="notesSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">
+                PDF & Notes Library (11th)
+              </h2>
+            </div>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
+              क्लास <span class="currentClassText font-bold text-apex">11th</span> के हस्तलिखित नोट्स, फॉर्मूला शीट और PDF
+            </p>
+          </div>
+          <button onclick="openModal('addNotesModal')" class="tap-effect px-3.5 py-2 rounded-xl bg-apex text-white text-xs font-extrabold shadow-sm shrink-0">
+            + Add PDF/Notes
+          </button>
+        </div>
+
+        <div id="notesContainer" class="grid grid-cols-1 gap-2.5"></div>
+      </div>
+
+      <!-- Footer Credit -->
+      <div class="pt-4 pb-2 text-center">
+        <p class="text-xs font-extrabold text-slate-500 dark:text-slate-400">
+          Created with <span class="text-red-500 animate-pulse">❤️</span> by <span class="text-apex font-black">Satyam</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: TESTS, PYQ & LEADERBOARD ==================== -->
+    <section id="page-tests" class="tab-page space-y-4">
+
+      <!-- ATTRACTIVE LEADERBOARD (Moved to Test Section as requested) -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-500 flex items-center justify-center">
+              <i class="fa-solid fa-trophy"></i>
             </div>
             <div>
-                <h1 class="font-black text-base tracking-wider text-apex leading-tight">APEX STUDY</h1>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wide">शिखर की ओर...</p>
+              <h2 class="text-base font-extrabold text-slate-900 dark:text-white leading-none">Live Test Leaderboard</h2>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-1">टॉप रैंकर्स और आपका लाइव स्कोर</p>
             </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[11px] font-extrabold">
+            <i class="fa-solid fa-crown mr-1"></i> Top Scholars
+          </span>
         </div>
 
-        <div class="flex items-center space-x-2">
-            <button type="button" onclick="openModal('leaderboardModal')" class="px-3 py-1.5 bg-amber-50 dark:bg-amber-950/60 text-amber-600 rounded-full font-bold text-xs flex items-center shadow-sm">
-                <i class="fa-solid fa-crown mr-1"></i> Leaderboard
-            </button>
-            <button type="button" onclick="toggleDarkMode()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                <i id="darkModeIcon" class="fa-solid fa-moon text-xs"></i>
-            </button>
-            <button type="button" onclick="openModal('themeModal')" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                <i class="fa-solid fa-palette text-xs"></i>
-            </button>
+        <!-- Top 3 Podium -->
+        <div id="leaderboardPodium" class="grid grid-cols-3 gap-2 items-end pt-3 pb-2 mb-3 bg-gradient-to-b from-slate-50 to-slate-100/70 dark:from-slate-800/40 dark:to-slate-900 rounded-2xl p-3 border border-slate-200/60 dark:border-slate-800"></div>
+
+        <!-- Remaining Leaderboard List -->
+        <div id="leaderboardList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
+      </div>
+
+      <!-- EXAM MODE TABS: CBT / NEET UG / JEE Mains-Adv / 1v1 Live -->
+      <div class="grid grid-cols-4 gap-1.5 bg-slate-200/70 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <button onclick="switchExamMode('cbt')" id="examTab-cbt" class="exam-mode-btn tap-effect py-2 px-1 rounded-xl text-xs font-extrabold bg-apex text-white shadow-sm">
+          CBT AI
+        </button>
+        <button onclick="switchExamMode('neet')" id="examTab-neet" class="exam-mode-btn tap-effect py-2 px-1 rounded-xl text-xs font-extrabold text-slate-600 dark:text-slate-300">
+          NEET UG
+        </button>
+        <button onclick="switchExamMode('jee')" id="examTab-jee" class="exam-mode-btn tap-effect py-2 px-1 rounded-xl text-xs font-extrabold text-slate-600 dark:text-slate-300">
+          JEE M/Adv
+        </button>
+        <button onclick="switchExamMode('1v1')" id="examTab-1v1" class="exam-mode-btn tap-effect py-2 px-1 rounded-xl text-xs font-extrabold text-slate-600 dark:text-slate-300">
+          1v1 Live
+        </button>
+      </div>
+
+      <!-- 1. CBT & AI TOPIC QUIZ GENERATOR -->
+      <div id="examPanel-cbt" class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">CBT Mock Test & AI Quiz Generator</h3>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">शुद्ध हिंदी मीडियम में 20 नए AI प्रश्न जनरेट करें व डाउनलोड करें</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[11px] font-extrabold">Hindi Medium</span>
         </div>
-    </header>
 
-    <main class="max-w-md mx-auto p-3.5 space-y-4">
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-1">Select Class</label>
+            <select id="cbtClassSelect" onchange="updateTopicSuggestions()" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-xs font-bold focus:outline-none">
+              <option value="11th">Class 11th</option>
+              <option value="12th">Class 12th</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-1">Select Subject</label>
+            <select id="cbtSubjectSelect" onchange="updateTopicSuggestions()" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-xs font-bold focus:outline-none">
+              <option value="Chemistry">Chemistry (रसायन विज्ञान)</option>
+              <option value="Physics">Physics (भौतिक विज्ञान)</option>
+              <option value="Biology">Biology (जीव विज्ञान)</option>
+              <option value="Mathematics">Mathematics (गणित)</option>
+            </select>
+          </div>
+        </div>
 
-        <!-- 1. HOME PAGE -->
-        <section id="page-home" class="tab-page active-page space-y-4">
-            
-            <!-- Motivational Shayari Banner -->
-            <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden">
-                <div class="relative z-10 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="inline-flex items-center space-x-1.5 bg-white/20 text-[11px] px-3 py-1 rounded-full font-semibold">
-                            <i class="fa-solid fa-fire text-amber-300 mr-1"></i> Motivation
-                        </span>
-                        <button type="button" onclick="nextShayari()" class="text-[11px] bg-white/20 px-2.5 py-1 rounded-full font-bold">
-                            <i class="fa-solid fa-rotate mr-1"></i>Next
-                        </button>
-                    </div>
-                    <h2 id="shayariText" class="text-base font-bold leading-snug">"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"</h2>
-                    <p id="shayariSub" class="text-[11px] text-blue-100 font-medium">सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!</p>
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-1">Topic Name / Chapter (चैप्टर चुनें या लिखें)</label>
+          <input id="cbtTopicInput" type="text" placeholder="जैसे: परमाणु संरचना, ऊष्मागतिकी, गति के नियम..." class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold focus:outline-none" />
+          <div id="cbtTopicSuggestions" class="flex flex-wrap gap-1.5 mt-2"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button onclick="startGeneratedTest('CBT')" class="tap-effect py-3 rounded-xl bg-apex text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i> Start CBT Test (20 Qs)
+          </button>
+          <button onclick="downloadGeneratedTestDirect('CBT')" class="tap-effect py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> Download AI Paper
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. NEET UG COMPLETE SECTION (Subject-wise, Mix Mode & AI PYQ 2000-2026) -->
+      <div id="examPanel-neet" class="hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-black">MEDICAL ENTRANCE</span>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">NEET UG (हिंदी मीडियम) - AI Test & PYQ</h3>
+          </div>
+          <i class="fa-solid fa-stethoscope text-2xl text-emerald-500"></i>
+        </div>
+
+        <!-- NEET Subject & Mix Selection -->
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-2">1. NEET Subject / Full Mix Mode चुनें:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="selectNeetSub('Physics')" class="neet-sub-btn tap-effect p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 text-left" data-sub="Physics">
+              <p class="text-xs font-extrabold">⚡ Physics (भौतिकी)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">20 NCERT + Numerical Qs</p>
+            </button>
+            <button onclick="selectNeetSub('Chemistry')" class="neet-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Chemistry">
+              <p class="text-xs font-extrabold">🧪 Chemistry (रसायन)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Physical, Organic, Inorganic</p>
+            </button>
+            <button onclick="selectNeetSub('Biology')" class="neet-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Biology">
+              <p class="text-xs font-extrabold">🧬 Biology (जीव विज्ञान)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Botany + Zoology NCERT</p>
+            </button>
+            <button onclick="selectNeetSub('Mix')" class="neet-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Mix">
+              <p class="text-xs font-extrabold">🔥 Full PCB Mix Test</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Complete NEET Pattern</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- NEET PYQ (2000 - 2026) Selector -->
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+              <i class="fa-solid fa-clock-rotate-left text-emerald-500 mr-1"></i> NEET PYQ (वर्ष 2000 से 2026) या AI Fresh:
+            </label>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <select id="neetTestMode" class="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold">
+              <option value="AI_FRESH">✨ AI New Mock Questions</option>
+              <option value="PYQ">📜 Previous Year Paper (PYQ)</option>
+            </select>
+            <select id="neetPyqYear" class="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="startGeneratedTest('NEET')" class="tap-effect py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-bolt"></i> Start NEET Test (20 Qs)
+          </button>
+          <button onclick="downloadGeneratedTestDirect('NEET')" class="tap-effect py-3 rounded-xl bg-slate-800 dark:bg-slate-700 text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down"></i> Download NEET Paper
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. JEE MAINS / ADVANCED COMPLETE SECTION (Subject-wise, Mix Mode & AI PYQ 2000-2026) -->
+      <div id="examPanel-jee" class="hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 text-[10px] font-black">ENGINEERING ENTRANCE</span>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">JEE Mains & Advanced (हिंदी) - AI & PYQ</h3>
+          </div>
+          <i class="fa-solid fa-atom text-2xl text-indigo-500"></i>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-1">Exam Level</label>
+            <select id="jeeLevelSelect" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="JEE Mains">JEE Mains</option>
+              <option value="JEE Advanced">JEE Advanced</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-1">Paper Type</label>
+            <select id="jeeTestMode" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="AI_FRESH">✨ AI New Mock Questions</option>
+              <option value="PYQ">📜 JEE PYQ (2000-2026)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-2">1. JEE Subject / Full PCM Mix चुनें:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="selectJeeSub('Physics')" class="jee-sub-btn tap-effect p-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-500/10 text-left" data-sub="Physics">
+              <p class="text-xs font-extrabold">⚡ Physics (भौतिकी)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Mechanics, Electro, Optics</p>
+            </button>
+            <button onclick="selectJeeSub('Chemistry')" class="jee-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Chemistry">
+              <p class="text-xs font-extrabold">🧪 Chemistry (रसायन)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Physical, Organic, Inorganic</p>
+            </button>
+            <button onclick="selectJeeSub('Mathematics')" class="jee-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Mathematics">
+              <p class="text-xs font-extrabold">📐 Mathematics (गणित)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Calculus, Algebra, Coordinate</p>
+            </button>
+            <button onclick="selectJeeSub('Mix')" class="jee-sub-btn tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-left" data-sub="Mix">
+              <p class="text-xs font-extrabold">🔥 Full PCM Mix Test</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Complete JEE Pattern</p>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-2">
+          <span class="text-xs font-extrabold"><i class="fa-solid fa-calendar-check text-indigo-500 mr-1"></i> Select PYQ Year (2000-2026):</span>
+          <select id="jeePyqYear" class="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-xs font-bold"></select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="startGeneratedTest('JEE')" class="tap-effect py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-rocket"></i> Start JEE Test (20 Qs)
+          </button>
+          <button onclick="downloadGeneratedTestDirect('JEE')" class="tap-effect py-3 rounded-xl bg-slate-800 dark:bg-slate-700 text-white text-xs font-extrabold shadow-md flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down"></i> Download JEE Paper
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. 1v1 LIVE FRIEND CHALLENGE -->
+      <div id="examPanel-1v1" class="hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">⚔️ 1v1 Live Friend Challenge</h3>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">रूम कोड बनाकर दोस्त के साथ लाइव टेस्ट मुकाबला करें</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-500 text-xs font-extrabold">LIVE BATTLE</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold text-slate-500">Your Challenge Room Code:</p>
+            <p id="challengeRoomCode" class="text-xl font-black tracking-widest text-apex mt-0.5">APEX-786</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="generateNewRoomCode()" class="tap-effect px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 text-xs font-bold">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+            <button onclick="copyRoomCode()" class="tap-effect px-3.5 py-2 rounded-xl bg-apex text-white text-xs font-extrabold">
+              <i class="fa-solid fa-share-nodes mr-1"></i> Share
+            </button>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <input id="joinChallengeInput" type="text" placeholder="दोस्त का रूम कोड डालें (e.g. APEX-786)" class="flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold uppercase focus:outline-none" />
+          <button onclick="start1v1Challenge()" class="tap-effect px-4 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-extrabold shrink-0">
+            Join & Start
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Credit -->
+      <div class="pt-3 pb-2 text-center">
+        <p class="text-xs font-extrabold text-slate-500 dark:text-slate-400">
+          Created with <span class="text-red-500">❤️</span> by <span class="text-apex font-black">Satyam</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: COMMUNITY & LIVE GROUPS ==================== -->
+    <section id="page-community" class="tab-page space-y-4">
+
+      <!-- Community Sub-Navigation: Feed vs Public/Live Groups -->
+      <div class="grid grid-cols-2 gap-2 bg-slate-200/70 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <button onclick="switchCommunitySubTab('feed')" id="commSub-feed" class="tap-effect py-2 rounded-xl text-xs font-extrabold bg-apex text-white shadow-sm">
+          <i class="fa-solid fa-comments mr-1"></i> Doubt & Post Feed
+        </button>
+        <button onclick="switchCommunitySubTab('groups')" id="commSub-groups" class="tap-effect py-2 rounded-xl text-xs font-extrabold text-slate-600 dark:text-slate-300">
+          <i class="fa-solid fa-users-rays mr-1"></i> Public & Live Groups
+        </button>
+      </div>
+
+      <!-- SUB-PANEL 1: COMMUNITY FEED + PERSISTENT SEARCH ENGINE -->
+      <div id="commPanel-feed" class="space-y-3.5">
+
+        <!-- SEARCH BAR (NEVER loses keyboard focus because input stays static in DOM!) -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3.5 shadow-sm space-y-2.5">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input
+              id="communitySearchInput"
+              type="text"
+              autocomplete="off"
+              oninput="handleCommunitySearchInput()"
+              placeholder="सर्च करें: छात्र का नाम (e.g. Satyam Kumar), पोस्ट या #hashtag..."
+              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold focus:outline-none focus:border-blue-500"
+            />
+            <button id="clearSearchBtn" onclick="clearCommunitySearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Search Filter Options (What the user wants to find: All, Profile, Post, Hashtag) -->
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <span class="text-[10px] font-extrabold text-slate-400 shrink-0 mr-1">खोजें:</span>
+            <button onclick="setSearchFilter('all')" id="sFilter-all" class="search-filter-chip tap-effect px-3 py-1 rounded-full text-[11px] font-extrabold bg-apex text-white">
+              All (सभी)
+            </button>
+            <button onclick="setSearchFilter('profile')" id="sFilter-profile" class="search-filter-chip tap-effect px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              👤 Profile (प्रोफाइल)
+            </button>
+            <button onclick="setSearchFilter('post')" id="sFilter-post" class="search-filter-chip tap-effect px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              📝 Post (पोस्ट)
+            </button>
+            <button onclick="setSearchFilter('hashtag')" id="sFilter-hashtag" class="search-filter-chip tap-effect px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              #️⃣ Hashtags
+            </button>
+          </div>
+
+          <!-- Trending Hashtags Bar -->
+          <div id="trendingHashtagsBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1"></div>
+        </div>
+
+        <!-- PROFILE SEARCH RESULTS CONTAINER (Shown when searching profiles or All) -->
+        <div id="profileSearchResultsBox" class="hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3.5 shadow-sm space-y-2.5"></div>
+
+        <!-- CREATE NEW POST BOX -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3.5 shadow-sm space-y-2.5">
+          <textarea
+            id="newPostContent"
+            rows="2"
+            placeholder="अपना डाउट, सवाल या नोट्स कम्युनिटी में साझा करें... (#NEET #JEE #11th #Chemistry का उपयोग करें)"
+            class="w-full rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 text-xs font-semibold focus:outline-none"
+          ></textarea>
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5">
+              <select id="newPostTag" class="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 text-[11px] font-bold">
+                <option value="#General">#General</option>
+                <option value="#Physics">#Physics</option>
+                <option value="#Chemistry">#Chemistry</option>
+                <option value="#Biology">#Biology</option>
+                <option value="#Mathematics">#Mathematics</option>
+                <option value="#NEET2026">#NEET2026</option>
+                <option value="#JEE2026">#JEE2026</option>
+              </select>
+              <button onclick="insertHashtagInInput('#APEXSTUDY')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-apex">+ #Tag</button>
+            </div>
+            <button onclick="createNewPost()" class="tap-effect px-4 py-2 rounded-xl bg-apex text-white text-xs font-extrabold shadow-sm">
+              <i class="fa-solid fa-paper-plane mr-1"></i> Post करें
+            </button>
+          </div>
+        </div>
+
+        <!-- COMMUNITY POSTS LIST -->
+        <div id="communityPostsList" class="space-y-3"></div>
+      </div>
+
+      <!-- SUB-PANEL 2: SEARCH PUBLIC GROUPS & JOIN LIVE GROUP -->
+      <div id="commPanel-groups" class="hidden space-y-3.5">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Search Public Study Groups</h3>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">पब्लिक ग्रुप खोजें या लाइव ग्रुप डिस्कशन जॉइन करें</p>
+            </div>
+            <button onclick="openModal('createGroupModal')" class="tap-effect px-3 py-1.5 rounded-xl bg-apex text-white text-xs font-extrabold">
+              + New Group
+            </button>
+          </div>
+
+          <input
+            id="groupSearchInput"
+            type="text"
+            oninput="renderPublicGroups()"
+            placeholder="ग्रुप का नाम या विषय खोजें (e.g. NEET Target, Bihar Board 11th)..."
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold focus:outline-none"
+          />
+
+          <div id="publicGroupsList" class="space-y-2.5"></div>
+        </div>
+
+        <!-- Active Live Group Chat Box -->
+        <div id="liveGroupChatBox" class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+              <div>
+                <h4 id="activeGroupName" class="text-sm font-extrabold">🔥 APEX Live Doubt Group (All Students)</h4>
+                <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Live Study Room Active</p>
+              </div>
+            </div>
+          </div>
+          <div id="groupChatMessages" class="space-y-2 max-h-60 overflow-y-auto p-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl"></div>
+          <div class="flex gap-2">
+            <input id="groupChatInput" type="text" placeholder="ग्रुप में संदेश लिखें..." onkeydown="if(event.key==='Enter')sendGroupChatMessage()" class="flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold focus:outline-none" />
+            <button onclick="sendGroupChatMessage()" class="tap-effect px-4 py-2 rounded-xl bg-apex text-white text-xs font-extrabold">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Credit -->
+      <div class="pt-3 pb-2 text-center">
+        <p class="text-xs font-extrabold text-slate-500 dark:text-slate-400">
+          Created with <span class="text-red-500">❤️</span> by <span class="text-apex font-black">Satyam</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: PROFILE, BIO LINKS, SETTINGS & FEEDBACK ==================== -->
+    <section id="page-profile" class="tab-page space-y-4">
+
+      <!-- PROFILE HEADER CARD WITH TOP-RIGHT SETTINGS BUTTON (As Requested) -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative">
+        <!-- Top-Right Corner Settings Button (Color Theme & App Settings) -->
+        <button onclick="openModal('settingsModal')" class="tap-effect absolute top-4 right-4 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-gear text-apex"></i>
+          <span>Settings</span>
+        </button>
+
+        <div class="flex items-center gap-3.5 pr-24">
+          <div id="profileAvatarBox" class="w-16 h-16 rounded-2xl bg-apex text-white flex items-center justify-center text-2xl font-black shadow-md shrink-0">
+            S
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h2 id="profileDisplayName" class="text-lg font-black text-slate-900 dark:text-white">Satyam Kumar</h2>
+              <span id="profileRoleBadge" class="px-2 py-0.5 rounded-md bg-blue-500/10 text-apex text-[10px] font-extrabold">Student</span>
+            </div>
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">
+              Class: <span id="profileDisplayClass" class="text-slate-800 dark:text-slate-200">11th</span> • Roll No: <span id="profileDisplayRoll" class="text-slate-800 dark:text-slate-200">01</span>
+            </p>
+            <p class="text-[11px] font-semibold text-slate-400 mt-0.5">
+              <i class="fa-solid fa-phone text-[10px] mr-1"></i><span id="profileDisplayMobile">+91 XXXXXXXXXX</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- BIO & SOCIAL LINKS (Instagram & Telegram in Bio) -->
+        <div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold text-slate-700 dark:text-slate-300">📌 Student Bio & Social Links</span>
+            <button onclick="openModal('editProfileModal')" class="tap-effect text-xs font-extrabold text-apex">
+              <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profile & Bio
+            </button>
+          </div>
+          <p id="profileBioText" class="text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl">
+            🎯 लक्ष्य: शिखर की ओर! Preparing with APEX STUDY.
+          </p>
+
+          <!-- Instagram & Telegram Link Cards with Linked / Not Linked Status -->
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-2 min-w-0">
+                <i class="fa-brands fa-instagram text-pink-500 text-lg shrink-0"></i>
+                <div class="truncate">
+                  <p class="text-[11px] font-extrabold">Instagram</p>
+                  <a id="instaBioLink" href="#" target="_blank" class="text-[10px] font-bold text-slate-400 truncate block">Not Linked</a>
                 </div>
+              </div>
+              <span id="instaStatusBadge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shrink-0">Not Linked</span>
             </div>
 
-            <!-- Analytics Strip -->
-            <div class="grid grid-cols-3 gap-2.5">
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer shadow-sm">
-                    <p class="text-[10px] text-slate-500 font-semibold">Tests Given</p>
-                    <p id="statTests" class="font-black text-base text-apex mt-0.5">0</p>
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-2 min-w-0">
+                <i class="fa-brands fa-telegram text-sky-500 text-lg shrink-0"></i>
+                <div class="truncate">
+                  <p class="text-[11px] font-extrabold">Telegram</p>
+                  <a id="tgBioLink" href="#" target="_blank" class="text-[10px] font-bold text-slate-400 truncate block">Not Linked</a>
                 </div>
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer shadow-sm">
-                    <p class="text-[10px] text-slate-500 font-semibold">Best Accuracy</p>
-                    <p id="statBestScore" class="font-black text-base text-emerald-600 mt-0.5">0%</p>
-                </div>
-                <div onclick="openModal('bookmarksModal')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer shadow-sm">
-                    <p class="text-[10px] text-slate-500 font-semibold">Saved Qs</p>
-                    <p id="statBookmarks" class="font-black text-base text-amber-500 mt-0.5">0</p>
-                </div>
+              </div>
+              <span id="tgStatusBadge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shrink-0">Not Linked</span>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Quick Action Cards & AI Tutor Floating Button -->
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-laptop-code"></i></div>
-                    <div><h3 class="font-bold text-xs">CBT & AI Test</h3><p class="text-[10px] text-slate-500">Live Practice</p></div>
-                </div>
-                <div onclick="openModal('aiModal')" class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white p-3.5 rounded-2xl shadow-md cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-robot"></i></div>
-                    <div><h3 class="font-bold text-xs">AI Tutor</h3><p class="text-[10px] text-indigo-100">24x7 Doubt Solver</p></div>
-                </div>
-            </div>
+      <!-- 5-STAR FEEDBACK & RATING SECTION IN PROFILE (As Requested) -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">⭐ Rate & Send Feedback</h3>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">ऐप को और बेहतर बनाने के लिए 5-स्टार रेटिंग और सुझाव दें</p>
+          </div>
+        </div>
 
-            <!-- YOUTUBE VIDEO FEED (With Creator Delete & Add Button) -->
-            <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="font-extrabold text-sm flex items-center">
-                            <i class="fa-brands fa-youtube text-red-600 text-lg mr-1.5"></i>One-Shot Lectures (<span id="feedClassLabel">11th</span>)
-                        </h3>
-                        <p class="text-[10px] text-slate-500">आपकी क्लास के अनुसार क्यूरेटेड लेक्चर्स</p>
-                    </div>
-                    <button type="button" onclick="openModal('addVideoModal')" class="bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow">
-                        + Add Lecture
-                    </button>
-                </div>
+        <!-- 5 Star Interactive Selector -->
+        <div class="flex items-center justify-center gap-3 py-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl" id="starRatingContainer">
+          <button onclick="setFeedbackStars(1)" class="star-btn text-2xl text-amber-400 tap-effect"><i class="fa-solid fa-star"></i></button>
+          <button onclick="setFeedbackStars(2)" class="star-btn text-2xl text-amber-400 tap-effect"><i class="fa-solid fa-star"></i></button>
+          <button onclick="setFeedbackStars(3)" class="star-btn text-2xl text-amber-400 tap-effect"><i class="fa-solid fa-star"></i></button>
+          <button onclick="setFeedbackStars(4)" class="star-btn text-2xl text-amber-400 tap-effect"><i class="fa-solid fa-star"></i></button>
+          <button onclick="setFeedbackStars(5)" class="star-btn text-2xl text-amber-400 tap-effect"><i class="fa-solid fa-star"></i></button>
+        </div>
 
-                <div id="youtubeFeedContainer" class="space-y-4"></div>
-            </div>
-        </section>
+        <textarea
+          id="feedbackTextInput"
+          rows="2"
+          placeholder="अपना फीडबैक या सुझाव यहाँ लिखें ताकि इसमें और सुधार किया जा सके..."
+          class="w-full rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 text-xs font-semibold focus:outline-none"
+        ></textarea>
 
-        <!-- 2. TEST PAGE -->
-        <section id="page-test" class="tab-page space-y-4">
-            <div id="testLobby" class="space-y-4">
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3.5">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-trophy"></i>
-                        </div>
-                        <div>
-                            <h2 class="font-bold text-sm">CBT Mock Test & AI Quiz Generator</h2>
-                            <p class="text-[11px] text-slate-500">टॉपिक चुनें (सजेशन उपलब्ध) और 20+ प्रश्नों का टेस्ट दें</p>
-                        </div>
-                    </div>
+        <button onclick="submitUserFeedback()" class="tap-effect w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold shadow-sm">
+          <i class="fa-solid fa-paper-plane mr-1"></i> Submit Feedback
+        </button>
 
-                    <div class="grid grid-cols-2 gap-2.5 text-xs">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Select Class</label>
-                            <select id="testClassSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-bold">
-                                <option value="11th">Class 11th</option>
-                                <option value="12th">Class 12th</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Select Subject</label>
-                            <select id="testSubjectSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-bold">
-                                <option value="Chemistry">Chemistry</option>
-                                <option value="Physics">Physics</option>
-                                <option value="Maths">Mathematics</option>
-                                <option value="Biology">Biology</option>
-                            </select>
-                        </div>
-                    </div>
+        <!-- Recent Feedbacks List -->
+        <div id="feedbackHistoryList" class="space-y-2 pt-2 max-h-44 overflow-y-auto"></div>
+      </div>
 
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 block mb-1">Topic Name / Chapter</label>
-                        <input id="aiTopicInput" list="topicSuggestions" type="text" placeholder="टाइप करें या सजेशन चुनें (जैसे: Complex Numbers, MOT...)" class="w-full p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold">
-                        <datalist id="topicSuggestions">
-                            <option value="Complex Numbers">
-                            <option value="Chemical Bonding & MOT">
-                            <option value="IUPAC Organic Nomenclature">
-                            <option value="Kinematics & Laws of Motion">
-                            <option value="Electrochemistry">
-                            <option value="Human Physiology">
-                        </datalist>
-                    </div>
+      <!-- Logout / Switch Student Account Button -->
+      <div class="flex justify-between items-center bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3.5">
+        <span class="text-xs font-bold text-slate-500">Account Session</span>
+        <button onclick="openModal('authModal')" class="tap-effect px-3.5 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs font-extrabold">
+          <i class="fa-solid fa-user-pen mr-1"></i> Switch / Re-Login
+        </button>
+      </div>
 
-                    <div class="grid grid-cols-2 gap-2.5 pt-1">
-                        <button type="button" onclick="startStandardCBT()" class="py-3 bg-apex text-white text-xs font-bold rounded-2xl shadow-md">
-                            <i class="fa-solid fa-play mr-1"></i>Start CBT Test
-                        </button>
-                        <button type="button" id="btnAiTest" onclick="generateAITest()" class="py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-2xl shadow-md">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>AI Test (20 Qs)
-                        </button>
-                    </div>
-                </div>
+      <!-- Footer Credit -->
+      <div class="pt-3 pb-2 text-center">
+        <p class="text-xs font-extrabold text-slate-500 dark:text-slate-400">
+          Created with <span class="text-red-500">❤️</span> by <span class="text-apex font-black">Satyam</span>
+        </p>
+      </div>
+    </section>
 
-                <!-- 1v1 Live Friend Challenge (With Mic & Real Code Validation) -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i>1v1 Live Friend Challenge</h3>
-                        <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-bold">Mi
+  </main>
+
+  <!-- ==================== COOL STUDENT-FRIENDLY BOTTOM NAVIGATION BAR ==================== -->
+  <nav id="bottomNavBar" class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200/80 dark:border-slate-800">
+    <button onclick="switchTab('home')" id="navBtn-home" class="nav-item-btn active-nav tap-effect">
+      <div class="nav-pill"><i class="fa-solid fa-house"></i></div>
+      <span>Home</span>
+    </button>
+    <button onclick="switchTab('tests')" id="navBtn-tests" class="nav-item-btn tap-effect">
+      <div class="nav-pill"><i class="fa-solid fa-clipboard-check"></i></div>
+      <span>Tests & PYQ</span>
+    </button>
+    <button onclick="switchTab('community')" id="navBtn-community" class="nav-item-btn tap-effect">
+      <div class="nav-pill"><i class="fa-solid fa-users"></i></div>
+      <span>Community</span>
+    </button>
+    <button onclick="switchTab('profile')" id="navBtn-profile" class="nav-item-btn tap-effect">
+      <div class="nav-pill"><i class="fa-solid fa-user-graduate"></i></div>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- ==================== MODAL 1: SIGNUP / LOGIN (4 MANDATORY QUESTIONS) ==================== -->
+  <div id="authModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-4">
+      <div class="text-center space-y-1">
+        <div class="w-14 h-14 rounded-2xl bg-apex text-white flex items-center justify-center text-2xl mx-auto shadow-lg">
+          <i class="fa-solid fa-mountain-sun"></i>
+        </div>
+        <h2 class="text-xl font-black text-slate-900 dark:text-white pt-1">Welcome to APEX STUDY</h2>
+        <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Towards the Peak... | साइन-अप / लॉगिन करें</p>
+      </div>
+
+      <div class="space-y-3">
+        <!-- 1. Student Name -->
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 dark:text-slate-300 mb-1">1. Student's Name (छात्र का नाम) *</label>
+          <input id="authNameInput" type="text" placeholder="अपना पूरा नाम लिखें (e.g. Satyam Kumar)" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold focus:outline-none" />
+        </div>
+
+        <!-- 2. Class (11th or 12th) -->
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 dark:text-slate-300 mb-1">2. Class (अपनी क्लास चुनें: 11th या 12th) *</label>
+          <select id="authClassInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold focus:outline-none">
+            <option value="11th">Class 11th</option>
+            <option value="12th">Class 12th</option>
+          </select>
+        </div>
+
+        <!-- 3. Roll Number -->
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 dark:text-slate-300 mb-1">3. Roll Number (रोल नंबर) *</label>
+          <input id="authRollInput" type="text" placeholder="अपना रोल नंबर लिखें (e.g. 24)" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold focus:outline-none" />
+        </div>
+
+        <!-- 4. Mobile Number -->
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 dark:text-slate-300 mb-1">4. Mobile Number (मोबाइल नंबर) *</label>
+          <input id="authMobileInput" type="tel" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर लिखें" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold focus:outline-none" />
+        </div>
+      </div>
+
+      <button onclick="saveAuthAndContinue()" class="tap-effect w-full py-3 rounded-2xl bg-apex text-white text-sm font-black shadow-lg">
+        Continue to APEX STUDY <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: PROFILE SETTINGS (COLOR THEME & ADMIN) ==================== -->
+  <div id="settingsModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+        <h3 class="text-base font-extrabold"><i class="fa-solid fa-sliders text-apex mr-1.5"></i> Settings & Color Theme</h3>
+        <button onclick="closeModal('settingsModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Auto Theme Status Info -->
+      <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-extrabold">Auto Dark/Light Theme</p>
+          <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">डिवाइस के अनुसार ऑटोमैटिक सेट है</p>
+        </div>
+        <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold">AUTO ON</span>
+      </div>
+
+      <!-- Color Theme Picker -->
+      <div>
+        <label class="block text-xs font-extrabold mb-2">Choose App Color Theme (कलर थीम चुनें):</label>
+        <div class="grid grid-cols-3 gap-2.5">
+          <button onclick="setAppColor('#2563eb', '37, 99, 235')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-blue-600 shrink-0"></span> Blue
+          </button>
+          <button onclick="setAppColor('#7c3aed', '124, 58, 237')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-violet-600 shrink-0"></span> Violet
+          </button>
+          <button onclick="setAppColor('#059669', '5, 150, 105')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-emerald-600 shrink-0"></span> Emerald
+          </button>
+          <button onclick="setAppColor('#e11d48', '225, 29, 72')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-rose-600 shrink-0"></span> Crimson
+          </button>
+          <button onclick="setAppColor('#d97706', '217, 119, 6')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-amber-600 shrink-0"></span> Amber
+          </button>
+          <button onclick="setAppColor('#0891b2', '8, 145, 178')" class="tap-effect p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs font-bold">
+            <span class="w-5 h-5 rounded-full bg-cyan-600 shrink-0"></span> Cyan
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Control Switch for Satyam -->
+      <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-extrabold text-amber-700 dark:text-amber-300">Admin Delete Access (Satyam)</p>
+          <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">कम्युनिटी पोस्ट डिलीट करने का अधिकार</p>
+        </div>
+        <button onclick="toggleAdminMode()" id="adminToggleBtn" class="px-3 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-extrabold">
+          Active
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: EDIT PROFILE & BIO LINKS ==================== -->
+  <div id="editProfileModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-extrabold">Edit Profile & Social Bio Links</h3>
+        <button onclick="closeModal('editProfileModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">Student Name</label>
+          <input id="editNameInput" type="text" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Class (11th / 12th)</label>
+            <select id="editClassInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="11th">11th</option>
+              <option value="12th">12th</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Roll Number</label>
+            <input id="editRollInput" type="text" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">Bio (बायो)</label>
+          <input id="editBioInput" type="text" placeholder="अपना बायो लिखें..." class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1"><i class="fa-brands fa-instagram text-pink-500 mr-1"></i> Instagram Link or Username</label>
+          <input id="editInstaInput" type="text" placeholder="e.g. https://instagram.com/satyam or @satyam" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1"><i class="fa-brands fa-telegram text-sky-500 mr-1"></i> Telegram Link or Username</label>
+          <input id="editTgInput" type="text" placeholder="e.g. https://t.me/apexstudy or @satyam" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+      </div>
+
+      <button onclick="saveProfileEdits()" class="tap-effect w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold">
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 4: ADD LECTURE MODAL ==================== -->
+  <div id="addLectureModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-extrabold"><i class="fa-brands fa-youtube text-red-600 mr-1"></i> Add One-Shot Lecture</h3>
+        <button onclick="closeModal('addLectureModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-2.5">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Class</label>
+            <select id="lecClassInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="11th">11th</option>
+              <option value="12th">12th</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Subject</label>
+            <select id="lecSubInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Mathematics">Mathematics</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">Lecture Title (चैप्टर का नाम)</label>
+          <input id="lecTitleInput" type="text" placeholder="e.g. रासायनिक आबंधन One-Shot (Hindi)" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">YouTube Video URL or ID</label>
+          <input id="lecUrlInput" type="text" placeholder="e.g. https://youtu.be/dQw4w9WgXcQ" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+      </div>
+      <button onclick="addNewLecture()" class="tap-effect w-full py-2.5 rounded-xl bg-red-600 text-white text-xs font-extrabold">
+        Upload Lecture
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 5: ADD PDF / NOTES MODAL ==================== -->
+  <div id="addNotesModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-extrabold"><i class="fa-solid fa-file-pdf text-rose-500 mr-1"></i> Add PDF / Study Notes</h3>
+        <button onclick="closeModal('addNotesModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-2.5">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Class</label>
+            <select id="noteClassInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="11th">11th</option>
+              <option value="12th">12th</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold mb-1">Subject</label>
+            <select id="noteSubInput" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold">
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Mathematics">Mathematics</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">Notes Title</label>
+          <input id="noteTitleInput" type="text" placeholder="e.g. कार्बनिक रसायन IUPAC नामकरण नोट्स" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-extrabold mb-1">Summary / Key Formulas (नोट्स का मुख्य कंटेंट या लिंक)</label>
+          <textarea id="noteContentInput" rows="3" placeholder="यहाँ महत्वपूर्ण सूत्र, नोट्स या Google Drive PDF लिंक लिखें..." class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-3 text-xs font-bold"></textarea>
+        </div>
+      </div>
+      <button onclick="addNewNote()" class="tap-effect w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold">
+        Save PDF / Notes
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 6: CREATE PUBLIC GROUP MODAL ==================== -->
+  <div id="createGroupModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold">Create Public Study Group</h3>
+        <button onclick="closeModal('createGroupModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input id="newGroupName" type="text" placeholder="ग्रुप का नाम (e.g. NEET 2026 Hindi Medium)" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+      <input id="newGroupDesc" type="text" placeholder="विषय / विवरण (e.g. Daily PCB Quiz & Doubts)" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-bold" />
+      <button onclick="createNewPublicGroup()" class="tap-effect w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold">Create Group</button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 7: SAVED QUESTIONS BANK ==================== -->
+  <div id="savedQuestionsModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-3 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-extrabold"><i class="fa-solid fa-bookmark text-amber-500 mr-1.5"></i> Saved Questions Bank</h3>
+        <button onclick="closeModal('savedQuestionsModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="savedQuestionsList" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 8: ACTIVE CBT / AI TEST ENGINE ==================== -->
+  <div id="activeTestModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-5 w-full max-w-lg shadow-2xl flex flex-col max-h-[92vh]">
+      <!-- Top Bar -->
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span id="activeTestBadge" class="px-2 py-0.5 rounded-md bg-blue-500/10 text-apex text-[10px] font-black">HINDI MEDIUM CBT</span>
+          <h3 id="activeTestTitle" class="text-sm font-extrabold mt-0.5">AI Mock Test</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Download Current Test Paper Button -->
+          <button onclick="downloadCurrentActiveTest()" title="Download Test Paper" class="tap-effect px-2.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold">
+            <i class="fa-solid fa-download mr-1"></i> PDF/Paper
+          </button>
+          <div class="px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs font-black flex items-center gap-1">
+            <i class="fa-regular fa-clock"></i> <span id="testTimerDisplay">20:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Progress & Save Button -->
+      <div class="flex items-center justify-between py-2.5">
+        <span id="testQCounter" class="text-xs font-extrabold text-slate-500">प्रश्न 1 / 20</span>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-bold text-emerald-600">+4</span>
+          <span class="text-[11px] font-bold text-rose-500">-1</span>
+          <button onclick="toggleSaveCurrentQuestion()" id="saveCurrentQBtn" class="tap-effect px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold">
+            <i class="fa-regular fa-bookmark mr-1"></i> Save Q
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Body -->
+      <div class="overflow-y-auto flex-1 space-y-3 py-1 pr-1">
+        <div id="testQuestionText" class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-sm font-bold leading-relaxed"></div>
+        <div id="testOptionsContainer" class="space-y-2"></div>
+      </div>
+
+      <!-- Question Number Palette -->
+      <div id="testPaletteRow" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2.5 border-t border-slate-100 dark:border-slate-800 mt-2"></div>
+
+      <!-- Bottom Controls -->
+      <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="prevTestQuestion()" class="tap-effect py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-extrabold">
+          <i class="fa-solid fa-chevron-left mr-1"></i> पिछला
+        </button>
+        <button onclick="nextTestQuestion()" class="tap-effect py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold">
+          अगला <i class="fa-solid fa-chevron-right ml-1"></i>
+        </button>
+        <button onclick="submitActiveTest()" class="tap-effect py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold">
+          Submit <i class="fa-solid fa-check ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 9: TEST RESULT & SOLUTIONS ==================== -->
+  <div id="testResultModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-black">🎉 टेस्ट परिणाम और विस्तृत हल (Hindi)</h3>
+        <button onclick="closeModal('testResultModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="testResultSummary" class="grid grid-cols-3 gap-2 text-center"></div>
+
+      <button onclick="downloadCurrentActiveTest()" class="tap-effect w-full py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold shadow-sm">
+        <i class="fa-solid fa-file-arrow-down mr-1.5"></i> प्रश्न-पत्र और उत्तर व्याख्या डाउनलोड करें (Download Paper)
+      </button>
+
+      <div id="testSolutionsList" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
+    </div>
+  </div>
+
+  <script>
+    /********************************************************************
+     * 1. AUTO THEME ENGINE (Strictly Automatic Dark/Light Detection)
+     ********************************************************************/
+    function applyAutoTheme() {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const hour = new Date().getHours();
+      const isNightHours = (hour >= 19 || hour < 6);
+      if (prefersDark || isNightHours) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    applyAutoTheme();
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyAutoTheme);
+    }
+
+    function setAppColor(hex, rgb) {
+      document.documentElement.style.setProperty('--theme-color', hex);
+      document.documentElement.style.setProperty('--theme-rgb', rgb);
+      localStorage.setItem('apex_theme_hex', hex);
+      localStorage.setItem('apex_theme_rgb', rgb);
+      showToast('कलर थीम अपडेट हो गया! 🎨');
+    }
+
+    (function loadSavedColor() {
+      const hex = localStorage.getItem('apex_theme_hex');
+      const rgb = localStorage.getItem('apex_theme_rgb');
+      if (hex && rgb) {
+        document.documentElement.style.setProperty('--theme-color', hex);
+        document.documentElement.style.setProperty('--theme-rgb', rgb);
+      }
+    })();
+
+    /********************************************************************
+     * 2. STATE & DEFAULT DATA
+     ********************************************************************/
+    let currentUser = JSON.parse(localStorage.getItem('apex_user_v4')) || null;
+    let isAdmin = JSON.parse(localStorage.getItem('apex_is_admin_v4'));
+    if (isAdmin === null) isAdmin = true; // Default enabled for Satyam
+
+    let userStats = JSON.parse(localStorage.getItem('apex_stats_v4')) || {
+      testsGiven: 0,
+      bestAccuracy: 0,
+      totalScore: 420
+    };
+
+    let savedQuestions = JSON.parse(localStorage.getItem('apex_saved_qs_v4')) || [];
+
+    // Curated Class 11th & Class 12th Lectures (YouTube Feed Style)
+    const defaultLectures = [
+      {
+        id: 'lec1',
+        classLevel: '11th',
+        subject: 'Chemistry',
+        title: 'रासायनिक आबंधन एवं आणविक संरचना (MOT & Bond Order) - Complete One Shot',
+        teacher: 'APEX Chemistry Faculty',
+        duration: '2h 15m',
+        ytId: 'f4M_r73_2zU'
+      },
+      {
+        id: 'lec2',
+        classLevel: '11th',
+        subject: 'Physics',
+        title: 'गति के नियम एवं घर्षण (Laws of Motion Class 11 Hindi Medium)',
+        teacher: 'APEX Physics Live',
+        duration: '1h 50m',
+        ytId: 'b1t41Q3xRM8'
+      },
+      {
+        id: 'lec3',
+        classLevel: '11th',
+        subject: 'Biology',
+        title: 'कोशिका: जीवन की इकाई (Cell: The Unit of Life NCERT 11th)',
+        teacher: 'APEX Bio Mentors',
+        duration: '1h 40m',
+        ytId: 'URUJD5NEXC8'
+      },
+      {
+        id: 'lec4',
+        classLevel: '11th',
+        subject: 'Mathematics',
+        title: 'सम्मिश्र संख्याएँ और द्विघात समीकरण (Complex Numbers 11th)',
+        teacher: 'APEX Maths Wing',
+        duration: '2h 05m',
+        ytId: '5PcpBw5Hbwo'
+      },
+      {
+        id: 'lec5',
+        classLevel: '12th',
+        subject: 'Chemistry',
+        title: 'वैद्युत रसायन और नेर्नस्ट समीकरण (Electrochemistry 12th One-Shot)',
+        teacher: 'APEX Chemistry Faculty',
+        duration: '2h 30m',
+        ytId: 'OE1S1J44Z4k'
+      },
+      {
+        id: 'lec6',
+        classLevel: '12th',
+        subject: 'Physics',
+        title: 'स्थिर वैद्युतिकी: कूलॉम का नियम एवं गाउस प्रमेय (Class 12th Hindi)',
+        teacher: 'APEX Physics Live',
+        duration: '2h 10m',
+        ytId: 'ZM8ECpBuQYE'
+      },
+      {
+        id: 'lec7',
+        classLevel: '12th',
+        subject: 'Biology',
+        title: 'वंशागति और विविधता के सिद्धांत (Genetics Class 12th Complete)',
+        teacher: 'APEX Bio Mentors',
+        duration: '2h 20m',
+        ytId: '8m6hHRlKwxY'
+      },
+      {
+        id: 'lec8',
+        classLevel: '12th',
+        subject: 'Mathematics',
+        title: 'समाकलन एवं अवकल समीकरण (Integration Full Chapter 12th)',
+        teacher: 'APEX Maths Wing',
+        duration: '2h 45m',
+        ytId: 'rfG8ce4nNh0'
+      }
+    ];
+    let lecturesList = JSON.parse(localStorage.getItem('apex_lectures_v4')) || defaultLectures;
+    let activeLectureSubjectFilter = 'All';
+
+    // Default Class 11th & Class 12th Notes
+    const defaultNotes = [
+      {
+        id: 'n1',
+        classLevel: '11th',
+        subject: 'Chemistry',
+        title: 'आणविक कक्षक सिद्धांत (MOT) एवं आबंध कोटि (Bond Order) ट्रिक्स PDF',
+        content: 'Bond Order = 1/2 (Nb - Na) | N2 = 3.0 (प्रतिचुंबकीय), O2 = 2.0 (अनुचुंबकीय), O2- = 1.5, O2+ = 2.5. जालक ऊर्जा (Lattice Energy) ∝ (q1*q2)/r.'
+      },
+      {
+        id: 'n2',
+        classLevel: '11th',
+        subject: 'Chemistry',
+        title: 'IUPAC कार्बनिक नामकरण एवं क्रियात्मक समूह प्राथमिकता सूची (11th)',
+        content: 'वरीयता क्रम: -COOH > -SO3H > -COOR > -COCl > -CONH2 > -CN > -CHO > >C=O > -OH > -NH2 > = > ≡.'
+      },
+      {
+        id: 'n3',
+        classLevel: '11th',
+        subject: 'Physics',
+        title: 'प्रक्षेप्य गति एवं वृत्तीय गति के सभी सूत्र (Class 11th Formula Sheet)',
+        content: 'उड्डयन काल T = 2u sinθ / g | अधिकतम ऊँचाई H = u² sin²θ / 2g | क्षैतिज परास R = u² sin2θ / g (Rmax पर θ = 45°).'
+      },
+      {
+        id: 'n4',
+        classLevel: '12th',
+        subject: 'Physics',
+        title: 'किरचॉफ के नियम, व्हीटस्टोन सेतु और धारा वैद्युत (12th Notes)',
+        content: 'प्रथम नियम (संधि नियम): ΣI = 0 (आवेश संरक्षण पर आधारित) | द्वितीय नियम (लूप नियम): ΣΔV = 0 (ऊर्जा संरक्षण पर आधारित).'
+      },
+      {
+        id: 'n5',
+        classLevel: '12th',
+        subject: 'Chemistry',
+        title: 'नेम रिएक्शन (Name Reactions) और d-ब्लॉक तत्व (Class 12th PDF)',
+        content: 'वुर्ट्ज़ अभिक्रिया, कैनिज़ारो अभिक्रिया, एल्डोल संघनन, राइमर-टीमान अभिक्रिया एवं Cr(24): [Ar] 3d5 4s1, Cu(29): [Ar] 3d10 4s1.'
+      }
+    ];
+    let notesList = JSON.parse(localStorage.getItem('apex_notes_v4')) || defaultNotes;
+
+    // Registered Directory of Profiles (So searching "Satyam Kumar" or any student shows Profiles!)
+    const defaultProfiles = [
+      {
+        id: 'u_satyam',
+        name: 'Satyam Kumar',
+        classLevel: '11th',
+        rollNo: '01',
+        mobile: '98XXXXXXXX',
+        role: 'Founder & Admin',
+        bio: '🚀 Creator of APEX STUDY | Towards the Peak...',
+        insta: 'https://instagram.com/satyam',
+        tg: 'https://t.me/apexstudy'
+      },
+      {
+        id: 'u_pavan',
+        name: 'Pavan Kumar',
+        classLevel: '11th',
+        rollNo: '07',
+        mobile: '91XXXXXXXX',
+        role: 'Topper Scholar',
+        bio: '🔬 11th Science | Chemistry & Maths Lover | Target NEET/JEE',
+        insta: '',
+        tg: 'https://t.me/pavankumar'
+      },
+      {
+        id: 'u_ankit',
+        name: 'Ankit Sharma',
+        classLevel: '12th',
+        rollNo: '14',
+        mobile: '88XXXXXXXX',
+        role: 'Student',
+        bio: '⚡ JEE Mains & Advanced Aspirant | Physics Geek',
+        insta: 'https://instagram.com/ankit_jee',
+        tg: ''
+      },
+      {
+        id: 'u_priya',
+        name: 'Priya Verma',
+        classLevel: '12th',
+        rollNo: '05',
+        mobile: '79XXXXXXXX',
+        role: 'Student',
+        bio: '🩺 Future Doctor | NEET UG 2026 | NCERT Biology 360/360',
+        insta: '',
+        tg: ''
+      }
+    ];
+    let directoryProfiles = JSON.parse(localStorage.getItem('apex_profiles_v4')) || defaultProfiles;
+
+    // Community Posts with 1-Like-Per-User tracking
+    const defaultPosts = [
+      {
+        id: 'p101',
+        author: 'Satyam Kumar',
+        authorClass: '11th',
+        isAdminPost: true,
+        time: '10 मिनट पहले',
+        tag: '#APEXSTUDY',
+        content: 'स्वागत है आप सभी का APEX STUDY के नए वर्शन में! अब आप अपनी क्लास (11th या 12th) के अनुसार One-Shot Lectures, PDF Notes और 2000-2026 तक के हिंदी मीडियम NEET/JEE PYQ टेस्ट दे सकते हैं और पेपर डाउनलोड भी कर सकते हैं। #NEET2026 #JEE2026',
+        likedBy: ['u_pavan', 'u_ankit'],
+        replies: [
+          { id: 'r1', author: 'Pavan Kumar', text: 'बहुत शानदार UI और फीचर्स हैं भाई! 🔥' }
+        ]
+      },
+      {
+        id: 'p102',
+        author: 'Pavan Kumar',
+        authorClass: '11th',
+        isAdminPost: false,
+        time: '35 मिनट पहले',
+        tag: '#Chemistry',
+        content: 'किसी को याद है O₂⁺ और O₂⁻ की आबंध कोटि (Bond Order) का सही क्रम क्या होता है? #Chemistry #MOT #11th',
+        likedBy: ['u_satyam'],
+        replies: [
+          { id: 'r2', author: 'Satyam Kumar', text: 'O₂⁺ = 2.5, O₂ = 2.0, O₂⁻ = 1.5 और O₂²⁻ = 1.0 होता है!' }
+        ]
+      }
+    ];
+    let communityPosts = JSON.parse(localStorage.getItem('apex_posts_v4')) || defaultPosts;
+
+    // Public Study Groups
+    const defaultGroups = [
+      { id: 'g1', name: '🔥 APEX Live Doubt Group (All Students)', desc: '24x7 Physics, Chemistry, Bio & Maths Live Discussion', members: 248 },
+      { id: 'g2', name: '🩺 NEET UG 2026 Hindi Medium Target 680+', desc: 'Daily NCERT Biology & Chemistry PYQ Quiz', members: 185 },
+      { id: 'g3', name: '🚀 JEE Mains & Advanced PCM Warriors', desc: '11th & 12th Maths + Physics Numericals Solver', members: 142 },
+      { id: 'g4', name: '📚 Bihar Board Class 11th & 12th Toppers', desc: 'Chapter-wise Notes & One-Shot Lecture Sharing', members: 310 }
+    ];
+    let publicGroups = JSON.parse(localStorage.getItem('apex_groups_v4')) || defaultGroups;
+
+    let groupMessages = JSON.parse(localStorage.getItem('apex_group_msgs_v4')) || [
+      { sender: 'Satyam Kumar', text: 'हेलो दोस्तों! शाम 7 बजे Chemistry MOT का लाइव टेस्ट होगा, सभी तैयार रहें!', time: '6:45 PM' },
+      { sender: 'Pavan Kumar', text: 'बिल्कुल भाई, आज 20 में 20 सही करने का टारगेट है!', time: '6:47 PM' }
+    ];
+
+    /********************************************************************
+     * 3. TOAST & MODAL HELPERS
+     ********************************************************************/
+    let toastTimer = null;
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      box.textContent = msg;
+      box.style.display = 'block';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.style.display = 'none';
+      }, 2600);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active-modal');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active-modal');
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active-page'));
+      document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active-nav'));
+
+      const targetPage = document.getElementById('page-' + tabName);
+      const targetBtn = document.getElementById('navBtn-' + tabName);
+      if (targetPage) targetPage.classList.add('active-page');
+      if (targetBtn) targetBtn.classList.add('active-nav');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /********************************************************************
+     * 4. AUTHENTICATION (4 Mandatory Questions + Dynamic Class Sync)
+     ********************************************************************/
+    function checkInitialAuth() {
+      if (!currentUser) {
+        openModal('authModal');
+      } else {
+        syncUserUI();
+      }
+    }
+
+    function saveAuthAndContinue() {
+      const name = document.getElementById('authNameInput').value.trim();
+      const classLevel = document.getElementById('authClassInput').value;
+      const rollNo = document.getElementById('authRollInput').value.trim();
+      const mobile = document.getElementById('authMobileInput').value.trim();
+
+      if (!name || !classLevel || !rollNo || !mobile) {
+        showToast('कृपया चारों जानकारी (नाम, क्लास, रोल नंबर, मोबाइल) भरें!');
+        return;
+      }
+
+      const userId = 'u_' + name.toLowerCase().replace(/\s+/g, '_');
+      const existing = directoryProfiles.find(p => p.id === userId);
+
+      currentUser = {
+        id: userId,
+        name: name,
+        classLevel: classLevel,
+        rollNo: rollNo,
+        mobile: mobile,
+        bio: existing ? existing.bio : `🎯 Class ${classLevel} Student | Preparing on APEX STUDY`,
+        insta: existing ? existing.insta : '',
+        tg: existing ? existing.tg : ''
+      };
+
+      // If name includes Satyam, automatically grant Admin access
+      if (name.toLowerCase().includes('satyam')) {
+        isAdmin = true;
+        localStorage.setItem('apex_is_admin_v4', JSON.stringify(true));
+      }
+
+      localStorage.setItem('apex_user_v4', JSON.stringify(currentUser));
+
+      // Add/update in searchable directoryProfiles
+      const idx = directoryProfiles.findIndex(p => p.id === userId || p.name.toLowerCase() === name.toLowerCase());
+      const profileEntry = {
+        id: userId,
+        name: name,
+        classLevel: classLevel,
+        rollNo: rollNo,
+        mobile: mobile,
+        role: isAdmin ? 'Founder & Admin' : 'Student',
+        bio: currentUser.bio,
+        insta: currentUser.insta,
+        tg: currentUser.tg
+      };
+      if (idx >= 0) directoryProfiles[idx] = profileEntry;
+      else directoryProfiles.unshift(profileEntry);
+      localStorage.setItem('apex_profiles_v4', JSON.stringify(directoryProfiles));
+
+      closeModal('authModal');
+      syncUserUI();
+      showToast(`स्वागत है ${name} (Class ${classLevel})! 🎉`);
+    }
+
+    function toggleUserClassQuick() {
+      if (!currentUser) {
+        openModal('authModal');
+        return;
+      }
+      currentUser.classLevel = currentUser.classLevel === '11th' ? '12th' : '11th';
+      localStorage.setItem('apex_user_v4', JSON.stringify(currentUser));
+      syncUserUI();
+      showToast(`आपकी क्लास अब Class ${currentUser.classLevel} पर सेट हो गई है!`);
+    }
+
+    function syncUserUI() {
+      const cls = currentUser ? currentUser.classLevel : '11th';
+      const name = currentUser ? currentUser.name : 'Satyam Kumar';
+      const roll = currentUser ? currentUser.rollNo : '01';
+      const mob = currentUser ? currentUser.mobile : '98XXXXXXXX';
+
+      // Update Header & Class Badges
+      document.getElementById('headerClassBadge').textContent = `Class ${cls}`;
+      document.querySelectorAll('.currentClassText').forEach(el => el.textContent = cls);
+
+      // Update Dynamic Home Section Titles (11th vs 12th)
+      document.getElementById('lectureSectionTitle').textContent = `One-Shot Lectures (${cls})`;
+      document.getElementById('notesSectionTitle').textContent = `PDF & Notes Library (${cls})`;
+
+      // Sync selects to user's class
+      document.getElementById('cbtClassSelect').value = cls;
+      document.getElementById('lecClassInput').value = cls;
+      document.getElementById('noteClassInput').value = cls;
+
+      // Admin Badge
+      const adminBadge = document.getElementById('headerAdminBadge');
+      const adminBtn = document.getElementById('adminToggleBtn');
+      if (isAdmin) {
+        adminBadge.classList.remove('hidden');
+        if (adminBtn) {
+          adminBtn.textContent = 'Active (ON)';
+          adminBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-extrabold';
+        }
+      } else {
+        adminBadge.classList.add('hidden');
+        if (adminBtn) {
+          adminBtn.textContent = 'Disabled (OFF)';
+          adminBtn.className = 'px-3 py-1.5 rounded-xl bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-extrabold';
+        }
+      }
+
+      // Profile Display
+      document.getElementById('profileAvatarBox').textContent = name.charAt(0).toUpperCase();
+      document.getElementById('profileDisplayName').textContent = name;
+      document.getElementById('profileDisplayClass').textContent = cls;
+      document.getElementById('profileDisplayRoll').textContent = roll;
+      document.getElementById('profileDisplayMobile').textContent = mob;
+      document.getElementById('profileRoleBadge').textContent = isAdmin ? 'Admin (Satyam)' : `Class ${cls} Scholar`;
+      document.getElementById('profileBioText').textContent = (currentUser && currentUser.bio) ? currentUser.bio : '🎯 लक्ष्य: शिखर की ओर! Preparing with APEX STUDY.';
+
+      // Social Links in Bio Status
+      const instaVal = currentUser && currentUser.insta ? currentUser.insta.trim() : '';
+      const tgVal = currentUser && currentUser.tg ? currentUser.tg.trim() : '';
+
+      const instaLink = document.getElementById('instaBioLink');
+      const instaBadge = document.getElementById('instaStatusBadge');
+      if (instaVal) {
+        instaLink.href = instaVal.startsWith('http') ? instaVal : `https://instagram.com/${instaVal.replace('@', '')}`;
+        instaLink.textContent = instaVal;
+        instaLink.className = 'text-[10px] font-bold text-pink-500 truncate block underline';
+        instaBadge.textContent = 'Linked';
+        instaBadge.className = 'px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shrink-0';
+      } else {
+        instaLink.href = 'javascript:void(0)';
+        instaLink.textContent = 'Add in Edit Profile';
+        instaLink.className = 'text-[10px] font-bold text-slate-400 truncate block';
+        instaBadge.textContent = 'Not Linked';
+        instaBadge.className = 'px-2 py

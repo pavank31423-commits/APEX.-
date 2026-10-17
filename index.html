@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="hi" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX STUDY - Ultimate Education Platform</title>
+    <title>APEX STUDY - 11th & 12th Ultimate Education Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,375 +21,256 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root { --theme-color: #2563eb; }
         .tap-effect:active { transform: scale(0.96); transition: transform 0.1s ease; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; }
+        .bg-apex { background-color: var(--theme-color); }
+        .text-apex { color: var(--theme-color); }
+        .border-apex { border-color: var(--theme-color); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen pb-24 font-sans select-none">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen pb-28 font-sans select-none">
 
-    <!-- TOP HEADER -->
-    <header class="bg-white/80 backdrop-blur-md dark:bg-slate-900/80 shadow-sm sticky top-0 z-40 px-4 py-3 flex justify-between items-center border-b dark:border-slate-800">
-        <div class="flex items-center space-x-2.5">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
+    <!-- TOP STICKY HEADER -->
+    <header class="bg-white/90 backdrop-blur-md dark:bg-slate-900/90 shadow-sm sticky top-0 z-40 px-4 py-3 flex justify-between items-center border-b dark:border-slate-800">
+        <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchTab('home')">
+            <div class="w-10 h-10 rounded-2xl bg-apex flex items-center justify-center text-white font-bold shadow-md">
                 <i class="fa-solid fa-mountain text-lg"></i>
             </div>
             <div>
-                <h1 class="font-black text-base tracking-wider text-apexPrimary">APEX STUDY</h1>
+                <div class="flex items-center space-x-1.5">
+                    <h1 class="font-black text-base tracking-wider text-apex">APEX STUDY</h1>
+                    <span id="headerClassBadge" class="text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full">11th</span>
+                </div>
                 <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Shikhar ki ore...</p>
             </div>
         </div>
-        <div class="flex items-center space-x-2.5">
-            <span id="userBadge" class="text-xs font-semibold bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full border border-blue-100 dark:border-slate-700">Guest</span>
-            <button onclick="openThemeModal()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300 shadow-sm">
+
+        <div class="flex items-center space-x-2">
+            <button onclick="openModal('aiModal')" title="AI Doubt Solver" class="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center tap-effect border border-indigo-200 dark:border-indigo-800">
+                <i class="fa-solid fa-robot text-sm"></i>
+            </button>
+            <button onclick="toggleDarkMode()" title="Dark/Light Mode" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
+                <i id="darkModeIcon" class="fa-solid fa-moon text-xs"></i>
+            </button>
+            <button onclick="openModal('themeModal')" title="Themes & API" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
                 <i class="fa-solid fa-palette text-xs"></i>
             </button>
+            <span onclick="switchTab('profile')" id="userBadge" class="cursor-pointer text-xs font-bold bg-blue-50 dark:bg-slate-800 text-apex px-3 py-1.5 rounded-full border border-blue-200 dark:border-slate-700 truncate max-w-[90px]">Guest</span>
         </div>
     </header>
 
-    <!-- MAIN APP CONTAINER -->
-    <main class="max-w-md mx-auto p-4 space-y-4">
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-md mx-auto p-4 space-y-5">
 
-        <!-- 1. HOME SECTION -->
-        <section id="section-home" class="space-y-4 animate-fadeIn">
-            <!-- Motivational Shayari & Banner -->
+        <!-- ==================== 1. HOME SECTION ==================== -->
+        <section id="section-home" class="space-y-5 animate-fadeIn">
+            
+            <!-- Motivational Shayari Banner -->
             <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden">
-                <div class="relative z-10 space-y-2">
-                    <div class="inline-flex items-center space-x-1.5 bg-white/20 backdrop-blur-md text-[11px] px-3 py-1 rounded-full font-semibold">
-                        <i class="fa-solid fa-fire text-amber-300"></i>
-                        <span>Motivation of the Day</span>
+                <div class="relative z-10 space-y-2.5">
+                    <div class="flex justify-between items-center">
+                        <div class="inline-flex items-center space-x-1.5 bg-white/20 backdrop-blur-md text-[11px] px-3 py-1 rounded-full font-semibold">
+                            <i class="fa-solid fa-fire text-amber-300"></i>
+                            <span>Motivation of the Day</span>
+                        </div>
+                        <button onclick="nextShayari()" class="text-[11px] bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full tap-effect">
+                            <i class="fa-solid fa-rotate mr-1"></i>Next
+                        </button>
                     </div>
-                    <h2 class="text-base font-bold leading-snug">"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"</h2>
-                    <p class="text-[11px] text-blue-100 font-medium">सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!</p>
+                    <h2 id="shayariText" class="text-base font-bold leading-snug">"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"</h2>
+                    <p id="shayariSub" class="text-[11px] text-blue-100 font-medium">सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!</p>
                 </div>
-                <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black">
+                <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black pointer-events-none">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
             </div>
 
-            <!-- YouTube One-Shot Lectures (Horizontal Scroll / Feed) -->
-            <div class="space-y-2.5">
-                <div class="flex justify-between items-center px-1">
-                    <h3 class="font-bold text-sm flex items-center"><i class="fa-solid fa-play text-red-500 mr-2"></i> 11th Grade YouTube One-Shots</h3>
-                    <span class="text-[10px] text-blue-600 dark:text-blue-400 font-semibold cursor-pointer">View All</span>
+            <!-- Quick Stats Bar (Performance Analytics Preview) -->
+            <div class="grid grid-cols-3 gap-2.5">
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
+                    <p class="text-[10px] text-slate-500">Tests Given</p>
+                    <p id="statTests" class="font-black text-base text-apex mt-0.5">0</p>
                 </div>
-                <div class="space-y-3">
-                    <!-- Lecture 1 -->
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex items-center justify-between space-x-3">
-                        <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-brands fa-youtube"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-xs truncate">Complex Numbers Full Chapter Revision</h4>
-                            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Maths | 11th Target</p>
-                        </div>
-                        <a href="https://youtube.com" target="_blank" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl tap-effect shrink-0 shadow-md shadow-red-600/20">Watch</a>
-                    </div>
-                    <!-- Lecture 2 -->
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex items-center justify-between space-x-3">
-                        <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-brands fa-youtube"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-xs truncate">IUPAC Nomenclature & MOT Masterclass</h4>
-                            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Chemistry | JEE / NEET</p>
-                        </div>
-                        <a href="https://youtube.com" target="_blank" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl tap-effect shrink-0 shadow-md shadow-red-600/20">Watch</a>
-                    </div>
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
+                    <p class="text-[10px] text-slate-500">Best Score</p>
+                    <p id="statBestScore" class="font-black text-base text-emerald-600 mt-0.5">0%</p>
+                </div>
+                <div onclick="openModal('bookmarksModal')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
+                    <p class="text-[10px] text-slate-500">Saved Qs</p>
+                    <p id="statBookmarks" class="font-black text-base text-amber-500 mt-0.5">0</p>
                 </div>
             </div>
 
-            <!-- Quick Utilities Card -->
+            <!-- Quick Utilities Grid -->
             <div class="grid grid-cols-2 gap-3">
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 flex items-center justify-center text-base"><i class="fa-solid fa-laptop-code"></i></div>
-                    <div><h3 class="font-semibold text-xs">CBT Test</h3><p class="text-[10px] text-slate-500">Live Practice</p></div>
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/70 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div><h3 class="font-bold text-xs">CBT & AI Test</h3><p class="text-[10px] text-slate-500">Live Practice</p></div>
                 </div>
-                <div onclick="switchTab('community')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center text-base"><i class="fa-solid fa-comments"></i></div>
-                    <div><h3 class="font-semibold text-xs">Doubt Wall</h3><p class="text-[10px] text-slate-500">Photo & Chat</p></div>
+                <div onclick="switchTab('community')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/70 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-comments"></i></div>
+                    <div><h3 class="font-bold text-xs">Doubt Wall</h3><p class="text-[10px] text-slate-500">Photo & Solve</p></div>
+                </div>
+            </div>
+
+            <!-- YOUTUBE BIG SQUARE/VIDEO FEED SECTION -->
+            <div class="space-y-3">
+                <div class="flex justify-between items-center px-1">
+                    <div>
+                        <h3 class="font-extrabold text-sm flex items-center">
+                            <i class="fa-brands fa-youtube text-red-600 text-lg mr-2"></i>One-Shot Video Feed
+                        </h3>
+                        <p class="text-[10px] text-slate-500">स्क्रॉल करें और ऐप के अंदर ही लेक्चर देखें</p>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <select id="videoClassFilter" onchange="renderVideos()" class="text-[11px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-2 py-1 font-semibold focus:outline-none">
+                            <option value="ALL">All Classes</option>
+                            <option value="11th">Class 11th</option>
+                            <option value="12th">Class 12th</option>
+                        </select>
+                        <button onclick="openModal('addVideoModal')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-xl tap-effect shadow-sm">
+                            + Add Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scrollable Large Square/YouTube Cards Container -->
+                <div id="youtubeFeedContainer" class="space-y-4">
+                    <!-- Rendered dynamically via JS in large YouTube card format -->
                 </div>
             </div>
         </section>
 
-        <!-- 2. TEST SECTION (CBT & 1v1 Live Friend Challenge) -->
+        <!-- ==================== 2. TEST SECTION (CBT, AI Generator, 1v1, Leaderboard) ==================== -->
         <section id="section-test" class="hidden space-y-4 animate-fadeIn">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800 text-center space-y-3">
-                <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-inner">
-                    <i class="fa-solid fa-trophy"></i>
+            
+            <!-- Test Dashboard Card -->
+            <div id="testLobby" class="space-y-4">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-sm">CBT Test Engine & AI Quiz Generator</h2>
+                            <p class="text-[11px] text-slate-500">क्लास और विषय चुनें या AI से नया टेस्ट बनाएं</p>
+                        </div>
+                    </div>
+
+                    <!-- Test Configuration Filters -->
+                    <div class="grid grid-cols-2 gap-2.5 text-xs">
+                        <div>
+                            <label class="text-[10px] font-semibold text-slate-500 block mb-1">Select Class</label>
+                            <select id="testClassSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold">
+                                <option value="11th">Class 11th</option>
+                                <option value="12th">Class 12th</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-semibold text-slate-500 block mb-1">Select Subject</label>
+                            <select id="testSubjectSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold">
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Maths">Mathematics</option>
+                                <option value="Biology">Biology</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-semibold text-slate-500 block mb-1">Topic / Chapter Name (AI Test के लिए)</label>
+                        <input id="aiTopicInput" type="text" placeholder="जैसे: Complex Numbers, IUPAC, Laws of Motion..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5 pt-1">
+                        <button onclick="startStandardCBT()" class="py-3 bg-apex text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
+                            <i class="fa-solid fa-play mr-1.5"></i>Start CBT Test
+                        </button>
+                        <button id="btnAiTest" onclick="generateAITest()" class="py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>AI Test बनाओ
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <h2 class="font-bold text-sm">Online CBT Test & 1v1 Live Challenge</h2>
-                    <p class="text-xs text-slate-500 mt-1">अपने दोस्तों के साथ लाइव क्विज़ मुकाबला खेलें और अपनी रैंक जांचें।</p>
+
+                <!-- 1v1 Live Friend Challenge Card -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i> 1v1 Live Friend Challenge</h3>
+                        <span class="text-[10px] bg-emerald-50 dark:bg-emerald-950 text-emerald-600 px-2.5 py-0.5 rounded-full font-bold">Real-Time</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">रूम कोड बनाएं या दोस्त का कोड डालकर लाइव मुकाबला शुरू करें।</p>
+                    <div class="flex space-x-2">
+                        <input id="challengeCodeInput" type="text" placeholder="Enter Room Code (e.g. APEX99)" class="flex-1 p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 uppercase font-bold">
+                        <button onclick="join1v1Challenge()" class="px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl tap-effect">Join</button>
+                        <button onclick="create1v1Challenge()" class="px-4 py-2.5 bg-slate-800 dark:bg-slate-700 text-white text-xs font-bold rounded-xl tap-effect">Create</button>
+                    </div>
+                    <div id="challengeRoomStatus" class="hidden p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-xs space-y-2"></div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="alert('CBT Mock Test Engine Loading...')" class="py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-2xl tap-effect shadow-lg shadow-blue-600/20">Start Mock Test</button>
-                    <button onclick="alert('1v1 Live Friend Challenge Room Created! Share link.')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-2xl tap-effect shadow-lg shadow-emerald-600/20">1v1 Live Challenge</button>
+
+                <!-- Live Leaderboard -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-ranking-star text-amber-500 mr-2"></i> Apex Live Leaderboard</h3>
+                        <span class="text-[10px] text-slate-400">Top Rankers</span>
+                    </div>
+                    <div id="leaderboardList" class="space-y-2 text-xs"></div>
                 </div>
+            </div>
+
+            <!-- ACTIVE CBT TEST ENGINE -->
+            <div id="cbtActiveScreen" class="hidden bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-lg border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex justify-between items-center border-b dark:border-slate-800 pb-3">
+                    <div>
+                        <span id="cbtSubjectTitle" class="text-xs font-bold text-apex">Subject Test</span>
+                        <p id="cbtQuestionCounter" class="text-[11px] text-slate-500">Question 1 of 5</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="bookmarkCurrentQuestion()" title="Bookmark Question" class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 flex items-center justify-center tap-effect">
+                            <i id="cbtBookmarkIcon" class="fa-regular fa-bookmark text-xs"></i>
+                        </button>
+                        <div class="bg-red-50 dark:bg-red-950/60 text-red-600 px-3 py-1 rounded-xl text-xs font-bold flex items-center">
+                            <i class="fa-regular fa-clock mr-1.5"></i><span id="cbtTimer">05:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Palette Dots -->
+                <div id="cbtPalette" class="flex space-x-1.5 overflow-x-auto pb-1 custom-scrollbar"></div>
+
+                <!-- Question Text -->
+                <div id="cbtQuestionBox" class="p-3.5 bg-slate-50 dark:bg-slate-950 rounded-2xl text-xs font-semibold leading-relaxed"></div>
+
+                <!-- Options -->
+                <div id="cbtOptionsBox" class="space-y-2.5 text-xs"></div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center pt-2 border-t dark:border-slate-800">
+                    <button onclick="prevCBTQuestion()" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold tap-effect">Previous</button>
+                    <button onclick="nextCBTQuestion()" id="cbtNextBtn" class="px-5 py-2.5 bg-apex text-white rounded-xl text-xs font-bold tap-effect">Next</button>
+                    <button onclick="submitCBTTest()" class="px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold tap-effect">Submit Test</button>
+                </div>
+            </div>
+
+            <!-- CBT RESULT & PERFORMANCE ANALYTICS SCREEN -->
+            <div id="cbtResultScreen" class="hidden bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-lg border border-slate-200 dark:border-slate-800 space-y-4 text-center">
+                <div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 rounded-full mx-auto flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h3 class="font-black text-base">Test Result & Analytics</h3>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Score</p><p id="resScore" class="font-black text-sm text-apex">0/20</p></div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Accuracy</p><p id="resAccuracy" class="font-black text-sm text-emerald-600">0%</p></div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Correct</p><p id="resCorrect" class="font-black text-sm text-purple-600">0</p></div>
+                </div>
+                <div id="resSolutionsList" class="text-left space-y-2.5 max-h-64 overflow-y-auto custom-scrollbar p-1"></div>
+                <button onclick="closeCBTResult()" class="w-full py-3 bg-apex text-white rounded-2xl text-xs font-bold tap-effect">Back to Test Hub</button>
             </div>
         </section>
 
-        <!-- 3. COMMUNITY SECTION (Photo Doubt Wall & Comments & Owner Delete) -->
+        <!-- ==================== 3. COMMUNITY SECTION (Doubt Wall, Photo Upload, AI Solve, Delete) ==================== -->
         <section id="section-community" class="hidden space-y-4 animate-fadeIn">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-200/60 dark:border-slate-800 space-y-3">
-                <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-camera text-blue-500 mr-2 text-sm"></i> Post Doubt Photo & Question</h3>
-                <textarea id="doubtText" placeholder="अपना प्रश्न या डाउट यहाँ लिखें..." class="w-full p-3 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-apexPrimary resize-none h-20"></textarea>
-                <div class="flex justify-between items-center pt-1">
-                    <input type="file" id="doubtImage" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-600 dark:file:bg-slate-800 dark:file:text-blue-400">
-                    <button onclick="postDoubt()" class="px-4 py-2 bg-apexPrimary text-white text-xs font-semibold rounded-xl tap-effect shadow-md shadow-blue-600/20">Post Doubt</button>
-                </div>
-            </div>
-
-            <!-- Doubts Feed -->
-            <div id="doubtsFeed" class="space-y-3">
-                <!-- Loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- 4. PROFILE MENU SECTION (Notes, JEE/NEET PYQs, Group Chat) -->
-        <section id="section-profile" class="hidden space-y-4 animate-fadeIn">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800 text-center space-y-2">
-                <div class="w-16 h-16 bg-gradient-to-tr from-blue-500 to-indigo-600 text-white rounded-full mx-auto flex items-center justify-center text-2xl font-bold shadow-md shadow-blue-500/20">
-                    <i class="fa-solid fa-user-graduate"></i>
-                </div>
-                <div>
-                    <h2 id="profileNameDisplay" class="font-bold text-sm">Student</h2>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">11th Grade Aspirant | Apex Member</p>
-                </div>
-                <button onclick="changeUserName()" class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[11px] font-medium rounded-xl tap-effect border border-slate-200 dark:border-slate-700">Edit Name</button>
-            </div>
-
-            <!-- Profile Menu Options Grid -->
-            <div class="space-y-2">
-                <div onclick="openNotesModal()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex justify-between items-center cursor-pointer tap-effect">
-                    <div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid fa-book"></i></div><span class="text-xs font-semibold">PDF Notes (Physics, Chem, Math, Bio)</span></div>
-                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
-                </div>
-                <div onclick="openJeepyiModal()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex justify-between items-center cursor-pointer tap-effect">
-                    <div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 flex items-center justify-center text-sm"><i class="fa-solid fa-graduation-cap"></i></div><span class="text-xs font-semibold">JEE PYQs (Subject Wise)</span></div>
-                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
-                </div>
-                <div onclick="openNeetpyqModal()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex justify-between items-center cursor-pointer tap-effect">
-                    <div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-sm"><i class="fa-solid fa-stethoscope"></i></div><span class="text-xs font-semibold">NEET PYQs (Subject Wise)</span></div>
-                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
-                </div>
-                <div onclick="openGroupChatModal()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex justify-between items-center cursor-pointer tap-effect">
-                    <div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-sm"><i class="fa-solid fa-users"></i></div><span class="text-xs font-semibold">Group Chat & Discussion Room</span></div>
-                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- BOTTOM NAVIGATION BAR (4 Clean Icons) -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md dark:bg-slate-900/90 border-t dark:border-slate-800 py-2.5 px-6 flex justify-between items-center z-40 max-w-md mx-auto shadow-2xl">
-        <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-apexPrimary flex flex-col items-center tap-effect">
-            <i class="fa-solid fa-house text-lg"></i>
-            <span class="text-[10px] mt-1 font-semibold">Home</span>
-        </button>
-        <button onclick="switchTab('test')" id="nav-test" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
-            <i class="fa-solid fa-clipboard-question text-lg"></i>
-            <span class="text-[10px] mt-1 font-semibold">Test</span>
-        </button>
-        <button onclick="switchTab('community')" id="nav-community" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
-            <i class="fa-solid fa-people-group text-lg"></i>
-            <span class="text-[10px] mt-1 font-semibold">Community</span>
-        </button>
-        <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
-            <i class="fa-solid fa-user-gear text-lg"></i>
-            <span class="text-[10px] mt-1 font-semibold">Profile</span>
-        </button>
-    </nav>
-
-    <!-- FOOTER CREDIT -->
-    <footer class="text-center pb-20 pt-4 text-[11px] text-slate-400 font-medium">
-        Created with ❤️ by Satyam
-    </footer>
-
-    <!-- MODALS & POPUPS -->
-    <!-- Theme Modal -->
-    <div id="themeModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 w-full max-w-xs space-y-4 shadow-2xl border dark:border-slate-800">
-            <h3 class="font-bold text-xs">Select Theme Color</h3>
-            <div class="grid grid-cols-4 gap-2">
-                <button onclick="setTheme('#2563eb')" class="h-10 rounded-2xl bg-blue-600 tap-effect shadow-md"></button>
-                <button onclick="setTheme('#059669')" class="h-10 rounded-2xl bg-emerald-600 tap-effect shadow-md"></button>
-                <button onclick="setTheme('#7c3aed')" class="h-10 rounded-2xl bg-purple-600 tap-effect shadow-md"></button>
-                <button onclick="setTheme('#dc2626')" class="h-10 rounded-2xl bg-red-600 tap-effect shadow-md"></button>
-            </div>
-            <button onclick="closeThemeModal()" class="w-full py-2.5 bg-slate-100 dark:bg-slate-800 text-xs rounded-2xl font-semibold tap-effect">Close</button>
-        </div>
-    </div>
-
-    <!-- Notes Modal -->
-    <div id="notesModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-end justify-center">
-        <div class="bg-white dark:bg-slate-900 rounded-t-3xl p-5 w-full max-w-md space-y-3 max-h-[80vh] overflow-y-auto custom-scrollbar border-t dark:border-slate-800">
-            <div class="flex justify-between items-center"><h3 class="font-bold text-xs">Study Notes PDF</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="space-y-2 text-xs">
-                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl flex justify-between items-center border dark:border-slate-800"><span>Physics - Mechanics & Kinematics</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
-                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl flex justify-between items-center border dark:border-slate-800"><span>Chemistry - IUPAC & MOT Notes</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
-                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl flex justify-between items-center border dark:border-slate-800"><span>Maths - Complex Numbers Formula</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
-                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl flex justify-between items-center border dark:border-slate-800"><span>Biology - Plant Physiology</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JEE PYQ Modal -->
-    <div id="jeepyiModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-end justify-center">
-        <div class="bg-white dark:bg-slate-900 rounded-t-3xl p-5 w-full max-w-md space-y-3 border-t dark:border-slate-800">
-            <div class="flex justify-between items-center"><h3 class="font-bold text-xs">JEE PYQs Section</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                <button onclick="alert('Opening Physics JEE PYQs')" class="p-3.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 rounded-2xl tap-effect">Physics PYQ</button>
-                <button onclick="alert('Opening Chemistry JEE PYQs')" class="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 rounded-2xl tap-effect">Chemistry PYQ</button>
-                <button onclick="alert('Opening Maths JEE PYQs')" class="p-3.5 bg-purple-50 dark:bg-purple-950/40 text-purple-600 rounded-2xl tap-effect">Maths PYQ</button>
-                <button onclick="alert('Opening All JEE PYQs')" class="p-3.5 bg-slate-100 dark:bg-slate-800 rounded-2xl tap-effect">All PYQs</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NEET PYQ Modal -->
-    <div id="neетpyqModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-end justify-center">
-        <div class="bg-white dark:bg-slate-900 rounded-t-3xl p-5 w-full max-w-md space-y-3 border-t dark:border-slate-800">
-            <div class="flex justify-between items-center"><h3 class="font-bold text-xs">NEET PYQs Section</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                <button onclick="alert('Opening Physics NEET PYQs')" class="p-3.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 rounded-2xl tap-effect">Physics PYQ</button>
-                <button onclick="alert('Opening Chemistry NEET PYQs')" class="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 rounded-2xl tap-effect">Chemistry PYQ</button>
-                <button onclick="alert('Opening Bio NEET PYQs')" class="p-3.5 bg-amber-50 dark:bg-amber-950/40 text-amber-600 rounded-2xl tap-effect">Bio PYQ</button>
-                <button onclick="alert('Opening All NEET PYQs')" class="p-3.5 bg-slate-100 dark:bg-slate-800 rounded-2xl tap-effect">All PYQs</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Group Chat Modal -->
-    <div id="groupChatModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-end justify-center">
-        <div class="bg-white dark:bg-slate-900 rounded-t-3xl p-5 w-full max-w-md space-y-3 h-[75vh] flex flex-col border-t dark:border-slate-800">
-            <div class="flex justify-between items-center border-b dark:border-slate-800 pb-2"><h3 class="font-bold text-xs">Group Discussion Room</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="flex-1 overflow-y-auto space-y-2 text-xs custom-scrollbar p-1" id="chatMessages">
-                <div class="p-2.5 bg-slate-100 dark:bg-slate-950 rounded-2xl border dark:border-slate-800"><strong>Aman:</strong> Kisi ko Chemical Bonding ka doubt hai kya?</div>
-            </div>
-            <div class="flex space-x-2 pt-2 border-t dark:border-slate-800">
-                <input type="text" id="chatInput" placeholder="Type message..." class="flex-1 p-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl focus:outline-none focus:ring-1 focus:ring-apexPrimary">
-                <button onclick="sendChatMessage()" class="px-4 py-2.5 bg-apexPrimary text-white text-xs rounded-2xl font-semibold">Send</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        const FIREBASE_URL = "https://apex-study-c9c2c-default-rtdb.firebaseio.com/";
-        const GEMINI_API_KEY = "AQ.Ab8RN6IMiO6akPbQbfVqFvhoh-Ed6_1X_GbwFAJJPVVgq8GHYQ";
-        
-        let currentUser = localStorage.getItem('apex_user') || "";
-        const OWNER_NAME = "Satyam"; // Only owner can delete posts
-
-        window.onload = () => {
-            if(!currentUser) {
-                let name = prompt("Welcome to APEX STUDY! Enter your Name to start:", "Student");
-                currentUser = name ? name.trim() : "Student";
-                localStorage.setItem('apex_user', currentUser);
-            }
-            document.getElementById('userBadge').innerText = currentUser;
-            document.getElementById('profileNameDisplay').innerText = currentUser;
-            loadDoubts();
-        };
-
-        function changeUserName() {
-            let name = prompt("Enter new name:", currentUser);
-            if(name) {
-                currentUser = name.trim();
-                localStorage.setItem('apex_user', currentUser);
-                document.getElementById('userBadge').innerText = currentUser;
-                document.getElementById('profileNameDisplay').innerText = currentUser;
-            }
-        }
-
-        function switchTab(tabId) {
-            ['home', 'test', 'community', 'profile'].forEach(t => {
-                document.getElementById('section-' + t).classList.add('hidden');
-                document.getElementById('nav-' + t).classList.remove('text-apexPrimary');
-                document.getElementById('nav-' + t).classList.add('text-slate-400');
-            });
-            document.getElementById('section-' + tabId).classList.remove('hidden');
-            document.getElementById('nav-' + tabId).classList.add('text-apexPrimary');
-            document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
-        }
-
-        function openThemeModal() { document.getElementById('themeModal').classList.remove('hidden'); }
-        function closeThemeModal() { document.getElementById('themeModal').classList.add('hidden'); }
-        function openNotesModal() { document.getElementById('notesModal').classList.remove('hidden'); }
-        function openJeepyiModal() { document.getElementById('jeepyiModal').classList.remove('hidden'); }
-        function openNeetpyqModal() { document.getElementById('neетpyqModal').classList.remove('hidden'); }
-        function openGroupChatModal() { document.getElementById('groupChatModal').classList.remove('hidden'); }
-        function closeModals() {
-            document.querySelectorAll('.fixed').forEach(m => m.classList.add('hidden'));
-        }
-
-        function setTheme(color) {
-            document.documentElement.style.setProperty('--theme-color', color);
-            closeThemeModal();
-        }
-
-        async function postDoubt() {
-            let text = document.getElementById('doubtText').value;
-            if(!text) return alert('Please write your doubt!');
-            
-            let postData = { user: currentUser, text: text, time: new Date().toLocaleTimeString() };
-            
-            try {
-                await fetch(FIREBASE_URL + 'doubts.json', {
-                    method: 'POST',
-                    body: JSON.stringify(postData)
-                });
-                document.getElementById('doubtText').value = '';
-                loadDoubts();
-            } catch(e) {
-                alert('Posted successfully');
-            }
-        }
-
-        async function loadDoubts() {
-            try {
-                let res = await fetch(FIREBASE_URL + 'doubts.json');
-                let data = await res.json();
-                let feed = document.getElementById('doubtsFeed');
-                feed.innerHTML = '';
-                if(data) {
-                    Object.keys(data).reverse().forEach(key => {
-                        let item = data[key];
-                        let canDelete = (currentUser.toLowerCase() === OWNER_NAME.toLowerCase());
-                        
-                        let html = `<div class="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 space-y-2">
-                            <div class="flex justify-between items-center"><span class="font-bold text-xs text-apexPrimary">${item.user}</span><span class="text-[10px] text-slate-400">${item.time}</span></div>
-                            <p class="text-xs">${item.text}</p>`;
-                        
-                        if(canDelete) {
-                            html += `<button onclick="deleteDoubt('${key}')" class="text-[10px] text-red-500 font-semibold mt-1"><i class="fa-solid fa-trash mr-1"></i> Delete (Owner Control)</button>`;
-                        }
-                        html += `</div>`;
-                        feed.innerHTML += html;
-                    });
-                }
-            } catch(e) {
-                console.log("Loading offline fallback");
-            }
-        }
-
-        async function deleteDoubt(key) {
-            if(confirm('Are you sure you want to delete this post?')) {
-                await fetch(FIREBASE_URL + `doubts/${key}.json`, { method: 'DELETE' });
-                loadDoubts();
-            }
-        }
-
-        function sendChatMessage() {
-            let msg = document.getElementById('chatInput').value;
-            if(!msg) return;
-            let box = document.getElementById('chatMessages');
-            box.innerHTML += `<div class="p-2.5 bg-blue-50 dark:bg-slate-950 rounded-2xl border dark:border-slate-800"><strong>${currentUser}:</strong> ${msg}</div>`;
-            document.getElementById('chatInput').value = '';
-            box.scrollTop = box.scrollHeight;
-        }
-    </script>
-</body>
-</html>
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-200/70 dark:border-slate-800 space-

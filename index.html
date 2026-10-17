@@ -1,711 +1,272 @@
 <!DOCTYPE html>
-<html lang="hi" class="light">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX STUDY - 11th & 12th Ultimate Learning Portal</title>
+    <title>APEX STUDY - Ultimate Education Platform</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] } } }
+            theme: {
+                extend: {
+                    colors: {
+                        apexPrimary: 'var(--theme-color, #2563eb)',
+                    }
+                }
+            }
         }
     </script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { scroll-behavior: smooth; font-family: 'Poppins', sans-serif; }
-        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%); }
-        .card-hover { transition: all 0.25s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.25); }
+        .tap-effect:active { transform: scale(0.95); transition: transform 0.1s ease; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen pb-24 font-sans select-none">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-indigo-600 text-white text-xs py-2 px-4 text-center font-medium flex justify-center items-center gap-2">
-        <span class="bg-amber-400 text-slate-900 font-bold px-2 py-0.5 rounded text-[10px] uppercase">LIVE</span>
-        <span>APEX STUDY: Class 11th & 12th Board + Competitive Free Smart Portal!</span>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-b border-slate-200 dark:border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-            <a href="#" class="flex items-center space-x-2.5">
-                <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-md">
-                    <i class="fa-solid fa-mountain-sun text-lg"></i>
-                </div>
-                <div>
-                    <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-500 dark:from-indigo-400 dark:to-violet-300">APEX STUDY</span>
-                    <span class="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold -mt-1 uppercase">11th & 12th Peak Hub</span>
-                </div>
-            </a>
-
-            <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-600 dark:text-slate-300">
-                <a href="#videos" class="hover:text-indigo-600 transition"><i class="fa-brands fa-youtube text-red-500 mr-1"></i>लेक्चर्स</a>
-                <a href="#notes" class="hover:text-indigo-600 transition"><i class="fa-solid fa-file-pdf text-rose-500 mr-1"></i>PDF नोट्स</a>
-                <a href="#cbt-test" class="hover:text-indigo-600 transition"><i class="fa-solid fa-laptop-code text-emerald-500 mr-1"></i>लाइव टेस्ट</a>
-                <button onclick="toggleModal('formulaModal')" class="hover:text-indigo-600 transition"><i class="fa-solid fa-bolt text-amber-500 mr-1"></i>फॉर्मूला शीट</button>
-                <a href="#upload" class="hover:text-indigo-600 transition"><i class="fa-solid fa-cloud-arrow-up text-indigo-500 mr-1"></i>अपलोड करें</a>
-                <a href="#comments" class="hover:text-indigo-600 transition"><i class="fa-regular fa-comments text-purple-500 mr-1"></i>डाउट बॉक्स</a>
+    <!-- TOP HEADER -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40 px-4 py-3 flex justify-between items-center border-b dark:border-slate-700">
+        <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-xl bg-apexPrimary flex items-center justify-center text-white font-bold shadow-md">
+                <i class="fa-solid fa-mountain-sun"></i>
             </div>
-
-            <div class="flex items-center space-x-2">
-                <button onclick="toggleModal('firebaseModal')" id="cloudStatusBtn" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
-                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    <span id="cloudStatusText">Local Save</span>
-                </button>
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400">
-                    <i id="themeIcon" class="fa-solid fa-moon"></i>
-                </button>
-                <button onclick="shareWebsite()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-md flex items-center gap-1.5">
-                    <i class="fa-brands fa-whatsapp text-base"></i> <span class="hidden sm:inline">शेयर करें</span>
-                </button>
+            <div>
+                <h1 class="font-bold text-lg leading-tight tracking-wide text-apexPrimary">APEX STUDY</h1>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400">Shikhar ki ore...</p>
             </div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero-gradient text-white py-12 px-4">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 items-center">
-            <div class="lg:col-span-7 space-y-4">
-                <div class="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 text-indigo-200 text-xs px-3.5 py-1.5 rounded-full font-semibold">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> 11th & 12th Science, Maths & Competitive Prep
-                </div>
-                <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight">
-                    अपनी पढ़ाई को ले जाएं <span class="text-amber-400">APEX (शिखर)</span> पर!
-                </h1>
-                <p class="text-indigo-100 text-sm sm:text-base max-w-2xl">
-                    बिना किसी रुकावट के YouTube लेक्चर्स देखें, Google Drive के PDF नोट्स सीधे पढ़ें, नेगेटिव मार्किंग के साथ लाइव टेस्ट दें और अपने दोस्तों के साथ शेयर करें।
-                </p>
-                <div class="flex flex-wrap gap-3 pt-2">
-                    <a href="#cbt-test" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-play"></i> लाइव टेस्ट दें
-                    </a>
-                    <a href="#upload" class="bg-white/10 hover:bg-white/20 border border-white/25 text-white font-semibold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> वीडियो / PDF जोड़ें
-                    </a>
-                    <button onclick="toggleModal('formulaModal')" class="bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-200 font-semibold px-4 py-2.5 rounded-xl text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-book-open"></i> फॉर्मूला शीट
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right Widgets -->
-            <div class="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                <div class="bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-2xl">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-xs font-bold uppercase text-amber-300"><i class="fa-solid fa-stopwatch mr-1"></i>स्टडी फोकस टाइमर</span>
-                        <span id="timerStatus" class="text-[11px] bg-indigo-950 px-2.5 py-0.5 rounded-full text-indigo-200">Ready</span>
-                    </div>
-                    <div class="flex items-center justify-between my-2">
-                        <div id="timerDisplay" class="text-4xl font-extrabold font-mono">25:00</div>
-                        <div class="flex gap-1.5">
-                            <button onclick="startTimer()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">शुरू</button>
-                            <button onclick="pauseTimer()" class="bg-amber-500 text-slate-950 px-2.5 py-1.5 rounded-lg text-xs font-bold"><i class="fa-solid fa-pause"></i></button>
-                            <button onclick="resetTimer()" class="bg-rose-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold"><i class="fa-solid fa-rotate-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-2xl">
-                    <h3 class="text-xs font-bold uppercase text-emerald-300 mb-2"><i class="fa-solid fa-list-check mr-1"></i>आज का स्टडी टारगेट</h3>
-                    <div class="flex gap-2 mb-2">
-                        <input type="text" id="todoInput" placeholder="नया टारगेट लिखें..." class="w-full bg-slate-900/60 border border-white/20 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none">
-                        <button onclick="addTodo()" class="bg-indigo-500 hover:bg-indigo-600 px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
-                    </div>
-                    <ul id="todoList" class="space-y-1 max-h-20 overflow-y-auto text-xs"></ul>
-                </div>
-            </div>
+        <div class="flex items-center space-x-3">
+            <span id="userBadge" class="text-xs font-medium bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full border dark:border-slate-600">Guest</span>
+            <button onclick="openThemeModal()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
+                <i class="fa-solid fa-palette"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Filter & Search Bar -->
-    <section class="max-w-7xl mx-auto px-4 -mt-6 relative z-20">
-        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 flex flex-wrap justify-between items-center gap-3">
-            <div class="flex flex-wrap gap-1.5" id="filterBtnGroup">
-                <button onclick="filterContent('all', this)" class="filter-btn bg-indigo-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold">सभी (All)</button>
-                <button onclick="filterContent('11th', this)" class="filter-btn bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold">Class 11th</button>
-                <button onclick="filterContent('12th', this)" class="filter-btn bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold">Class 12th</button>
-                <button onclick="filterContent('Chemistry', this)" class="filter-btn bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold">Chemistry</button>
-                <button onclick="filterContent('Physics', this)" class="filter-btn bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold">Physics</button>
-                <button onclick="filterContent('Maths', this)" class="filter-btn bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold">Maths</button>
-            </div>
-            <div class="relative w-full md:w-64">
-                <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="टॉपिक सर्च करें..." class="w-full pl-8 pr-4 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none">
-                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-            </div>
-        </div>
-    </section>
+    <!-- MAIN APP CONTAINER -->
+    <main class="max-w-md mx-auto p-4">
 
-    <!-- 1. VIDEO LECTURES SECTION -->
-    <section id="videos" class="max-w-7xl mx-auto px-4 py-10">
-        <div class="flex justify-between items-end mb-6">
-            <div>
-                <h2 class="text-xl sm:text-2xl font-extrabold"><i class="fa-brands fa-youtube text-red-600 mr-1"></i> स्मार्ट वीडियो लेक्चर्स</h2>
-                <p class="text-slate-500 text-xs mt-0.5">यहीं पर वीडियो देखें या अपने दोस्तों को शेयर करें</p>
-            </div>
-            <a href="#upload" class="text-xs font-bold text-indigo-600 hover:underline">+ वीडियो जोड़ें</a>
-        </div>
-        <div id="videoGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </section>
-
-    <!-- 2. PDF NOTES SECTION -->
-    <section id="notes" class="bg-indigo-50/70 dark:bg-slate-900/60 py-10 px-4 border-y border-indigo-100 dark:border-slate-800">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-wrap justify-between items-end mb-6 gap-2">
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-extrabold"><i class="fa-solid fa-file-pdf text-rose-500 mr-1"></i> हैंडरिटन PDF नोट्स लाइब्रेरी</h2>
-                    <p class="text-slate-500 text-xs mt-0.5">वेबसाइट के अंदर ही नोट्स पढ़ें या डाउनलोड करें</p>
+        <!-- 1. HOME SECTION -->
+        <section id="section-home" class="space-y-4">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">Trick of the Day</span>
+                    <h2 class="text-xl font-bold mt-2">Chemistry MOT Bond Order Trick</h2>
+                    <p class="text-xs text-blue-100 mt-1">Total electrons 14 = Bond Order 3. Har 1 electron kam/jyada hone par 0.5 ghata do!</p>
                 </div>
-                <button onclick="toggleModal('pdfGuideModal')" class="text-xs bg-white dark:bg-slate-800 border px-3 py-1.5 rounded-lg font-semibold text-indigo-600">
-                    <i class="fa-brands fa-google-drive mr-1"></i>नोट्स कैसे अपलोड करें?
-                </button>
-            </div>
-            <div id="notesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-    </section>
-
-    <!-- 3. CBT LIVE TEST SECTION -->
-    <section id="cbt-test" class="max-w-7xl mx-auto px-4 py-10">
-        <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-2xl">
-            <div class="flex flex-wrap justify-between items-center gap-4 border-b border-white/10 pb-4 mb-5">
-                <div>
-                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Live CBT Exam</span>
-                    <h2 class="text-xl sm:text-2xl font-extrabold mt-1">11th & 12th Mock Test Portal</h2>
-                    <p class="text-indigo-200 text-xs">सही उत्तर: <span class="text-emerald-400 font-bold">+4</span> | गलत उत्तर: <span class="text-rose-400 font-bold">-1</span></p>
+                <div class="absolute -right-4 -bottom-4 text-white/10 text-8xl font-black">
+                    <i class="fa-solid fa-atom"></i>
                 </div>
-                <div class="flex items-center gap-3">
-                    <select id="quizSubjectSelect" onchange="loadQuizSubject()" class="bg-slate-800 text-white border border-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold">
-                        <option value="all">All Subjects</option>
-                        <option value="Chemistry">Chemistry</option>
-                        <option value="Physics">Physics</option>
-                        <option value="Maths">Maths</option>
-                    </select>
-                    <div class="bg-white/10 border border-white/20 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
-                        <i class="fa-regular fa-clock text-amber-400"></i>
-                        <span id="cbtTimer" class="font-mono font-bold text-sm">10:00</span>
+            </div>
+
+            <!-- Quick Access Grid -->
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border dark:border-slate-700 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div><h3 class="font-semibold text-sm">CBT Test</h3><p class="text-[11px] text-slate-500">Live Exam</p></div>
+                </div>
+                <div onclick="switchTab('community')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border dark:border-slate-700 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-comments"></i></div>
+                    <div><h3 class="font-semibold text-sm">Doubt Wall</h3><p class="text-[11px] text-slate-500">Photo & Chat</p></div>
+                </div>
+            </div>
+
+            <!-- Video Lectures -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border dark:border-slate-700">
+                <h3 class="font-bold text-sm mb-3 flex items-center"><i class="fa-solid fa-video text-red-500 mr-2"></i> Recommended Classes</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border dark:border-slate-600 flex justify-between items-center">
+                        <div><h4 class="font-semibold text-xs">Complex Numbers Full Shot</h4><p class="text-[10px] text-slate-500">Maths | 11th Grade</p></div>
+                        <a href="https://youtube.com" target="_blank" class="px-3 py-1.5 bg-red-600 text-white text-xs rounded-lg font-medium tap-effect">Watch</a>
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border dark:border-slate-600 flex justify-between items-center">
+                        <div><h4 class="font-semibold text-xs">IUPAC Nomenclature Masterclass</h4><p class="text-[10px] text-slate-500">Chemistry | JEE/NEET</p></div>
+                        <a href="https://youtube.com" target="_blank" class="px-3 py-1.5 bg-red-600 text-white text-xs rounded-lg font-medium tap-effect">Watch</a>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div id="quizPlayArea">
-                <div class="flex justify-between items-center text-xs text-indigo-200 mb-3">
-                    <span id="qCounter" class="font-bold bg-white/10 px-3 py-1 rounded-lg">Question 1</span>
-                    <span id="qCategoryBadge" class="bg-indigo-500/30 px-3 py-1 rounded-lg font-semibold">Chemistry</span>
+        <!-- 2. TEST SECTION (CBT & 37th Feature: 1v1 Live Friend Challenge) -->
+        <section id="section-test" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border dark:border-slate-700 text-center">
+                <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-xl mb-2">
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl mb-5">
-                    <h3 id="qText" class="text-base sm:text-lg font-bold">प्रश्न लोड हो रहा है...</h3>
-                    <div id="qOptions" class="grid sm:grid-cols-2 gap-3 mt-4"></div>
-                </div>
-                <div class="flex flex-wrap justify-between items-center gap-3">
-                    <div class="flex gap-2">
-                        <button onclick="prevQuestion()" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-xs font-bold">पिछला</button>
-                        <button onclick="clearAnswer()" class="bg-rose-500/20 text-rose-200 px-4 py-2 rounded-xl text-xs font-bold">Clear</button>
-                        <button onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl text-xs font-bold">अगला</button>
-                    </div>
-                    <button onclick="submitCBTTest()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow-lg">
-                        टेस्ट सबमिट करें & रिजल्ट देखें
-                    </button>
+                <h2 class="font-bold text-base">Online CBT Test & 1v1 Challenge</h2>
+                <p class="text-xs text-slate-500 mt-1">Apne dosto ke sath live quiz mukabla khelein ya mock test dein.</p>
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                    <button onclick="alert('CBT Mock Test Engine Loading...')" class="py-2.5 bg-blue-600 text-white text-xs font-semibold rounded-xl tap-effect shadow-md">Start Mock Test</button>
+                    <button onclick="alert('1v1 Live Friend Challenge Room Created!')" class="py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-xl tap-effect shadow-md">1v1 Live Challenge</button>
                 </div>
             </div>
+        </section>
 
-            <div id="quizResultArea" class="hidden bg-white/10 border border-white/20 rounded-2xl p-5 text-center">
-                <h3 class="text-xl font-extrabold text-amber-400 mb-1">आपका टेस्ट रिपोर्ट कार्ड</h3>
-                <p id="resultSummaryText" class="text-xs text-indigo-100 mb-4"></p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto mb-5">
-                    <div class="bg-slate-900/80 p-3 rounded-xl"><div class="text-[11px] text-slate-400">कुल स्कोर</div><div id="resScore" class="text-xl font-extrabold text-amber-400">0</div></div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl"><div class="text-[11px] text-emerald-300">सही (+4)</div><div id="resCorrect" class="text-xl font-extrabold text-emerald-400">0</div></div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl"><div class="text-[11px] text-rose-300">गलत (-1)</div><div id="resWrong" class="text-xl font-extrabold text-rose-400">0</div></div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl"><div class="text-[11px] text-slate-400">छोड़े गए</div><div id="resSkipped" class="text-xl font-extrabold text-slate-200">0</div></div>
-                </div>
-                <div id="resSolutions" class="text-left bg-slate-950/70 p-3.5 rounded-xl max-h-56 overflow-y-auto space-y-2.5 mb-5 text-xs"></div>
-                <div class="flex justify-center gap-3">
-                    <button onclick="resetCBTTest()" class="bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs">दोबारा टेस्ट दें</button>
-                    <button onclick="shareTestScore()" class="bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs"><i class="fa-brands fa-whatsapp mr-1"></i>स्कोर शेयर करें</button>
+        <!-- 3. COMMUNITY SECTION (Photo Doubt Wall & Comments & Owner Delete) -->
+        <section id="section-community" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border dark:border-slate-700">
+                <h3 class="font-bold text-sm mb-2 flex items-center"><i class="fa-solid fa-camera text-blue-500 mr-2"></i> Post Doubt Photo</h3>
+                <textarea id="doubtText" placeholder="Apna question ya doubt yahan likhein..." class="w-full p-3 text-xs bg-slate-50 dark:bg-slate-900 border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-apexPrimary"></textarea>
+                <div class="flex justify-between items-center mt-2">
+                    <input type="file" id="doubtImage" accept="image/*" class="text-[10px] text-slate-500">
+                    <button onclick="postDoubt()" class="px-4 py-2 bg-apexPrimary text-white text-xs font-semibold rounded-xl tap-effect shadow-md">Post Doubt</button>
                 </div>
             </div>
-        </div>
-    </section>
+            <div id="doubtsFeed" class="space-y-3"></div>
+        </section>
 
-    <!-- 4. UPLOAD STUDIO -->
-    <section id="upload" class="max-w-7xl mx-auto px-4 py-8">
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-slate-200 dark:border-slate-800">
-            <div class="flex flex-wrap justify-between items-center gap-2 mb-6">
-                <div>
-                    <h2 class="text-xl font-extrabold"><i class="fa-solid fa-cloud-arrow-up text-indigo-600 mr-1"></i> कंटेंट अपलोड स्टूडियो</h2>
-                    <p class="text-slate-500 text-xs">यहाँ से नया YouTube वीडियो, Google Drive PDF या MCQ सवाल जोड़ें।</p>
+        <!-- 4. PROFILE MENU SECTION (Notes, JEE/NEET PYQs, Group Chat, Settings) -->
+        <section id="section-profile" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border dark:border-slate-700 text-center">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/40 text-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-bold mb-2">
+                    <i class="fa-solid fa-user-graduate"></i>
                 </div>
-                <button onclick="toggleModal('firebaseModal')" class="text-xs bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 border border-indigo-200 px-3 py-1.5 rounded-xl font-bold">
-                    <i class="fa-solid fa-database mr-1"></i>Cloud Sync (Firebase)
-                </button>
+                <h2 id="profileNameDisplay" class="font-bold text-base">Student</h2>
+                <p class="text-xs text-slate-500 mt-0.5">11th Grade Aspirant | Apex Member</p>
+                <button onclick="changeUserName()" class="mt-3 px-3 py-1 bg-slate-100 dark:bg-slate-700 text-[11px] font-medium rounded-lg tap-effect">Edit Name</button>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-5">
-                <!-- Video Upload -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="font-bold text-indigo-600 text-sm mb-2.5">1. YouTube वीडियो जोड़ें</h3>
-                    <input type="text" id="vidTitle" placeholder="टॉपिक का नाम" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <input type="text" id="vidUrl" placeholder="YouTube लिंक पेस्ट करें" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <input type="text" id="vidDesc" placeholder="छोटा विवरण" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <div class="grid grid-cols-2 gap-2 mb-2.5">
-                        <select id="vidClass" class="p-2 rounded-xl border dark:bg-slate-900 text-xs"><option value="11th">Class 11th</option><option value="12th">Class 12th</option></select>
-                        <select id="vidSub" class="p-2 rounded-xl border dark:bg-slate-900 text-xs"><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Maths">Maths</option></select>
-                    </div>
-                    <button onclick="addNewVideo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs">+ वीडियो पब्लिश करें</button>
+            <div class="space-y-2">
+                <div onclick="openNotesModal()" class="bg-white dark:bg-slate-800 p-3.5 rounded-xl shadow-sm border dark:border-slate-700 flex justify-between items-center cursor-pointer tap-effect">
+                    <div class="flex items-center space-x-3"><i class="fa-solid fa-book text-blue-500"></i><span class="text-xs font-semibold">PDF Notes (Physics, Chem, Math, Bio)</span></div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </div>
-
-                <!-- PDF Upload -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="font-bold text-emerald-600 text-sm mb-2.5">2. Google Drive PDF जोड़ें</h3>
-                    <input type="text" id="noteTitle" placeholder="नोट्स का नाम" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <input type="text" id="noteUrl" placeholder="Google Drive Share Link" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <input type="text" id="noteDesc" placeholder="विवरण" class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <div class="grid grid-cols-2 gap-2 mb-2.5">
-                        <select id="noteClass" class="p-2 rounded-xl border dark:bg-slate-900 text-xs"><option value="11th">Class 11th</option><option value="12th">Class 12th</option></select>
-                        <select id="noteSub" class="p-2 rounded-xl border dark:bg-slate-900 text-xs"><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Maths">Maths</option></select>
-                    </div>
-                    <button onclick="addNewNote()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs">+ PDF पब्लिश करें</button>
+                <div onclick="openJeepyiModal()" class="bg-white dark:bg-slate-800 p-3.5 rounded-xl shadow-sm border dark:border-slate-700 flex justify-between items-center cursor-pointer tap-effect">
+                    <div class="flex items-center space-x-3"><i class="fa-solid fa-graduation-cap text-emerald-500"></i><span class="text-xs font-semibold">JEE PYQs (Subject Wise)</span></div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </div>
-
-                <!-- MCQ Upload -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="font-bold text-amber-600 text-sm mb-2.5">3. टेस्ट में सवाल (MCQ) जोड़ें</h3>
-                    <input type="text" id="mcqQuestion" placeholder="प्रश्न लिखें..." class="w-full mb-2 p-2 rounded-xl border dark:bg-slate-900 text-xs">
-                    <div class="grid grid-cols-2 gap-1.5 mb-2">
-                        <input type="text" id="mcqOptA" placeholder="विकल्प A" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs">
-                        <input type="text" id="mcqOptB" placeholder="विकल्प B" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs">
-                        <input type="text" id="mcqOptC" placeholder="विकल्प C" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs">
-                        <input type="text" id="mcqOptD" placeholder="विकल्प D" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mb-2">
-                        <select id="mcqAns" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs"><option value="0">सही: A</option><option value="1">सही: B</option><option value="2">सही: C</option><option value="3">सही: D</option></select>
-                        <select id="mcqSub" class="p-1.5 rounded-lg border dark:bg-slate-900 text-xs"><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Maths">Maths</option></select>
-                    </div>
-                    <input type="text" id="mcqExp" placeholder="व्याख्या (Explanation)" class="w-full mb-2 p-1.5 rounded-lg border dark:bg-slate-900 text-xs">
-                    <button onclick="addNewMCQ()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-xl text-xs">+ सवाल जोड़ें</button>
+                <div onclick="openNeetpyqModal()" class="bg-white dark:bg-slate-800 p-3.5 rounded-xl shadow-sm border dark:border-slate-700 flex justify-between items-center cursor-pointer tap-effect">
+                    <div class="flex items-center space-x-3"><i class="fa-solid fa-stethoscope text-purple-500"></i><span class="text-xs font-semibold">NEET PYQs (Subject Wise)</span></div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </div>
+                <div onclick="openGroupChatModal()" class="bg-white dark:bg-slate-800 p-3.5 rounded-xl shadow-sm border dark:border-slate-700 flex justify-between items-center cursor-pointer tap-effect">
+                    <div class="flex items-center space-x-3"><i class="fa-solid fa-users text-amber-500"></i><span class="text-xs font-semibold">Group Chat & Discussion Room</span></div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 5. COMMENTS SECTION -->
-    <section id="comments" class="max-w-7xl mx-auto px-4 py-10">
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800">
-            <h2 class="text-xl font-extrabold mb-1"><i class="fa-regular fa-comments text-indigo-600 mr-1"></i> स्टूडेंट डाउट & कमेंट बॉक्स</h2>
-            <p class="text-slate-500 text-xs mb-4">अपना सवाल पूछें या दोस्तों के साथ चर्चा करें</p>
-            <div class="grid md:grid-cols-4 gap-2.5 mb-5">
-                <input type="text" id="userName" placeholder="आपका नाम" class="p-2.5 rounded-xl border dark:bg-slate-800 text-xs">
-                <input type="text" id="userComment" placeholder="अपना सवाल या कमेंट लिखें..." class="md:col-span-2 p-2.5 rounded-xl border dark:bg-slate-800 text-xs">
-                <button onclick="postComment()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs">पोस्ट करें</button>
-            </div>
-            <div id="commentList" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
-        </div>
-    </section>
+    </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs">
-        <p class="text-white font-bold text-sm">APEX STUDY (शिखर) – 11th & 12th Smart Portal</p>
-        <p class="mt-1">छात्रों की सफलता के लिए बनाया गया आधुनिक लर्निंग हब।</p>
+    <!-- BOTTOM NAVIGATION BAR (4 Clean Icons) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t dark:border-slate-700 py-2 px-6 flex justify-between items-center z-40 max-w-md mx-auto shadow-lg">
+        <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-apexPrimary flex flex-col items-center tap-effect">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] mt-1 font-medium">Home</span>
+        </button>
+        <button onclick="switchTab('test')" id="nav-test" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
+            <i class="fa-solid fa-clipboard-question text-lg"></i>
+            <span class="text-[10px] mt-1 font-medium">Test</span>
+        </button>
+        <button onclick="switchTab('community')" id="nav-community" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
+            <i class="fa-solid fa-people-group text-lg"></i>
+            <span class="text-[10px] mt-1 font-medium">Community</span>
+        </button>
+        <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn text-slate-400 hover:text-apexPrimary flex flex-col items-center tap-effect">
+            <i class="fa-solid fa-user-gear text-lg"></i>
+            <span class="text-[10px] mt-1 font-medium">Profile</span>
+        </button>
+    </nav>
+
+    <!-- FOOTER CREDIT -->
+    <footer class="text-center pb-20 pt-4 text-[11px] text-slate-400">
+        Created by Satyam
     </footer>
 
     <!-- MODALS -->
-    <div id="pdfPreviewModal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-2xl overflow-hidden flex flex-col h-[85vh]">
-            <div class="p-3.5 bg-slate-900 text-white flex justify-between items-center">
-                <h3 id="pdfModalTitle" class="font-bold text-sm truncate">PDF Reader</h3>
-                <button onclick="closePdfModal()" class="bg-rose-500 text-white px-3 py-1 rounded-lg font-bold text-xs">बंद करें ✕</button>
+    <div id="themeModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 w-full max-w-xs space-y-4">
+            <h3 class="font-bold text-sm">Select Theme Color</h3>
+            <div class="grid grid-cols-4 gap-2">
+                <button onclick="setTheme('#2563eb')" class="h-10 rounded-xl bg-blue-600 tap-effect"></button>
+                <button onclick="setTheme('#059669')" class="h-10 rounded-xl bg-emerald-600 tap-effect"></button>
+                <button onclick="setTheme('#7c3aed')" class="h-10 rounded-xl bg-purple-600 tap-effect"></button>
+                <button onclick="setTheme('#dc2626')" class="h-10 rounded-xl bg-red-600 tap-effect"></button>
             </div>
-            <iframe id="pdfModalFrame" class="w-full flex-1 bg-slate-100" src=""></iframe>
+            <button onclick="closeThemeModal()" class="w-full py-2 bg-slate-100 dark:bg-slate-700 text-xs rounded-xl font-medium">Close</button>
         </div>
     </div>
 
-    <div id="formulaModal" class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl p-5 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-2.5 mb-4">
-                <h3 class="text-base font-extrabold text-indigo-600">11th & 12th Quick Formula Sheet</h3>
-                <button onclick="toggleModal('formulaModal')" class="text-slate-400 hover:text-rose-500 font-bold">✕</button>
-            </div>
-            <div class="grid sm:grid-cols-3 gap-3 text-xs">
-                <div class="bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl space-y-1.5">
-                    <h4 class="font-bold text-emerald-600">Chemistry</h4>
-                    <p><b>Bond Order:</b> ½ (Nb - Na)</p>
-                    <p><b>O₂ B.O:</b> 2.0 (Paramagnetic)</p>
-                    <p><b>N₂ B.O:</b> 3.0 (Diamagnetic)</p>
-                    <p><b>Cr (24):</b> [Ar] 3d⁵ 4s¹</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl space-y-1.5">
-                    <h4 class="font-bold text-indigo-600">Maths</h4>
-                    <p><b>Complex z:</b> x + iy (i² = -1)</p>
-                    <p><b>Modulus |z|:</b> √(x² + y²)</p>
-                    <p><b>Conjugate z̄:</b> x - iy</p>
-                    <p><b>d/dx (xⁿ):</b> n·xⁿ⁻¹</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl space-y-1.5">
-                    <h4 class="font-bold text-amber-600">Physics</h4>
-                    <p><b>Coulomb:</b> F = k(q₁q₂)/r²</p>
-                    <p><b>Gauss Law:</b> Φ = q / ε₀</p>
-                    <p><b>Ohm's Law:</b> V = I·R</p>
-                    <p><b>Kinetic E:</b> K = ½ mv²</p>
-                </div>
+    <!-- Notes Modal -->
+    <div id="notesModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl p-5 w-full max-w-md space-y-3 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center"><h3 class="font-bold text-sm">Study Notes PDF</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="space-y-2 text-xs">
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl flex justify-between items-center"><span>Physics - Mechanics</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl flex justify-between items-center"><span>Chemistry - IUPAC & MOT</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl flex justify-between items-center"><span>Maths - Complex Numbers</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl flex justify-between items-center"><span>Biology - Plant Physiology</span><a href="#" class="text-blue-600 font-bold">View PDF</a></div>
             </div>
         </div>
     </div>
 
-    <div id="pdfGuideModal" class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-5 shadow-2xl">
-            <div class="flex justify-between items-center border-b pb-2 mb-3">
-                <h3 class="font-extrabold text-emerald-600 text-sm">Google Drive से PDF कैसे जोड़ें?</h3>
-                <button onclick="toggleModal('pdfGuideModal')" class="font-bold">✕</button>
+    <!-- JEE PYQ Modal (Subject Wise) -->
+    <div id="jeepyiModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl p-5 w-full max-w-md space-y-3">
+            <div class="flex justify-between items-center"><h3 class="font-bold text-sm">JEE PYQs Section</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                <button onclick="alert('Opening Physics JEE PYQs')" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl tap-effect">Physics PYQ</button>
+                <button onclick="alert('Opening Chemistry JEE PYQs')" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-xl tap-effect">Chemistry PYQ</button>
+                <button onclick="alert('Opening Maths JEE PYQs')" class="p-3 bg-purple-50 dark:bg-purple-900/30 text-purple-600 rounded-xl tap-effect">Maths PYQ</button>
+                <button onclick="alert('Opening All JEE PYQs')" class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl tap-effect">All PYQs</button>
             </div>
-            <ol class="space-y-2 text-xs list-decimal pl-4">
-                <li>Google Drive ऐप में <b>+ (Plus)</b> दबाकर नोट्स को Scan या Upload करें।</li>
-                <li>फाइल के तीन डॉट्स (⋮) पर जाकर <b>Manage Access</b> में <b>"Anyone with the link"</b> चुनें।</li>
-                <li>लिंक कॉपी करके इस वेबसाइट के Upload सेक्शन में पेस्ट कर दें!</li>
-            </ol>
         </div>
     </div>
 
-    <div id="firebaseModal" class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-5 shadow-2xl">
-            <div class="flex justify-between items-center border-b pb-2 mb-3">
-                <h3 class="font-extrabold text-indigo-600 text-sm">Firebase Cloud Sync जोड़ें</h3>
-                <button onclick="toggleModal('firebaseModal')" class="font-bold">✕</button>
+    <!-- NEET PYQ Modal (Subject Wise including Bio) -->
+    <div id="neетpyqModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl p-5 w-full max-w-md space-y-3">
+            <div class="flex justify-between items-center"><h3 class="font-bold text-sm">NEET PYQs Section</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                <button onclick="alert('Opening Physics NEET PYQs')" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl tap-effect">Physics PYQ</button>
+                <button onclick="alert('Opening Chemistry NEET PYQs')" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-xl tap-effect">Chemistry PYQ</button>
+                <button onclick="alert('Opening Bio NEET PYQs')" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-xl tap-effect">Bio PYQ</button>
+                <button onclick="alert('Opening All NEET PYQs')" class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl tap-effect">All PYQs</button>
             </div>
-            <p class="text-xs text-slate-500 mb-3">सभी दोस्तों के फोन में लाइव डेटा सिंक करने के लिए अपना Firebase Realtime Database URL नीचे पेस्ट करें:</p>
-            <input type="text" id="firebaseUrlInput" placeholder="https://your-project-default-rtdb.firebaseio.com" class="w-full p-2.5 rounded-xl border dark:bg-slate-800 text-xs mb-3">
-            <button onclick="saveFirebaseConfig()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold">सेव और कनेक्ट करें</button>
         </div>
     </div>
 
-    <!-- MAIN SCRIPT -->
+    <!-- Group Chat Modal -->
+    <div id="groupChatModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl p-5 w-full max-w-md space-y-3 h-[75vh] flex flex-col">
+            <div class="flex justify-between items-center border-b dark:border-slate-700 pb-2"><h3 class="font-bold text-sm">Group Discussion Room</h3><button onclick="closeModals()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="flex-1 overflow-y-auto space-y-2 text-xs custom-scrollbar p-2" id="chatMessages">
+                <div class="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg"><strong>Aman:</strong> Kisi ko Chemical Bonding ka doubt hai kya?</div>
+            </div>
+            <div class="flex space-x-2 pt-2 border-t dark:border-slate-700">
+                <input type="text" id="chatInput" placeholder="Type message..." class="flex-1 p-2 text-xs bg-slate-50 dark:bg-slate-900 border dark:border-slate-700 rounded-xl">
+                <button onclick="sendChatMessage()" class="px-4 py-2 bg-apexPrimary text-white text-xs rounded-xl">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const defaultData = {
-            videos: [
-                { id: 1, title: "Chemical Bonding & MOT Bond Order Trick", videoId: "dQw4w9WgXcQ", desc: "O₂ और N₂ का Bond Order और Magnetic Nature निकालने की सबसे आसान ट्रिक।", cls: "11th", sub: "Chemistry" },
-                { id: 2, title: "Complex Numbers - Modulus & Conjugate", videoId: "dQw4w9WgXcQ", desc: "11th Maths के सभी महत्वपूर्ण सवालों का आसान हल।", cls: "11th", sub: "Maths" },
-                { id: 3, title: "Organic Chemistry - IUPAC Nomenclature", videoId: "dQw4w9WgXcQ", desc: "Functional Groups और नामकरण के सभी नियम।", cls: "11th", sub: "Chemistry" }
-            ],
-            notes: [
-                { id: 101, title: "IUPAC Nomenclature Handwritten Notes", url: "https://drive.google.com/file/d/1_sample_id/view", desc: "सभी Functional Groups के नियम और उदाहरण।", cls: "11th", sub: "Chemistry" },
-                { id: 102, title: "Periodic Table & d-Block Config Sheet", url: "https://drive.google.com/file/d/2_sample_id/view", desc: "Lattice Energy, Hydration Energy और एक्सेप्शन शीट।", cls: "11th", sub: "Chemistry" },
-                { id: 103, title: "11th & 12th Physics Formula Booklet", url: "https://drive.google.com/file/d/3_sample_id/view", desc: "बोर्ड और कॉम्पिटिटिव एग्जाम के लिए फॉर्मूला पीडीएफ।", cls: "12th", sub: "Physics" }
-            ],
-            mcqs: [
-                { q: "MOT के अनुसार O₂ अणु का Bond Order क्या होता है?", opts: ["1.5", "2.0", "2.5", "3.0"], ans: 1, sub: "Chemistry", exp: "Bond Order = (10 - 6)/2 = 2.0" },
-                { q: "समिश्र संख्या z = 3 + 4i का मापांक (Modulus |z|) क्या होगा?", opts: ["7", "5", "25", "12"], ans: 1, sub: "Maths", exp: "|z| = √(3² + 4²) = √25 = 5" },
-                { q: "रदरफोर्ड के अल्फा कण प्रकीर्णन प्रयोग से किसकी खोज हुई थी?", opts: ["इलेक्ट्रॉन", "परमाणु नाभिक (Nucleus)", "न्यूट्रॉन", "समस्थानिक"], ans: 1, sub: "Chemistry", exp: "रदरफोर्ड ने परमाणु के नाभिक (Nucleus) की खोज की थी।" },
-                { q: "Chromium (Cr, Z = 24) का सही इलेक्ट्रॉनिक विन्यास क्या है?", opts: ["[Ar] 3d⁴ 4s²", "[Ar] 3d⁵ 4s¹", "[Ar] 3d⁶ 4s⁰", "[Ar] 3d³ 4s²"], ans: 1, sub: "Chemistry", exp: "Half-filled स्थायित्व के कारण Cr का विन्यास [Ar] 3d⁵ 4s¹ होता है।" },
-                { q: "CH₃-CH₂-CHO का सही IUPAC नाम क्या है?", opts: ["Propanol", "Propanal", "Propanone", "Ethanal"], ans: 1, sub: "Chemistry", exp: "-CHO एल्डिहाइड समूह के लिए 'al' लगता है, इसलिए Propanal सही है।" }
-            ],
-            comments: [
-                { name: "अमन कुमार (11th Student)", text: "भाई, वेबसाइट एकदम मस्त काम कर रही है! टेस्ट और नोट्स बहुत काम के हैं।", time: "अभी" }
-            ],
-            todos: ["Chemical Bonding के 20 MCQ हल करने हैं", "शाम की कोचिंग का रिवीजन करना है"]
+        const FIREBASE_URL = "https://apex-study-c9c2c-default-rtdb.firebaseio.com/";
+        const GEMINI_API_KEY = "AQ.Ab8RN6IMiO6akPbQbfVqFvhoh-Ed6_1X_GbwFAJJPVVgq8GHYQ";
+        
+        let currentUser = localStorage.getItem('apex_user') || "";
+        const OWNER_NAME = "Satyam"; // Only owner can delete posts
+
+        window.onload = () => {
+            if(!currentUser) {
+                let name = prompt("Enter your Name to start (Apex Study):", "Student");
+                currentUser = name ? name.trim() : "Student";
+                localStorage.setItem('apex_user', currentUser);
+            }
+            document.getElementById('userBadge').innerText = currentUser;
+            document.getElementById('profileNameDisplay').innerText = currentUser;
+            loadDoubts();
         };
 
-        let appData = JSON.parse(localStorage.getItem('apexStudyData_v3')) || defaultData;
-        let firebaseDbUrl = localStorage.getItem('apexFirebaseUrl') || '';
-
-        function saveData() {
-            localStorage.setItem('apexStudyData_v3', JSON.stringify(appData));
-            if (firebaseDbUrl) {
-                fetch(`${firebaseDbUrl}/apexData.json`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(appData)
-                }).catch(e => console.warn(e));
-            }
-        }
-
-        async function syncFromCloud() {
-            if (!firebaseDbUrl) return;
-            try {
-                const res = await fetch(`${firebaseDbUrl}/apexData.json`);
-                const remote = await res.json();
-                if (remote && remote.videos) {
-                    appData = remote;
-                    localStorage.setItem('apexStudyData_v3', JSON.stringify(appData));
-                    renderAll();
-                }
-                document.getElementById('cloudStatusText').textContent = "Cloud Live";
-            } catch (e) { console.warn(e); }
-        }
-
-        function saveFirebaseConfig() {
-            let url = document.getElementById('firebaseUrlInput').value.trim();
-            if (!url) return alert("कृपया सही Firebase URL डालें!");
-            if (url.endsWith('/')) url = url.slice(0, -1);
-            firebaseDbUrl = url;
-            localStorage.setItem('apexFirebaseUrl', url);
-            saveData();
-            syncFromCloud();
-            toggleModal('firebaseModal');
-            alert("Firebase Cloud Sync जुड़ गया!");
-        }
-
-        function extractYouTubeId(url) {
-            const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-            const match = url.match(regExp);
-            return (match && match[1]) ? match[1] : null;
-        }
-
-        function parseGoogleDriveLink(url) {
-            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-                return {
-                    previewUrl: `https://drive.google.com/file/d/${match[1]}/preview`,
-                    downloadUrl: `https://drive.google.com/uc?export=download&id=${match[1]}`
-                };
-            }
-            return { previewUrl: url, downloadUrl: url };
-        }
-
-        function renderVideos() {
-            document.getElementById('videoGrid').innerHTML = appData.videos.map(v => `
-                <div class="content-item bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden card-hover" data-category="${v.cls} ${v.sub}">
-                    <div class="aspect-video bg-slate-950">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/${v.videoId}" allowfullscreen loading="lazy"></iframe>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-center mb-1.5">
-                            <span class="text-[10px] font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">Class ${v.cls} • ${v.sub}</span>
-                            <button onclick="deleteVideo(${v.id})" class="text-slate-300 hover:text-rose-500 text-xs"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">${v.title}</h3>
-                        <p class="text-slate-500 text-xs mt-1">${v.desc}</p>
-                        <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                            <button onclick="shareItem('${v.title.replace(/'/g, "")}')" class="text-emerald-600 text-xs font-bold"><i class="fa-brands fa-whatsapp"></i> शेयर करें</button>
-                            <span class="text-[10px] text-slate-400">Free Lecture</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderNotes() {
-            document.getElementById('notesGrid').innerHTML = appData.notes.map(n => {
-                const d = parseGoogleDriveLink(n.url);
-                return `
-                <div class="content-item bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between card-hover" data-category="${n.cls} ${n.sub}">
-                    <div>
-                        <span class="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded">Class ${n.cls} • ${n.sub}</span>
-                        <h4 class="font-bold text-sm mt-2">${n.title}</h4>
-                        <p class="text-xs text-slate-500 mt-1">${n.desc}</p>
-                    </div>
-                    <div class="mt-4 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                        <div class="flex gap-2">
-                            <button onclick="openPdfPreview('${n.title.replace(/'/g, "")}', '${d.previewUrl}')" class="bg-indigo-600 text-white text-xs px-3 py-1 rounded-lg font-semibold">पढ़ें</button>
-                            <a href="${d.downloadUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-800 text-xs px-3 py-1 rounded-lg font-semibold">PDF</a>
-                        </div>
-                        <button onclick="shareItem('${n.title.replace(/'/g, "")}')" class="text-emerald-600 text-xs font-bold"><i class="fa-brands fa-whatsapp"></i> शेयर</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function renderComments() {
-            document.getElementById('commentList').innerHTML = appData.comments.map(c => `
-                <div class="bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 flex justify-between items-start">
-                    <div>
-                        <span class="font-bold text-indigo-600 text-xs">${c.name} <span class="text-slate-400 font-normal">• ${c.time}</span></span>
-                        <p class="text-xs mt-1">${c.text}</p>
-                    </div>
-                    <button onclick="shareItem('${c.text.replace(/'/g, "")}')" class="text-xs text-emerald-600 font-bold"><i class="fa-brands fa-whatsapp"></i></button>
-                </div>
-            `).join('');
-        }
-
-        function renderTodos() {
-            document.getElementById('todoList').innerHTML = appData.todos.map((t, i) => `
-                <li class="flex justify-between items-center bg-slate-900/50 px-2.5 py-1 rounded border border-white/10">
-                    <span class="truncate">✅ ${t}</span>
-                    <button onclick="removeTodo(${i})" class="text-rose-400 ml-2 font-bold">✕</button>
-                </li>
-            `).join('');
-        }
-
-        function addNewVideo() {
-            const title = document.getElementById('vidTitle').value.trim();
-            const url = document.getElementById('vidUrl').value.trim();
-            const desc = document.getElementById('vidDesc').value.trim() || 'महत्वपूर्ण लेक्चर';
-            const cls = document.getElementById('vidClass').value;
-            const sub = document.getElementById('vidSub').value;
-            const videoId = extractYouTubeId(url);
-            if (!title || !videoId) return alert('कृपया सही टाइटल और YouTube लिंक डालें!');
-            appData.videos.unshift({ id: Date.now(), title, videoId, desc, cls, sub });
-            saveData(); renderVideos();
-            document.getElementById('vidTitle').value = ''; document.getElementById('vidUrl').value = '';
-            alert('वीडियो जुड़ गया!');
-        }
-
-        function deleteVideo(id) { appData.videos = appData.videos.filter(v => v.id !== id); saveData(); renderVideos(); }
-
-        function addNewNote() {
-            const title = document.getElementById('noteTitle').value.trim();
-            const url = document.getElementById('noteUrl').value.trim();
-            const desc = document.getElementById('noteDesc').value.trim() || 'PDF नोट्स';
-            const cls = document.getElementById('noteClass').value;
-            const sub = document.getElementById('noteSub').value;
-            if (!title || !url) return alert('नाम और लिंक दोनों भरें!');
-            appData.notes.unshift({ id: Date.now(), title, url, desc, cls, sub });
-            saveData(); renderNotes();
-            document.getElementById('noteTitle').value = ''; document.getElementById('noteUrl').value = '';
-            alert('नोट्स जुड़ गए!');
-        }
-
-        function addNewMCQ() {
-            const q = document.getElementById('mcqQuestion').value.trim();
-            const a = document.getElementById('mcqOptA').value.trim();
-            const b = document.getElementById('mcqOptB').value.trim();
-            const c = document.getElementById('mcqOptC').value.trim();
-            const d = document.getElementById('mcqOptD').value.trim();
-            const ans = parseInt(document.getElementById('mcqAns').value);
-            const sub = document.getElementById('mcqSub').value;
-            const exp = document.getElementById('mcqExp').value.trim() || '';
-            if (!q || !a || !b || !c || !d) return alert('पूरा सवाल और चारों विकल्प भरें!');
-            appData.mcqs.push({ q, opts: [a, b, c, d], ans, sub, exp });
-            saveData(); loadQuizSubject();
-            document.getElementById('mcqQuestion').value = '';
-            alert('नया सवाल जुड़ गया!');
-        }
-
-        function postComment() {
-            const name = document.getElementById('userName').value.trim() || 'Student';
-            const text = document.getElementById('userComment').value.trim();
-            if (!text) return;
-            appData.comments.unshift({ name, text, time: 'अभी' });
-            saveData(); renderComments();
-            document.getElementById('userComment').value = '';
-        }
-
-        function addTodo() {
-            const val = document.getElementById('todoInput').value.trim();
-            if (!val) return;
-            appData.todos.unshift(val);
-            document.getElementById('todoInput').value = '';
-            saveData(); renderTodos();
-        }
-        function removeTodo(i) { appData.todos.splice(i, 1); saveData(); renderTodos(); }
-
-        // CBT Test with Live Countdown Timer Fixed
-        let activeQuestions = [], currentQIndex = 0, userAnswers = {}, lastScoreText = "", cbtTime = 600, cbtInterval = null;
-
-        function startCBTTimer() {
-            clearInterval(cbtInterval);
-            cbtTime = 600;
-            cbtInterval = setInterval(() => {
-                if (cbtTime <= 0) { clearInterval(cbtInterval); submitCBTTest(); return; }
-                cbtTime--;
-                const m = String(Math.floor(cbtTime / 60)).padStart(2, '0');
-                const s = String(cbtTime % 60).padStart(2, '0');
-                document.getElementById('cbtTimer').textContent = `${m}:${s}`;
-            }, 1000);
-        }
-
-        function loadQuizSubject() {
-            const sub = document.getElementById('quizSubjectSelect').value;
-            activeQuestions = sub === 'all' ? [...appData.mcqs] : appData.mcqs.filter(m => m.sub === sub);
-            if (!activeQuestions.length) activeQuestions = [...appData.mcqs];
-            currentQIndex = 0; userAnswers = {};
-            document.getElementById('quizResultArea').classList.add('hidden');
-            document.getElementById('quizPlayArea').classList.remove('hidden');
-            renderCurrentQuestion();
-            startCBTTimer();
-        }
-
-        function renderCurrentQuestion() {
-            const qObj = activeQuestions[currentQIndex];
-            document.getElementById('qCounter').textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length}`;
-            document.getElementById('qCategoryBadge').textContent = qObj.sub;
-            document.getElementById('qText').textContent = `Q${currentQIndex + 1}. ${qObj.q}`;
-            const labels = ['A', 'B', 'C', 'D'];
-            document.getElementById('qOptions').innerHTML = qObj.opts.map((opt, idx) => {
-                const sel = userAnswers[currentQIndex] === idx;
-                return `<button onclick="selectOption(${idx})" class="${sel ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/10 text-white'} border border-white/15 p-3 rounded-xl text-left text-xs flex items-center gap-2.5">
-                    <span class="w-5 h-5 rounded bg-black/20 flex items-center justify-center font-bold">${labels[idx]}</span><span>${opt}</span>
-                </button>`;
-            }).join('');
-        }
-
-        function selectOption(idx) { userAnswers[currentQIndex] = idx; renderCurrentQuestion(); }
-        function clearAnswer() { delete userAnswers[currentQIndex]; renderCurrentQuestion(); }
-        function nextQuestion() { if (currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderCurrentQuestion(); } }
-        function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; renderCurrentQuestion(); } }
-
-        function submitCBTTest() {
-            clearInterval(cbtInterval);
-            let correct = 0, wrong = 0, skipped = 0, solHTML = "";
-            activeQuestions.forEach((q, idx) => {
-                const u = userAnswers[idx];
-                if (u === undefined) {
-                    skipped++;
-                    solHTML += `<div class="p-2 rounded bg-slate-900"><b>Q${idx+1}: ${q.q}</b><br><span class="text-amber-400">Skipped</span> | सही: <b>${q.opts[q.ans]}</b></div>`;
-                } else if (u === q.ans) {
-                    correct++;
-                    solHTML += `<div class="p-2 rounded bg-emerald-950/60"><b>Q${idx+1}: ${q.q}</b><br><span class="text-emerald-400">✅ सही (+4): ${q.opts[q.ans]}</span><br>${q.exp}</div>`;
-                } else {
-                    wrong++;
-                    solHTML += `<div class="p-2 rounded bg-rose-950/60"><b>Q${idx+1}: ${q.q}</b><br><span class="text-rose-400">❌ गलत (-1)</span> | सही: <b>${q.opts[q.ans]}</b><br>${q.exp}</div>`;
-                }
-            });
-            const score = (correct * 4) - wrong;
-            const max = activeQuestions.length * 4;
-            lastScoreText = `मैंने APEX STUDY टेस्ट में ${max} में से ${score} अंक पाए! तुम भी ट्राई करो: ${window.location.href}`;
-            document.getElementById('resScore').textContent = `${score}/${max}`;
-            document.getElementById('resCorrect').textContent = correct;
-            document.getElementById('resWrong').textContent = wrong;
-            document.getElementById('resSkipped').textContent = skipped;
-            document.getElementById('resSolutions').innerHTML = solHTML;
-            document.getElementById('quizPlayArea').classList.add('hidden');
-            document.getElementById('quizResultArea').classList.remove('hidden');
-        }
-
-        function resetCBTTest() { loadQuizSubject(); }
-        function shareTestScore() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lastScoreText)}`, '_blank'); }
-
-        // Study Pomodoro Timer
-        let pTime = 1500, pInterval = null;
-        function updateTimerUI() {
-            document.getElementById('timerDisplay').textContent = `${String(Math.floor(pTime/60)).padStart(2,'0')}:${String(pTime%60).padStart(2,'0')}`;
-        }
-        function startTimer() {
-            if (pInterval) return;
-            document.getElementById('timerStatus').textContent = "Focusing 🔥";
-            pInterval = setInterval(() => {
-                if (pTime <= 0) { clearInterval(pInterval); pInterval = null; alert("25 मिनट पूरे हुए!"); return; }
-                pTime--; updateTimerUI();
-            }, 1000);
-        }
-        function pauseTimer() { clearInterval(pInterval); pInterval = null; document.getElementById('timerStatus').textContent = "Paused"; }
-        function resetTimer() { pauseTimer(); pTime = 1500; updateTimerUI(); document.getElementById('timerStatus').textContent = "Ready"; }
-
-        function filterContent(cat, btn) {
-            document.querySelectorAll('.content-item').forEach(el => {
-                el.style.display = (cat === 'all' || el.dataset.category.includes(cat)) ? '' : 'none';
-            });
-        }
-        function searchItems() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.content-item').forEach(el => {
-                el.style.display = el.innerText.toLowerCase().includes(q) ? '' : 'none';
-            });
-        }
-        function openPdfPreview(title, url) {
-            document.getElementById('pdfModalTitle').textContent = title;
-            document.getElementById('pdfModalFrame').src = url;
-            document.getElementById('pdfPreviewModal').classList.remove('hidden');
-        }
-        function closePdfModal() {
-            document.getElementById('pdfModalFrame').src = '';
-            document.getElementById('pdfPreviewModal').classList.add('hidden');
-        }
-        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
-        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
-        function shareItem(t) { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('APEX STUDY पर यह देखो: ' + t + ' ' + window.location.href)}`, '_blank'); }
-        function shareWebsite() { shareItem('11th & 12th Free Notes & Live Test'); }
-
-        function renderAll() { renderVideos(); renderNotes(); renderComments(); renderTodos(); loadQuizSubject(); }
-        window.onload = () => { renderAll(); if (firebaseDbUrl) syncFromCloud(); };
-    </script>
-</body>
-</html>
+        function changeUserName() {
+            let name = prompt("Enter new name:", currentUser);
+            if(name) {
+                currentUser = name.trim();
+                localStorage.setItem('apex_user', currentUser);
+                document.getElementById('userBadge').innerText = currentUser;
+                document.getElementById('profileNameDisplay').inne

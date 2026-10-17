@@ -2,8 +2,8 @@
 <html lang="hi" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX STUDY - 11th & 12th Ultimate Education Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>APEX STUDY - 11th & 12th Ultimate Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -22,20 +22,93 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --theme-color: #2563eb; }
-        .tap-effect:active { transform: scale(0.96); transition: transform 0.1s ease; }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; }
-        .bg-apex { background-color: var(--theme-color); }
-        .text-apex { color: var(--theme-color); }
-        .border-apex { border-color: var(--theme-color); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { padding-bottom: 90px !important; margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+        
+        /* Theme Utilities */
+        .bg-apex { background-color: var(--theme-color) !important; }
+        .text-apex { color: var(--theme-color) !important; }
+        .border-apex { border-color: var(--theme-color) !important; }
+        .tap-effect:active { transform: scale(0.95); transition: transform 0.1s ease; }
+
+        /* Bulletproof Tab & Modal System (Never conflicts with Tailwind) */
+        .tab-page { display: none !important; }
+        .tab-page.active-page { display: block !important; animation: fadeIn 0.2s ease-in-out; }
+
+        .app-modal {
+            display: none !important;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .app-modal.active-modal { display: flex !important; }
+
+        /* Bulletproof Fixed Bottom Navigation Bar */
+        #bottomNavBar {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 68px !important;
+            z-index: 9990 !important;
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+        }
+        .nav-item-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 11px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .nav-item-btn.active-nav {
+            color: var(--theme-color) !important;
+        }
+        .nav-item-btn i { font-size: 19px; margin-bottom: 4px; }
+
+        /* Toast Notification */
+        #toastBox {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20000;
+            display: none;
+            padding: 10px 18px;
+            border-radius: 14px;
+            background: #1e293b;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 90%;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen pb-28 font-sans select-none">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen select-none">
 
-    <!-- TOP STICKY HEADER -->
-    <header class="bg-white/90 backdrop-blur-md dark:bg-slate-900/90 shadow-sm sticky top-0 z-40 px-4 py-3 flex justify-between items-center border-b dark:border-slate-800">
+    <!-- IN-APP TOAST NOTIFICATION -->
+    <div id="toastBox"></div>
+
+    <!-- ==================== STICKY TOP HEADER ==================== -->
+    <header class="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
         <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchTab('home')">
             <div class="w-10 h-10 rounded-2xl bg-apex flex items-center justify-center text-white font-bold shadow-md">
                 <i class="fa-solid fa-mountain text-lg"></i>
@@ -49,130 +122,146 @@
             </div>
         </div>
 
-        <div class="flex items-center space-x-2">
-            <button onclick="openModal('aiModal')" title="AI Doubt Solver" class="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center tap-effect border border-indigo-200 dark:border-indigo-800">
+        <div class="flex items-center space-x-1.5">
+            <button type="button" onclick="openModal('aiModal')" class="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center tap-effect border border-indigo-200 dark:border-indigo-800">
                 <i class="fa-solid fa-robot text-sm"></i>
             </button>
-            <button onclick="toggleDarkMode()" title="Dark/Light Mode" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
+            <button type="button" onclick="toggleDarkMode()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
                 <i id="darkModeIcon" class="fa-solid fa-moon text-xs"></i>
             </button>
-            <button onclick="openModal('themeModal')" title="Themes & API" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
+            <button type="button" onclick="openModal('themeModal')" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center tap-effect text-slate-600 dark:text-slate-300">
                 <i class="fa-solid fa-palette text-xs"></i>
             </button>
-            <span onclick="switchTab('profile')" id="userBadge" class="cursor-pointer text-xs font-bold bg-blue-50 dark:bg-slate-800 text-apex px-3 py-1.5 rounded-full border border-blue-200 dark:border-slate-700 truncate max-w-[90px]">Guest</span>
+            <button type="button" onclick="openModal('authModal')" id="userBadge" class="text-xs font-bold bg-blue-50 dark:bg-slate-800 text-apex px-3 py-1.5 rounded-full border border-blue-200 dark:border-slate-700 truncate max-w-[85px]">
+                Login
+            </button>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="max-w-md mx-auto p-4 space-y-5">
+    <!-- ==================== MAIN APP CONTENT ==================== -->
+    <main class="max-w-md mx-auto p-3.5 space-y-4">
 
-        <!-- ==================== 1. HOME SECTION ==================== -->
-        <section id="section-home" class="space-y-5 animate-fadeIn">
+        <!-- ==================== 1. HOME PAGE ==================== -->
+        <section id="page-home" class="tab-page active-page space-y-4">
             
             <!-- Motivational Shayari Banner -->
-            <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden">
-                <div class="relative z-10 space-y-2.5">
+            <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10 space-y-2">
                     <div class="flex justify-between items-center">
-                        <div class="inline-flex items-center space-x-1.5 bg-white/20 backdrop-blur-md text-[11px] px-3 py-1 rounded-full font-semibold">
-                            <i class="fa-solid fa-fire text-amber-300"></i>
-                            <span>Motivation of the Day</span>
-                        </div>
-                        <button onclick="nextShayari()" class="text-[11px] bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full tap-effect">
+                        <span class="inline-flex items-center space-x-1.5 bg-white/20 text-[11px] px-3 py-1 rounded-full font-semibold">
+                            <i class="fa-solid fa-fire text-amber-300 mr-1"></i> Motivation
+                        </span>
+                        <button type="button" onclick="nextShayari()" class="text-[11px] bg-white/20 px-2.5 py-1 rounded-full font-bold tap-effect">
                             <i class="fa-solid fa-rotate mr-1"></i>Next
                         </button>
                     </div>
                     <h2 id="shayariText" class="text-base font-bold leading-snug">"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"</h2>
                     <p id="shayariSub" class="text-[11px] text-blue-100 font-medium">सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!</p>
                 </div>
-                <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black pointer-events-none">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
             </div>
 
-            <!-- Quick Stats Bar (Performance Analytics Preview) -->
+            <!-- Live Analytics Strip -->
             <div class="grid grid-cols-3 gap-2.5">
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
-                    <p class="text-[10px] text-slate-500">Tests Given</p>
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer tap-effect shadow-sm">
+                    <p class="text-[10px] text-slate-500 font-semibold">Tests Given</p>
                     <p id="statTests" class="font-black text-base text-apex mt-0.5">0</p>
                 </div>
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
-                    <p class="text-[10px] text-slate-500">Best Score</p>
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer tap-effect shadow-sm">
+                    <p class="text-[10px] text-slate-500 font-semibold">Best Accuracy</p>
                     <p id="statBestScore" class="font-black text-base text-emerald-600 mt-0.5">0%</p>
                 </div>
-                <div onclick="openModal('bookmarksModal')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 text-center cursor-pointer tap-effect">
-                    <p class="text-[10px] text-slate-500">Saved Qs</p>
+                <div onclick="openModal('bookmarksModal')" class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer tap-effect shadow-sm">
+                    <p class="text-[10px] text-slate-500 font-semibold">Saved Qs</p>
                     <p id="statBookmarks" class="font-black text-base text-amber-500 mt-0.5">0</p>
                 </div>
             </div>
 
-            <!-- Quick Utilities Grid -->
+            <!-- Quick Action Cards -->
             <div class="grid grid-cols-2 gap-3">
-                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/70 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-laptop-code"></i></div>
-                    <div><h3 class="font-bold text-xs">CBT & AI Test</h3><p class="text-[10px] text-slate-500">Live Practice</p></div>
+                <div onclick="switchTab('test')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div><h3 class="font-bold text-xs">CBT & AI Test</h3><p class="text-[10px] text-slate-500">1v1 & Live Quiz</p></div>
                 </div>
-                <div onclick="switchTab('community')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200/70 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-comments"></i></div>
-                    <div><h3 class="font-bold text-xs">Doubt Wall</h3><p class="text-[10px] text-slate-500">Photo & Solve</p></div>
+                <div onclick="switchTab('community')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 tap-effect cursor-pointer flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-base shrink-0"><i class="fa-solid fa-comments"></i></div>
+                    <div><h3 class="font-bold text-xs">Doubt Wall</h3><p class="text-[10px] text-slate-500">Photo & AI Solve</p></div>
                 </div>
             </div>
 
-            <!-- YOUTUBE BIG SQUARE/VIDEO FEED SECTION -->
+            <!-- YOUTUBE BIG SQUARE VIDEO FEED -->
             <div class="space-y-3">
-                <div class="flex justify-between items-center px-1">
+                <div class="flex justify-between items-center">
                     <div>
                         <h3 class="font-extrabold text-sm flex items-center">
-                            <i class="fa-brands fa-youtube text-red-600 text-lg mr-2"></i>One-Shot Video Feed
+                            <i class="fa-brands fa-youtube text-red-600 text-lg mr-1.5"></i>YouTube One-Shot Lectures
                         </h3>
-                        <p class="text-[10px] text-slate-500">स्क्रॉल करें और ऐप के अंदर ही लेक्चर देखें</p>
+                        <p class="text-[10px] text-slate-500">बड़े स्क्वायर कार्ड्स — स्क्रॉल करें और टैप करके देखें</p>
                     </div>
                     <div class="flex items-center space-x-1.5">
-                        <select id="videoClassFilter" onchange="renderVideos()" class="text-[11px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-2 py-1 font-semibold focus:outline-none">
-                            <option value="ALL">All Classes</option>
-                            <option value="11th">Class 11th</option>
-                            <option value="12th">Class 12th</option>
+                        <select id="videoClassFilter" onchange="renderVideos()" class="text-[11px] bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1.5 font-bold">
+                            <option value="ALL">All</option>
+                            <option value="11th">11th</option>
+                            <option value="12th">12th</option>
                         </select>
-                        <button onclick="openModal('addVideoModal')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-xl tap-effect shadow-sm">
-                            + Add Link
+                        <button type="button" onclick="openModal('addVideoModal')" class="bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl tap-effect shadow">
+                            + Add
                         </button>
                     </div>
                 </div>
 
-                <!-- Scrollable Large Square/YouTube Cards Container -->
+                <!-- Scrollable Square Video Feed -->
                 <div id="youtubeFeedContainer" class="space-y-4">
-                    <!-- Rendered dynamically via JS in large YouTube card format -->
+                    <!-- Pre-rendered Default Square Card 1 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-800">
+                        <div id="vid-box-0" onclick="playInlineVideo(0, 'L6M3Y29pDAU')" class="relative w-full aspect-square max-h-72 bg-slate-950 cursor-pointer flex items-center justify-center overflow-hidden">
+                            <img src="https://img.youtube.com/vi/L6M3Y29pDAU/hqdefault.jpg" class="w-full h-full object-cover opacity-90">
+                            <div class="absolute inset-0 bg-black/35 flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 rounded-full bg-red-600 text-white flex items-center justify-center text-2xl shadow-2xl">
+                                    <i class="fa-solid fa-play ml-1"></i>
+                                </div>
+                                <span class="mt-2 bg-black/75 text-white text-[11px] font-bold px-3 py-1 rounded-full">Tap to Play Video</span>
+                            </div>
+                            <span class="absolute top-3 left-3 bg-blue-600 text-white text-[11px] font-bold px-3 py-1 rounded-xl">Class 11th • Maths</span>
+                        </div>
+                        <div class="p-4 flex items-center justify-between">
+                            <div>
+                                <h4 class="font-bold text-sm">Complex Numbers Full One-Shot Revision</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Maths Target • JEE & 11th Board</p>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=L6M3Y29pDAU" target="_blank" class="px-3 py-2 bg-red-50 dark:bg-red-950 text-red-600 text-xs font-bold rounded-xl">YouTube</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== 2. TEST SECTION (CBT, AI Generator, 1v1, Leaderboard) ==================== -->
-        <section id="section-test" class="hidden space-y-4 animate-fadeIn">
+        <!-- ==================== 2. TEST PAGE (CBT, AI Test, 1v1, Leaderboard) ==================== -->
+        <section id="page-test" class="tab-page space-y-4">
             
-            <!-- Test Dashboard Card -->
             <div id="testLobby" class="space-y-4">
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-4">
+                <!-- CBT & AI Test Generator Card -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3.5">
                     <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                        <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
                             <i class="fa-solid fa-trophy"></i>
                         </div>
                         <div>
-                            <h2 class="font-bold text-sm">CBT Test Engine & AI Quiz Generator</h2>
-                            <p class="text-[11px] text-slate-500">क्लास और विषय चुनें या AI से नया टेस्ट बनाएं</p>
+                            <h2 class="font-bold text-sm">CBT Mock Test & AI Test Generator</h2>
+                            <p class="text-[11px] text-slate-500">क्लास और सब्जेक्ट चुनें या AI से तुरंत नया टेस्ट बनाएं</p>
                         </div>
                     </div>
 
-                    <!-- Test Configuration Filters -->
                     <div class="grid grid-cols-2 gap-2.5 text-xs">
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 block mb-1">Select Class</label>
-                            <select id="testClassSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold">
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Select Class</label>
+                            <select id="testClassSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-bold">
                                 <option value="11th">Class 11th</option>
                                 <option value="12th">Class 12th</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 block mb-1">Select Subject</label>
-                            <select id="testSubjectSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold">
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Select Subject</label>
+                            <select id="testSubjectSelect" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-bold">
                                 <option value="Chemistry">Chemistry</option>
                                 <option value="Physics">Physics</option>
                                 <option value="Maths">Mathematics</option>
@@ -182,95 +271,48 @@
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-semibold text-slate-500 block mb-1">Topic / Chapter Name (AI Test के लिए)</label>
-                        <input id="aiTopicInput" type="text" placeholder="जैसे: Complex Numbers, IUPAC, Laws of Motion..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="text-[10px] font-bold text-slate-500 block mb-1">Topic Name (AI Test के लिए)</label>
+                        <input id="aiTopicInput" type="text" placeholder="e.g. Complex Numbers, Chemical Bonding, Kinematics..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2.5 pt-1">
-                        <button onclick="startStandardCBT()" class="py-3 bg-apex text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
-                            <i class="fa-solid fa-play mr-1.5"></i>Start CBT Test
+                        <button type="button" onclick="startStandardCBT()" class="py-3 bg-apex text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
+                            <i class="fa-solid fa-play mr-1"></i>Start Mock Test
                         </button>
-                        <button id="btnAiTest" onclick="generateAITest()" class="py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>AI Test बनाओ
+                        <button type="button" id="btnAiTest" onclick="generateAITest()" class="py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-2xl tap-effect shadow-md">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>AI Test बनाओ
                         </button>
                     </div>
                 </div>
 
-                <!-- 1v1 Live Friend Challenge Card -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-3">
+                <!-- 1v1 Live Friend Challenge -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i> 1v1 Live Friend Challenge</h3>
-                        <span class="text-[10px] bg-emerald-50 dark:bg-emerald-950 text-emerald-600 px-2.5 py-0.5 rounded-full font-bold">Real-Time</span>
+                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i>1v1 Live Friend Challenge</h3>
+                        <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-bold">Multiplayer</span>
                     </div>
                     <p class="text-[11px] text-slate-500">रूम कोड बनाएं या दोस्त का कोड डालकर लाइव मुकाबला शुरू करें।</p>
                     <div class="flex space-x-2">
-                        <input id="challengeCodeInput" type="text" placeholder="Enter Room Code (e.g. APEX99)" class="flex-1 p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 uppercase font-bold">
-                        <button onclick="join1v1Challenge()" class="px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl tap-effect">Join</button>
-                        <button onclick="create1v1Challenge()" class="px-4 py-2.5 bg-slate-800 dark:bg-slate-700 text-white text-xs font-bold rounded-xl tap-effect">Create</button>
+                        <input id="challengeCodeInput" type="text" placeholder="Room Code (e.g. APEX11)" class="flex-1 p-2.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 uppercase font-bold">
+                        <button type="button" onclick="join1v1Challenge()" class="px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl tap-effect">Join</button>
+                        <button type="button" onclick="create1v1Challenge()" class="px-4 py-2.5 bg-slate-800 text-white text-xs font-bold rounded-xl tap-effect">Create</button>
                     </div>
-                    <div id="challengeRoomStatus" class="hidden p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-xs space-y-2"></div>
+                    <div id="challengeRoomStatus" class="hidden p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs space-y-2"></div>
                 </div>
 
                 <!-- Live Leaderboard -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-3">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-ranking-star text-amber-500 mr-2"></i> Apex Live Leaderboard</h3>
+                        <h3 class="font-bold text-xs flex items-center"><i class="fa-solid fa-ranking-star text-amber-500 mr-2"></i>Live Leaderboard</h3>
                         <span class="text-[10px] text-slate-400">Top Rankers</span>
                     </div>
                     <div id="leaderboardList" class="space-y-2 text-xs"></div>
                 </div>
             </div>
 
-            <!-- ACTIVE CBT TEST ENGINE -->
+            <!-- Active CBT Exam Screen -->
             <div id="cbtActiveScreen" class="hidden bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-lg border border-slate-200 dark:border-slate-800 space-y-4">
                 <div class="flex justify-between items-center border-b dark:border-slate-800 pb-3">
                     <div>
-                        <span id="cbtSubjectTitle" class="text-xs font-bold text-apex">Subject Test</span>
-                        <p id="cbtQuestionCounter" class="text-[11px] text-slate-500">Question 1 of 5</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="bookmarkCurrentQuestion()" title="Bookmark Question" class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 flex items-center justify-center tap-effect">
-                            <i id="cbtBookmarkIcon" class="fa-regular fa-bookmark text-xs"></i>
-                        </button>
-                        <div class="bg-red-50 dark:bg-red-950/60 text-red-600 px-3 py-1 rounded-xl text-xs font-bold flex items-center">
-                            <i class="fa-regular fa-clock mr-1.5"></i><span id="cbtTimer">05:00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question Palette Dots -->
-                <div id="cbtPalette" class="flex space-x-1.5 overflow-x-auto pb-1 custom-scrollbar"></div>
-
-                <!-- Question Text -->
-                <div id="cbtQuestionBox" class="p-3.5 bg-slate-50 dark:bg-slate-950 rounded-2xl text-xs font-semibold leading-relaxed"></div>
-
-                <!-- Options -->
-                <div id="cbtOptionsBox" class="space-y-2.5 text-xs"></div>
-
-                <!-- Navigation Buttons -->
-                <div class="flex justify-between items-center pt-2 border-t dark:border-slate-800">
-                    <button onclick="prevCBTQuestion()" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold tap-effect">Previous</button>
-                    <button onclick="nextCBTQuestion()" id="cbtNextBtn" class="px-5 py-2.5 bg-apex text-white rounded-xl text-xs font-bold tap-effect">Next</button>
-                    <button onclick="submitCBTTest()" class="px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold tap-effect">Submit Test</button>
-                </div>
-            </div>
-
-            <!-- CBT RESULT & PERFORMANCE ANALYTICS SCREEN -->
-            <div id="cbtResultScreen" class="hidden bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-lg border border-slate-200 dark:border-slate-800 space-y-4 text-center">
-                <div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 rounded-full mx-auto flex items-center justify-center text-2xl">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <h3 class="font-black text-base">Test Result & Analytics</h3>
-                <div class="grid grid-cols-3 gap-2 text-xs">
-                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Score</p><p id="resScore" class="font-black text-sm text-apex">0/20</p></div>
-                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Accuracy</p><p id="resAccuracy" class="font-black text-sm text-emerald-600">0%</p></div>
-                    <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl"><p class="text-[10px] text-slate-400">Correct</p><p id="resCorrect" class="font-black text-sm text-purple-600">0</p></div>
-                </div>
-                <div id="resSolutionsList" class="text-left space-y-2.5 max-h-64 overflow-y-auto custom-scrollbar p-1"></div>
-                <button onclick="closeCBTResult()" class="w-full py-3 bg-apex text-white rounded-2xl text-xs font-bold tap-effect">Back to Test Hub</button>
-            </div>
-        </section>
-
-        <!-- ==================== 3. COMMUNITY SECTION (Doubt Wall, Photo Upload, AI Solve, Delete) ==================== -->
-        <section id="section-community" class="hidden space-y-4 animate-fadeIn">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-200/70 dark:border-slate-800 space-
+                        <span id="cbtSubjectTitle" class="text-xs font-bold text-apex">Mock Test</span>
+                        <p id="cbtQuestionCounter" 

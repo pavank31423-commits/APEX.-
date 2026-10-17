@@ -293,3 +293,69 @@
             </p>
           </div>
           <button onclick="openModal
+                  <!-- ==================== CONTINUATION FROM SUBJECT FILTER BUTTONS ==================== -->
+      
+      <!-- Search Bar for Lectures -->
+      <div class="relative mb-3">
+        <input type="text" id="lectureSearchInput" oninput="renderLectures()" placeholder="लेक्चर या टॉपिक सर्च करें (जैसे: Mole Concept, Vectors)..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 ring-apex border border-slate-200 dark:border-slate-700">
+        <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+      </div>
+
+      <!-- Lectures Grid Container -->
+      <div id="lecturesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. TESTS TAB (CBT: NEET, JEE, PYQ, CHAPTERWISE) ==================== -->
+  <section id="tab-tests" class="tab-page px-3.5 pt-3">
+    
+    <!-- Exam Selection View -->
+    <div id="testSelectorView">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h2 class="text-base font-extrabold flex items-center gap-2">
+              <i class="fas fa-laptop-code text-apex"></i> CBT Test Arena
+            </h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">NEET, JEE और PYQ के रियल एग्जाम पैटर्न प्रैक्टिस सेट्स</p>
+          </div>
+          <button onclick="openAddQuestionModal()" class="admin-only hidden text-[11px] bg-apex text-white px-3 py-1.5 rounded-xl font-bold tap-effect">
+            + Add Qs
+          </button>
+        </div>
+
+        <!-- Mode Selector (JEE / NEET / PYQ) -->
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <button onclick="selectExamMode('NEET')" id="modeBtn-NEET" class="exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect">
+            <div class="text-lg mb-0.5">🩺</div>
+            <div class="font-extrabold text-xs text-apex">NEET UG</div>
+            <div class="text-[10px] text-slate-500">PCB • +4 / -1</div>
+          </button>
+          <button onclick="selectExamMode('JEE')" id="modeBtn-JEE" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
+            <div class="text-lg mb-0.5">⚙️</div>
+            <div class="font-extrabold text-xs">JEE Main</div>
+            <div class="text-[10px] text-slate-500">PCM • +4 / -1</div>
+          </button>
+          <button onclick="selectExamMode('PYQ')" id="modeBtn-PYQ" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
+            <div class="text-lg mb-0.5">📜</div>
+            <div class="font-extrabold text-xs">PYQ Bank</div>
+            <div class="text-[10px] text-slate-500">Past Papers</div>
+          </button>
+        </div>
+
+        <!-- Subject Filter inside Test Mode -->
+        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">सब्जेक्ट चुनें (Select Subject):</label>
+        <div id="testSubjectPills" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-3">
+          <!-- Populated dynamically via JS based on NEET/JEE/PYQ -->
+        </div>
+
+        <!-- Available Test Cards List -->
+        <div id="availableTestsList" class="space-y-2.5"></div>
+      </div>
+    </div>
+
+    <!-- Active CBT Exam Runner View (Hidden until test starts) -->
+    <div id="activeTestView" class="hidden">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800
+        
+            

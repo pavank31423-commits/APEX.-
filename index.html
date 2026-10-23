@@ -1456,7 +1456,830 @@
     </div>
 
     <!-- Active CBT Exam Runner View (Hidden until test starts) -->
-    <div id="activeTestView" class="hidden">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800
+    <div id="activeTestView" class="hidden">`)
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800`).join('');
+    }
+
+    function saveNewNote() {
+      const title = document.getElementById('newNoteTitle').value.trim();
+      const subject = document.getElementById('newNoteSubject').value;
+      const cls = document.getElementById('newNoteClass').value;
+      const url = document.getElementById('newNoteUrl').value.trim();
+      if (!title || !url) return showToast('⚠️ कृपया नोट्स का नाम और PDF लिंक भरें!');
+
+      notesData.unshift({
+        id: 'note_' + Date.now(),
+        title,
+        subject,
+        cls,
+        url
+      });
+      setStorage('apex_notes_v4', notesData);
+      document.getElementById('newNoteTitle').value = '';
+      document.getElementById('newNoteUrl').value = '';
+      closeModal('addNoteModal');
+      renderNotes();
+      showToast('📄 नया PDF नोट जुड़ गया!');
+    }
+
+    function deleteNote(id) {
+      notesData = notesData.filter(n => n.id !== id);
+      setStorage('apex_notes_v4', notesData);
+      renderNotes();
+      showToast('🗑️ PDF नोट हटा दिया गया');
+    }
+
+    // --- SINGLE LIKE SYSTEM (1 USER = 1 LIKE PER ITEM) ---
+    function toggleSingleLike(likeKey, type, itemId) {
+      const alreadyLiked = !!likedItemsMap[likeKey];
+      if (type === 'lecture') {
+        const item = lecturesData.find(l => l.id === itemId);
+        if (!item) return;
+        item.likes = Math.max(0, (item.likes || 0) + (alreadyLiked ? -1 : 1));
+        likedItemsMap[likeKey] = !alreadyLiked;
+        setStorage('apex_lectures_v4', lecturesData);
+        setStorage('apex_liked_items_v4', likedItemsMap);
+        renderLectures();
+      } else if (type === 'doubt') {
+        const item = doubtsData.find(d => d.id === itemId);
+        if (!item) return;
+        item.likes = Math.max(0, (item.likes || 0) + (alreadyLiked ? -1 : 1));
+        likedItemsMap[likeKey] = !alreadyLiked;
+        setStorage('apex_doubts_v4', doubtsData);
+        setStorage('apex_liked_items_v4', likedItemsMap);
+        renderDoubts();
+      }
+    }
+
+    // ==================== CBT TEST ARENA (NEET / JEE / PYQ) ====================
+    function selectExamMode(mode) {
+      selectedExamMode = mode;
+      selectedTestSubj = 'All';
+
+      ['NEET', 'JEE', 'PYQ'].forEach(m => {
+        const btn = document.getElementById('modeBtn-' + m);
+        if (!btn) return;
+        if (m === mode) {
+          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect';
+        } else {
+          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect';
+        }
+      });
+      renderTestArena();
+    }
+
+    function selectTestSubject(subj) {
+      selectedTestSubj = subj;
+      renderTestArena();
+    }
+
+    function renderTestArena() {
+      const pillsBox = document.getElementById('testSubjectPills');
+      const listBox = document.getElementById('availableTestsList');
+      if (!pillsBox || !listBox) return;
+
+      const subjects = selectedExamMode === 'NEET'
+        ? ['All', 'Biology', 'Chemistry', 'Physics']
+        : selectedExamMode === 'JEE'
+        ? ['All', 'Mathematics', 'Physics', 'Chemistry']
+        : ['All', 'Chemistry', 'Physics', 'Biology', 'Mathematics'];
+
+      pillsBox.innerHTML = subjects.map(s => `
+        <button onclick="selectTestSubject('${s}')" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap tap-effect ${selectedTestSubj === s ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">
+          ${s === 'All' ? 'All Subjects' : s}
+        </button>
+      `).join('');
+
+      const matchingQs = questionsData.filter(q => {
+        const matchExam = q.exam === selectedExamMode;
+        const matchSub = selectedTestSubj === 'All' || q.subject === selectedTestSubj;
+        return matchExam && matchSub;
+      });
+
+      const allModeQs = questionsData.filter(q => selectedTestSubj === 'All' || q.subject === selectedTestSubj);
+
+      listBox.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">${selectedExamMode} SPECIAL</span>
+            <h4 class="text-xs font-extrabold mt-1">${selectedExamMode} ${selectedTestSubj === 'All' ? 'Full Mock Test' : selectedTestSubj + ' Chapter Test'}</h4>
+            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">${matchingQs.length} Questions • +4 / -1 Marking • Instant Solution</p>
+          </div>
+          <button onclick="startTestSession('${selectedExamMode}', '${selectedTestSubj}', '${selectedExamMode} ${selectedTestSubj} Mock Test', 0, 60)" class="tap-effect px-4 py-2 rounded-xl bg-apex text-white text-xs font-extrabold shrink-0">
+            Start Test ▶
+          </button>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">COMBINED BOOSTER</span>
+            <h4 class="text-xs font-extrabold mt-1">All-in-One Rank Booster (${selectedTestSubj})</h4>
+            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">${allModeQs.length} Mixed Questions (NEET + JEE + PYQ)</p>
+          </div>
+          <button onclick="startTestSession('ALL', '${selectedTestSubj}', 'Combined Rank Booster', 0, 60)" class="tap-effect px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-extrabold shrink-0">
+            Start ▶
+          </button>
+        </div>
+      `;
+    }
+
+    function launchCustomConfiguredTest() {
+      const exam = document.getElementById('custExam').value;
+      const subj = document.getElementById('custSubj').value;
+      const count = Math.max(1, parseInt(document.getElementById('custCount').value, 10) || 10);
+      const secPerQ = Math.max(15, parseInt(document.getElementById('custSecPerQ').value, 10) || 60);
+      closeModal('customTestModal');
+      startTestSession(exam, subj, `Custom ${exam} (${subj}) Test`, count, secPerQ);
+    }
+
+    function startTestSession(examMode, subjFilter, customTitle, qLimit = 0, secPerQ = 60) {
+      let pool = questionsData.filter(q => {
+        const mExam = examMode === 'ALL' || q.exam === examMode;
+        const mSubj = subjFilter === 'All' || q.subject === subjFilter;
+        return mExam && mSubj;
+      });
+
+      if (pool.length === 0) {
+        return showToast('⚠️ इस फिल्टर में अभी कोई प्रश्न नहीं है! "+ Add Qs" से जोड़ें।');
+      }
+
+      // Shuffle copy for fresh practice
+      pool = [...pool].sort(() => Math.random() - 0.5);
+      if (qLimit > 0 && pool.length > qLimit) {
+        pool = pool.slice(0, qLimit);
+      }
+
+      activeQuestions = pool;
+      currentQIndex = 0;
+      userAnswers = {};
+      visitedQuestions = { 0: true };
+      revealedHints = {};
+      remainingSeconds = activeQuestions.length * (secPerQ || 60);
+
+      document.getElementById('testSelectorView').classList.add('hidden');
+      document.getElementById('testResultView').classList.add('hidden');
+      document.getElementById('activeTestView').classList.remove('hidden');
+
+      document.getElementById('liveTestBadge').textContent = examMode;
+      document.getElementById('liveTestTitle').textContent = customTitle;
+
+      renderCurrentQuestion();
+      startTestTimer();
+    }
+
+    function renderCurrentQuestion() {
+      const qObj = activeQuestions[currentQIndex];
+      if (!qObj) return;
+      visitedQuestions[currentQIndex] = true;
+
+      document.getElementById('liveQCounter').textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length} (${qObj.subject})`;
+      document.getElementById('liveQuestionText').textContent = qObj.q;
+
+      // Hint Box state
+      const hintBox = document.getElementById('liveHintBox');
+      if (revealedHints[currentQIndex]) {
+        const hintSnippet = qObj.exp ? qObj.exp.split('.')[0] + '...' : 'ध्यान से फॉर्मूला और यूनिट जाँचें।';
+        hintBox.innerHTML = `💡 <b>Hint:</b> ${esc(hintSnippet)}`;
+        hintBox.classList.remove('hidden');
+      } else {
+        hintBox.classList.add('hidden');
+      }
+
+      // Bookmark button state
+      const bmBtn = document.getElementById('liveBookmarkBtn');
+      const isSaved = savedQIds.includes(qObj.id);
+      if (bmBtn) {
+        bmBtn.className = isSaved
+          ? 'w-8 h-8 rounded-lg border border-amber-400 bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-amber-500 tap-effect'
+          : 'w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 tap-effect';
+      }
+
+      // Render Options
+      const optsBox = document.getElementById('liveOptionsContainer');
+      const labels = ['A', 'B', 'C', 'D'];
+      optsBox.innerHTML = qObj.options.map((opt, idx) => {
+        const selected = userAnswers[currentQIndex] === idx;
+        return `
+          <button onclick="selectOption(${idx})" class="w-full text-left p-3 rounded-xl border-2 transition flex items-center gap-3 tap-effect ${selected ? 'border-apex bg-blue-50/70 dark:bg-slate-800 font-extrabold' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold'}">
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${selected ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">${labels[idx]}</span>
+            <span class="text-xs leading-snug">${esc(opt)}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Render Palette Pills
+      const palBox = document.getElementById('liveQuestionPalette');
+      palBox.innerHTML = activeQuestions.map((_, idx) => {
+        const isCurrent = idx === currentQIndex;
+        const isAns = userAnswers[idx] !== undefined;
+        const isVis = !!visitedQuestions[idx];
+        let cls = 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
+        if (isAns) cls = 'bg-emerald-600 text-white';
+        else if (isVis) cls = 'bg-amber-500 text-white';
+        return `
+          <button onclick="jumpToQuestion(${idx})" class="w-8 h-8 rounded-lg text-xs font-extrabold shrink-0 tap-effect ${cls} ${isCurrent ? 'ring-2 ring-offset-1 ring-blue-500' : ''}">
+            ${idx + 1}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[currentQIndex] = optIdx;
+      renderCurrentQuestion();
+    }
+
+    function showQuestionHint() {
+      revealedHints[currentQIndex] = true;
+      renderCurrentQuestion();
+    }
+
+    function clearCurrentAnswer() {
+      delete userAnswers[currentQIndex];
+      renderCurrentQuestion();
+    }
+
+    function prevTestQuestion() {
+      if (currentQIndex > 0) {
+        currentQIndex--;
+        renderCurrentQuestion();
+      }
+    }
+
+    function nextTestQuestion() {
+      if (currentQIndex < activeQuestions.length - 1) {
+        currentQIndex++;
+        renderCurrentQuestion();
+      } else {
+        showToast('ℹ️ यह अंतिम प्रश्न है। सबमिट करने के लिए Submit दबाएँ।');
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      currentQIndex = idx;
+      renderCurrentQuestion();
+    }
+
+    function toggleBookmarkCurrentQ() {
+      const qObj = activeQuestions[currentQIndex];
+      if (!qObj) return;
+      const idx = savedQIds.indexOf(qObj.id);
+      if (idx === -1) {
+        savedQIds.push(qObj.id);
+        showToast('🔖 प्रश्न Saved Bank में सेव हो गया!');
+      } else {
+        savedQIds.splice(idx, 1);
+        showToast('🗑️ प्रश्न Saved Bank से हटा दिया गया');
+      }
+      setStorage('apex_saved_qids_v4', savedQIds);
+      updateHomeStatsUI();
+      renderCurrentQuestion();
+    }
+
+    function startTestTimer() {
+      clearInterval(testTimerInterval);
+      updateTestTimerDisplay();
+      testTimerInterval = setInterval(() => {
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+          updateTestTimerDisplay();
+        } else {
+          clearInterval(testTimerInterval);
+          showToast('⏰ समय समाप्त! आपका टेस्ट ऑटो-सबमिट हो रहा है...');
+          finishAndEvaluateTest();
+        }
+      }, 1000);
+    }
+
+    function updateTestTimerDisplay() {
+      const m = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+      const s = String(remainingSeconds % 60).padStart(2, '0');
+      const el = document.getElementById('testTimerDisplay');
+      if (el) el.textContent = `${m}:${s}`;
+    }
+
+    function confirmSubmitTest() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const ok = confirm(`आपने ${activeQuestions.length} में से ${answeredCount} प्रश्नों के उत्तर दिए हैं। क्या आप टेस्ट सबमिट करना चाहते हैं?`);
+      if (ok) finishAndEvaluateTest();
+    }
+
+    function finishAndEvaluateTest() {
+      clearInterval(testTimerInterval);
+      let correct = 0;
+      let wrong = 0;
+      let unattempted = 0;
+
+      if (!userStats.subjectMap) userStats.subjectMap = {};
+
+      const solutionsHTML = activeQuestions.map((q, idx) => {
+        const uAns = userAnswers[idx];
+        const isCorrect = uAns === q.answer;
+        const isSkipped = uAns === undefined;
+
+        if (!userStats.subjectMap[q.subject]) {
+          userStats.subjectMap[q.subject] = { correct: 0, total: 0 };
+        }
+
+        if (isSkipped) {
+          unattempted++;
+        } else if (isCorrect) {
+          correct++;
+          userStats.subjectMap[q.subject].correct++;
+          userStats.subjectMap[q.subject].total++;
+        } else {
+          wrong++;
+          userStats.subjectMap[q.subject].total++;
+        }
+
+        const statusBadge = isSkipped
+          ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Skipped (0)</span>'
+          : isCorrect
+          ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">Correct (+4)</span>'
+          : '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">Wrong (-1)</span>';
+
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-extrabold text-slate-400">Q.${idx + 1} • ${esc(q.subject)}</span>
+              ${statusBadge}
+            </div>
+            <p class="text-xs font-bold">${esc(q.q)}</p>
+            <p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">✔ सही उत्तर: ${esc(q.options[q.answer])}</p>
+            ${!isSkipped && !isCorrect ? `<p class="text-[11px] font-semibold text-rose-500">✖ आपका उत्तर: ${esc(q.options[uAns])}</p>` : ''}
+            <div class="text-[11px] text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200/60 dark:border-slate-800 mt-1">
+              <b>Solution:</b> ${esc(q.exp)}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const totalScore = (correct * 4) - (wrong * 1);
+      const maxScore = activeQuestions.length * 4;
+      const attempted = correct + wrong;
+      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+
+      // Save Stats & History
+      userStats.testsGiven = (userStats.testsGiven || 0) + 1;
+      if (accuracy > (userStats.bestAccuracy || 0)) {
+        userStats.bestAccuracy = accuracy;
+      }
+      if (!Array.isArray(userStats.history)) userStats.history = [];
+      userStats.history.unshift({
+        title: document.getElementById('liveTestTitle').textContent || 'CBT Mock Test',
+        score: `${totalScore}/${maxScore}`,
+        accuracy: `${accuracy}%`,
+        date: new Date().toLocaleDateString('hi-IN')
+      });
+      userStats.history = userStats.history.slice(0, 8);
+      setStorage('apex_user_stats_v4', userStats);
+      updateHomeStatsUI();
+
+      lastResultSummary = {
+        score: totalScore,
+        maxScore,
+        accuracy,
+        exam: document.getElementById('liveTestTitle').textContent || 'APEX CBT Test'
+      };
+
+      // Update Result View DOM
+      document.getElementById('activeTestView').classList.add('hidden');
+      document.getElementById('testResultView').classList.remove('hidden');
+
+      document.getElementById('resScore').textContent = `${totalScore}/${maxScore}`;
+      document.getElementById('resCorrect').textContent = correct;
+      document.getElementById('resWrong').textContent = wrong;
+      document.getElementById('resAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('resultSolutionsList').innerHTML = solutionsHTML;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function shareResult(platform) {
+      const text = `🏆 *APEX STUDY CBT Result*\n📚 Test: ${lastResultSummary.exam}\n🎯 Score: ${lastResultSummary.score}/${lastResultSummary.maxScore}\n⚡ Accuracy: ${lastResultSummary.accuracy}%\n🔥 Towards the Peak!`;
+      const encoded = encodeURIComponent(text);
+      if (platform === 'whatsapp') {
+        window.open(`https://wa.me/?text=${encoded}`, '_blank');
+      } else {
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encoded}`, '_blank');
+      }
+    }
+
+    function exitTestToMenu() {
+      clearInterval(testTimerInterval);
+      document.getElementById('activeTestView').classList.add('hidden');
+      document.getElementById('testResultView').classList.add('hidden');
+      document.getElementById('testSelectorView').classList.remove('hidden');
+      renderTestArena();
+    }
+
+    function saveNewCustomQuestion() {
+      const exam = document.getElementById('newQExam').value;
+      const subject = document.getElementById('newQSubject').value;
+      const q = document.getElementById('newQText').value.trim();
+      const o0 = document.getElementById('newQOpt0').value.trim();
+      const o1 = document.getElementById('newQOpt1').value.trim();
+      const o2 = document.getElementById('newQOpt2').value.trim();
+      const o3 = document.getElementById('newQOpt3').value.trim();
+      const answer = parseInt(document.getElementById('newQCorrect').value, 10);
+      const exp = document.getElementById('newQExp').value.trim() || 'सही विकल्प का चयन अवधारणा के अनुसार किया गया है।';
+
+      if (!q || !o0 || !o1 || !o2 || !o3) {
+        return showToast('⚠️ कृपया प्रश्न और चारों विकल्प (A, B, C, D) भरें!');
+      }
+
+      questionsData.unshift({
+        id: 'q_custom_' + Date.now(),
+        exam,
+        subject,
+        q,
+        options: [o0, o1, o2, o3],
+        answer,
+        exp
+      });
+      setStorage('apex_questions_v4', questionsData);
+
+      ['newQText', 'newQOpt0', 'newQOpt1', 'newQOpt2', 'newQOpt3', 'newQExp'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      closeModal('addQuestionModal');
+      renderTestArena();
+      showToast('✅ नया प्रश्न सफलतापूर्वक जुड़ गया!');
+    }
+
+    // ==================== DOUBTS & COMMUNITY WALL ====================
+    function insertDoubtEmoji(emoji) {
+      const box = document.getElementById('doubtTextInput');
+      if (!box) return;
+      box.value += emoji;
+      box.focus();
+    }
+
+    let pendingDoubtPhotoBase64 = '';
+    function previewDoubtPhotoName(input) {
+      const file = input.files && input.files[0];
+      const label = document.getElementById('doubtPhotoName');
+      if (!file) {
+        pendingDoubtPhotoBase64 = '';
+        if (label) label.textContent = '';
+        return;
+      }
+      if (label) label.textContent = `📷 ${file.name}`;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Compress image via canvas to avoid localStorage quota issues
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 600;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          pendingDoubtPhotoBase64 = canvas.toDataURL('image/jpeg', 0.72);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function postNewDoubt() {
+      const subject = document.getElementById('doubtSubjectSelect').value;
+      const author = document.getElementById('doubtAuthorInput').value.trim() || userProfile.name || 'Student';
+      const text = document.getElementById('doubtTextInput').value.trim();
+
+      if (!text && !pendingDoubtPhotoBase64) {
+        return showToast('⚠️ कृपया अपना डाउट लिखें या फोटो चुनें!');
+      }
+
+      doubtsData.unshift({
+        id: 'd_' + Date.now(),
+        author,
+        subject,
+        text: text || '📷 [Photo Doubt Attached]',
+        time: 'Just now',
+        likes: 1,
+        img: pendingDoubtPhotoBase64 || '',
+        replies: []
+      });
+
+      setStorage('apex_doubts_v4', doubtsData);
+      document.getElementById('doubtTextInput').value = '';
+      document.getElementById('doubtPhotoInput').value = '';
+      document.getElementById('doubtPhotoName').textContent = '';
+      pendingDoubtPhotoBase64 = '';
+
+      renderDoubts();
+      showToast('💬 आपका डाउट पोस्ट हो गया!');
+    }
+
+    function filterDoubtsBySubject(subj) {
+      currentDoubtSubj = subj;
+      document.querySelectorAll('.doubt-sub-btn').forEach(btn => {
+        if (btn.dataset.sub === subj) {
+          btn.className = 'doubt-sub-btn px-3 py-1 rounded-full text-xs font-extrabold bg-apex text-white whitespace-nowrap';
+        } else {
+          btn.className = 'doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap';
+        }
+      });
+      renderDoubts();
+    }
+
+    function renderDoubts() {
+      const feed = document.getElementById('doubtsFeedContainer');
+      if (!feed) return;
+      const q = (document.getElementById('doubtSearchInput')?.value || '').toLowerCase().trim();
+
+      const filtered = doubtsData.filter(d => {
+        const mSub = currentDoubtSubj === 'All' || d.subject === currentDoubtSubj;
+        const mSearch = !q || d.text.toLowerCase().includes(q) || d.author.toLowerCase().includes(q) || d.subject.toLowerCase().includes(q);
+        return mSub && mSearch;
+      });
+
+      if (filtered.length === 0) {
+        feed.innerHTML = `<div class="text-center py-6 text-xs text-slate-400 font-bold">कोई डाउट नहीं मिला। पहला सवाल आप पूछें!</div>`;
+        return;
+      }
+
+      feed.innerHTML = filtered.map(d => {
+        const isLiked = !!likedItemsMap['doubt_' + d.id];
+        const repliesHTML = (d.replies || []).map((r, rIdx) => `
+          <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/70 dark:border-slate-800 text-xs flex items-start justify-between gap-2">
+            <div>
+              <span class="font-extrabold text-apex">${esc(r.by)}:</span>
+              <span class="text-slate-700 dark:text-slate-300 ml-1">${esc(r.text)}</span>
+            </div>
+            ${isAdmin ? `<button onclick="deleteDoubtReply('${d.id}', ${rIdx})" class="text-[10px] text-rose-500"><i class="fas fa-times"></i></button>` : ''}
+          </div>
+        `).join('');
+
+        return `
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-apex text-white flex items-center justify-center text-xs font-extrabold">
+                  ${esc((d.author || 'S')[0].toUpperCase())}
+                </div>
+                <div>
+                  <h4 class="text-xs font-extrabold">${esc(d.author)}</h4>
+                  <p class="text-[10px] text-slate-400 font-semibold">${esc(d.time)} • <span class="text-apex font-bold">${esc(d.subject)}</span></p>
+                </div>
+              </div>
+              ${isAdmin ? `<button onclick="deleteDoubt('${d.id}')" class="text-xs text-rose-500 px-2 py-1"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+
+            <p class="text-xs font-semibold leading-relaxed">${esc(d.text)}</p>
+            ${d.img ? `<img src="${d.img}" alt="Doubt attachment" class="rounded-xl max-h-60 w-auto border border-slate-200 dark:border-slate-700" />` : ''}
+
+            <div class="flex items-center gap-4 pt-1 text-xs font-bold text-slate-500">
+              <button onclick="toggleSingleLike('doubt_${d.id}', 'doubt', '${d.id}')" class="flex items-center gap-1.5 ${isLiked ? 'text-rose-600' : ''} tap-effect">
+                <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> <span>${d.likes || 0}</span>
+              </button>
+              <span><i class="far fa-comment mr-1"></i> ${(d.replies || []).length} Replies</span>
+            </div>
+
+            <div class="space-y-1.5 pt-1">${repliesHTML}</div>
+
+            <div class="flex gap-1.5 pt-1">
+              <input type="text" id="replyInp_${d.id}" placeholder="अपना उत्तर या एक्सप्लेनेशन लिखें..." class="flex-1 text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none" />
+              <button onclick="addDoubtReply('${d.id}')" class="px-3 py-1.5 rounded-xl bg-apex text-white text-xs font-extrabold tap-effect">
+                Reply
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addDoubtReply(doubtId) {
+      const inp = document.getElementById('replyInp_' + doubtId);
+      if (!inp || !inp.value.trim()) return;
+      const d = doubtsData.find(item => item.id === doubtId);
+      if (!d) return;
+      if (!Array.isArray(d.replies)) d.replies = [];
+      d.replies.push({
+        by: userProfile.name || 'Student',
+        text: inp.value.trim()
+      });
+      setStorage('apex_doubts_v4', doubtsData);
+      renderDoubts();
+      showToast('✅ आपका उत्तर जुड़ गया!');
+    }
+
+    function deleteDoubt(id) {
+      doubtsData = doubtsData.filter(d => d.id !== id);
+      setStorage('apex_doubts_v4', doubtsData);
+      renderDoubts();
+      showToast('🗑️ डाउट हटा दिया गया');
+    }
+
+    function deleteDoubtReply(doubtId, rIdx) {
+      const d = doubtsData.find(item => item.id === doubtId);
+      if (!d || !Array.isArray(d.replies)) return;
+      d.replies.splice(rIdx, 1);
+      setStorage('apex_doubts_v4', doubtsData);
+      renderDoubts();
+    }
+
+    // ==================== PROFILE, PROGRESS, SAVED QS & FEEDBACK ====================
+    function updateHomeStatsUI() {
+      const tEl = document.getElementById('statTestsGiven');
+      const aEl = document.getElementById('statBestAccuracy');
+      const sEl = document.getElementById('statSavedQs');
+      if (tEl) tEl.textContent = userStats.testsGiven || 0;
+      if (aEl) aEl.textContent = (userStats.bestAccuracy || 0) + '%';
+      if (sEl) sEl.textContent = savedQIds.length;
+    }
+
+    function openSavedQuestionsModal() {
+      switchTab('profile');
+      setTimeout(() => {
+        const sec = document.getElementById('savedQuestionsSection');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+      }, 120);
+    }
+
+    function saveUserProfile() {
+      const name = document.getElementById('profNameInp').value.trim() || 'Student';
+      const cls = document.getElementById('profClassInp').value || '11th';
+      const roll = document.getElementById('profRollInp').value.trim() || '—';
+      const mobile = document.getElementById('profMobileInp').value.trim();
+      const tg = document.getElementById('profTgInp').value.trim();
+      const ig = document.getElementById('profIgInp').value.trim();
+
+      if (mobile && !/^\d{10}$/.test(mobile)) {
+        return showToast('⚠️ कृपया सही 10-अंकों का मोबाइल नंबर डालें!');
+      }
+
+      userProfile = { name, cls, roll, mobile, tg, ig };
+      setStorage('apex_user_profile_v4', userProfile);
+      closeModal('editProfileModal');
+      changeStudentClass(cls);
+      renderProfileAndSaved();
+      showToast('✅ प्रोफ़ाइल अपडेट हो गई!');
+    }
+
+    function renderProfileAndSaved() {
+      const av = document.getElementById('profileAvatarLetter');
+      const nm = document.getElementById('profileNameDisplay');
+      const cb = document.getElementById('profileClassBadge');
+      const mt = document.getElementById('profileMetaDisplay');
+      const sl = document.getElementById('profileSocialLinks');
+
+      if (av) av.textContent = (userProfile.name || 'S')[0].toUpperCase();
+      if (nm) nm.textContent = userProfile.name || 'Student';
+      if (cb) cb.textContent = userProfile.cls === 'Target' ? 'Target Batch' : `Class ${userProfile.cls}`;
+      if (mt) mt.textContent = `Roll: ${userProfile.roll || '—'} ${userProfile.mobile ? '• 📱 ' + userProfile.mobile : ''}`;
+
+      if (sl) {
+        let linksHTML = '';
+        if (userProfile.tg) linksHTML += `<a href="${esc(userProfile.tg)}" target="_blank" rel="noopener" class="text-sky-500"><i class="fa-brands fa-telegram"></i> Telegram</a>`;
+        if (userProfile.ig) linksHTML += `<a href="${esc(userProfile.ig)}" target="_blank" rel="noopener" class="text-pink-500"><i class="fa-brands fa-instagram"></i> Instagram</a>`;
+        sl.innerHTML = linksHTML;
+      }
+
+      // Subject-wise Accuracy Progress Bars
+      const progBox = document.getElementById('subjectProgressContainer');
+      if (progBox) {
+        const subjs = ['Chemistry', 'Physics', 'Biology', 'Mathematics'];
+        const map = userStats.subjectMap || {};
+        progBox.innerHTML = subjs.map(s => {
+          const entry = map[s] || { correct: 0, total: 0 };
+          const pct = entry.total > 0 ? Math.round((entry.correct / entry.total) * 100) : 0;
+          return `
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span>${s}</span>
+                <span class="text-apex">${pct}% (${entry.correct}/${entry.total})</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                <div class="h-full bg-apex rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Recent Tests History
+      const histBox = document.getElementById('recentTestsHistoryContainer');
+      if (histBox) {
+        const hist = userStats.history || [];
+        if (hist.length === 0) {
+          histBox.innerHTML = `<p class="text-[11px] text-slate-400 font-semibold">अभी तक कोई टेस्ट हिस्ट्री नहीं है।</p>`;
+        } else {
+          histBox.innerHTML = `<p class="text-[10px] font-extrabold uppercase text-slate-400 mb-1">Recent Test History</p>` +
+            hist.slice(0, 4).map(h => `
+              <div class="flex items-center justify-between text-xs py-1">
+                <span class="font-bold truncate pr-2">${esc(h.title)} <span class="text-[10px] text-slate-400">(${esc(h.date)})</span></span>
+                <span class="font-extrabold text-emerald-600 shrink-0">${esc(h.score)} • ${esc(h.accuracy)}</span>
+              </div>
+            `).join('');
+        }
+      }
+
+      // Saved Questions List
+      const savedBadge = document.getElementById('savedCountBadge');
+      const savedBox = document.getElementById('savedQuestionsContainer');
+      if (savedBadge) savedBadge.textContent = `${savedQIds.length} Saved`;
+
+      if (savedBox) {
+        const savedList = questionsData.filter(q => savedQIds.includes(q.id));
+        if (savedList.length === 0) {
+          savedBox.innerHTML = `<p class="text-xs text-slate-400 font-semibold py-2">कोई बुकमार्क प्रश्न नहीं है। टेस्ट के दौरान 🔖 आइकन दबाकर सेव करें।</p>`;
+        } else {
+          savedBox.innerHTML = savedList.map(q => `
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">${esc(q.exam)} • ${esc(q.subject)}</span>
+                <button onclick="removeSavedQuestion('${q.id}')" class="text-xs text-rose-500 font-bold"><i class="fas fa-trash"></i></button>
+              </div>
+              <p class="text-xs font-bold">${esc(q.q)}</p>
+              <p class="text-[11px] font-extrabold text-emerald-600">✔ उत्तर: ${esc(q.options[q.answer])}</p>
+              <p class="text-[11px] text-slate-500">${esc(q.exp)}</p>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Feedback Counter
+      const fbCount = document.getElementById('feedbackCountText');
+      if (fbCount) {
+        fbCount.textContent = feedbacksList.length > 0 ? `कुल प्राप्त सुझाव: ${feedbacksList.length}` : '';
+      }
+    }
+
+    function removeSavedQuestion(qId) {
+      savedQIds = savedQIds.filter(id => id !== qId);
+      setStorage('apex_saved_qids_v4', savedQIds);
+      updateHomeStatsUI();
+      renderProfileAndSaved();
+      showToast('🗑️ प्रश्न Saved Bank से हटा दिया गया');
+    }
+
+    function submitFeedback() {
+      const inp = document.getElementById('feedbackInput');
+      if (!inp || !inp.value.trim()) return showToast('⚠️ कृपया अपना सुझाव लिखें!');
+      feedbacksList.unshift({
+        by: userProfile.name || 'Student',
+        text: inp.value.trim(),
+        time: new Date().toLocaleString('hi-IN')
+      });
+      setStorage('apex_feedbacks_v4', feedbacksList);
+      inp.value = '';
+      renderProfileAndSaved();
+      showToast('🙏 धन्यवाद! आपका फीडबैक सेव हो गया।');
+    }
+
+    // --- PWA INSTALL SUPPORT ---
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+    });
+
+    function installPWA() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
+      } else {
+        showToast('📲 ब्राउज़र मेनू (⋮) में जाकर "Add to Home Screen" चुनें!');
+      }
+    }
+
+    // ==================== INITIALIZE APP ON LOAD ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Restore Dark Mode
+      const savedDark = getStorage('apex_dark_mode_v4', false);
+      if (savedDark) {
+        document.documentElement.classList.add('dark');
+        const icon = document.getElementById('themeToggleIcon');
+        if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+      }
+
+      // 2. Restore Theme Color
+      const savedTheme = getStorage('apex_theme_color_v4', null);
+      if (savedTheme && savedTheme.hex && savedTheme.rgb) {
+        document.documentElement.style.setProperty('--theme-color', savedTheme.hex);
+        document.documentElement.style.setProperty('--theme-rgb', savedTheme.rgb);
+        const meta = document.getElementById('metaThemeColor');
+        if (meta) meta.setAttribute('content', savedTheme.hex);
+      }
+
+      // 3. Init Streak, Countdown & Pomodoro
+      initStreakAndCountdown();
+      updatePomoUI();
+      updateHomeStatsUI();
+
+      // 4. Sync Class Filter & Render All Tabs
+      changeStudentClass(userProfile.cls || '11th');
+      renderTestArena();
+      renderDoubts();
+      renderProfileAndSaved();
+    });
+  </script>
+</body>
+</html>
+
+        
         
             

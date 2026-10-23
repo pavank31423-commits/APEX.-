@@ -2,8 +2,9 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>APEX - Towards the Peak...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#2563eb" id="metaThemeColor" />
+  <title>APEX STUDY - Towards the Peak...</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script>
@@ -16,7 +17,7 @@
           }
         }
       }
-    }
+    };
   </script>
   <style>
     :root {
@@ -28,7 +29,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      padding-bottom: 84px !important;
+      padding-bottom: 88px !important;
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       transition: background-color 0.25s ease, color 0.25s ease;
@@ -37,6 +38,7 @@
     .text-apex { color: var(--theme-color) !important; }
     .border-apex { border-color: var(--theme-color) !important; }
     .ring-apex:focus { --tw-ring-color: var(--theme-color) !important; }
+    .bg-apex-soft { background-color: rgba(var(--theme-rgb), 0.12) !important; }
 
     .tap-effect {
       transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s ease;
@@ -102,13 +104,13 @@
       color: var(--theme-color) !important;
     }
     .nav-item-btn.active-nav .nav-pill {
-      background-color: rgba(var(--theme-rgb), 0.14);
+      background-color: rgba(var(--theme-rgb), 0.15);
       padding: 4px 16px;
       border-radius: 9999px;
     }
     .nav-item-btn i {
       font-size: 18px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     #toastBox {
@@ -127,7 +129,7 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
       text-align: center;
       max-width: 92%;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
     }
 
     .yt-card-aspect {
@@ -161,46 +163,57 @@
   <!-- TOAST NOTIFICATION -->
   <div id="toastBox"></div>
 
-  <!-- TOP HEADER -->
-  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-11 h-11 rounded-full bg-apex flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-        <i class="fa-solid fa-mountain-sun text-lg"></i>
+  <!-- STICKY TOP HEADER -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-3.5 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('home')">
+      <div class="w-10 h-10 rounded-full bg-apex flex items-center justify-center text-white shadow-md">
+        <i class="fa-solid fa-mountain-sun text-base"></i>
       </div>
       <div>
-        <h1 class="text-lg font-extrabold tracking-tight text-apex leading-none">APEX STUDY</h1>
-        <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Towards the Peak...</p>
+        <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-apex leading-none">APEX STUDY</h1>
+        <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Towards the Peak...</p>
       </div>
     </div>
 
-    <div class="flex items-center gap-2">
-      <button onclick="toggleUserClassQuick()" class="tap-effect px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold flex items-center gap-1.5">
+    <div class="flex items-center gap-1.5">
+      <span id="headerAdminBadge" onclick="toggleAdminModal()" class="hidden cursor-pointer px-2 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[10px] font-extrabold">
+        <i class="fa-solid fa-shield-halved mr-0.5"></i> ADMIN
+      </span>
+
+      <button onclick="toggleUserClassQuick()" title="Click to switch Class" class="tap-effect px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold flex items-center gap-1.5">
         <i class="fa-solid fa-graduation-cap text-apex"></i>
         <span id="headerClassBadge">Class 11th</span>
       </button>
-      <span id="headerAdminBadge" class="hidden px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[10px] font-extrabold">
-        <i class="fa-solid fa-shield-halved mr-0.5"></i> ADMIN
-      </span>
+
+      <button onclick="toggleDarkMode()" aria-label="Toggle Dark Mode" class="tap-effect w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs">
+        <i id="themeToggleIcon" class="fa-solid fa-moon text-slate-700 dark:text-amber-400"></i>
+      </button>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="max-w-xl mx-auto px-3.5 pt-3.5 pb-8">
+  <main class="max-w-xl mx-auto px-3.5 pt-3.5 pb-6">
 
-    <!-- ==================== TAB 1: HOME ==================== -->
-    <section id="page-home" class="tab-page active-page space-y-4">
-
-      <!-- Motivation Card -->
+    <!-- TAB 1: HOME -->
+    <section id="tab-home" class="tab-page active-page space-y-4">
+      <!-- Streak & Countdown Banner -->
       <div class="rounded-2xl p-4 text-white shadow-lg relative overflow-hidden" style="background: linear-gradient(135deg, #4f46e5 0%, #6366f1 55%, #8b5cf6 100%);">
-        <div class="flex items-center justify-between mb-2.5">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold">
-            <span>🔥</span> Daily Motivation
-          </span>
-          <button onclick="nextQuote()" class="tap-effect inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs font-bold">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm text-[11px] font-extrabold">
+              🔥 <span id="streakDaysText">1</span> दिन की स्ट्रीक
+            </span>
+            <button onclick="openExamDateModal()" class="tap-effect inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/25 hover:bg-amber-400/35 border border-amber-300/40 text-[11px] font-extrabold text-amber-100">
+              <i class="fa-regular fa-calendar-check"></i>
+              <span id="examCountdownBadge">Set Exam Date</span>
+            </button>
+          </div>
+          <button onclick="nextQuote()" class="tap-effect inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm text-[11px] font-bold">
             <i class="fa-solid fa-rotate"></i> Next
           </button>
         </div>
-        <h2 id="quoteMainText" class="text-base sm:text-lg font-extrabold leading-snug mb-1.5">
+
+        <h2 id="quoteMainText" class="text-sm sm:text-base font-extrabold leading-snug mb-1">
           "रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"
         </h2>
         <p id="quoteSubText" class="text-xs text-indigo-100 font-medium">
@@ -224,2062 +237,825 @@
         </div>
       </div>
 
-      <!-- Quick Action Bar -->
-      <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchTab('tests')" class="tap-effect bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 shadow-sm text-left">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">
+      <!-- Quick Action + Pomodoro -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <button onclick="switchTab('tests')" class="tap-effect bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 flex items-center gap-3 shadow-sm text-left">
+          <div class="w-10 h-10 rounded-xl bg-apex-soft text-apex flex items-center justify-center text-base shrink-0">
             <i class="fa-solid fa-laptop-code"></i>
           </div>
           <div>
-            <h3 class="text-sm font-extrabold text-slate-800 dark:text-slate-100">CBT, NEET & JEE</h3>
-            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Live Practice & PYQ</p>
+            <h3 class="text-xs font-extrabold text-slate-800 dark:text-slate-100">CBT, NEET & JEE</h3>
+            <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Live Practice & PYQ</p>
           </div>
         </button>
 
-        <button onclick="openSavedQuestionsModal()" class="tap-effect bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3.5 flex items-center gap-3 shadow-md text-left">
-          <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-lg shrink-0">
+        <button onclick="openSavedQuestionsModal()" class="tap-effect bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3 flex items-center gap-3 shadow-md text-left">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-base shrink-0">
             <i class="fa-solid fa-bookmark"></i>
           </div>
           <div>
-            <h3 class="text-sm font-extrabold">Saved Qs Bank</h3>
-            <p class="text-[11px] font-semibold text-amber-100">बुकमार्क प्रश्न देखें</p>
+            <h3 class="text-xs font-extrabold">Saved Qs Bank</h3>
+            <p class="text-[10px] font-semibold text-amber-100">बुकमार्क प्रश्न देखें</p>
           </div>
         </button>
       </div>
 
-      <!-- ONE-SHOT LECTURES SECTION (Dynamic 11th / 12th & YouTube Feed Style) -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+      <!-- Pomodoro Timer -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 shadow-sm flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+            <i class="fa-solid fa-stopwatch text-base"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-extrabold">Focus Study Timer (Pomodoro)</h3>
+            <p id="pomoStatusText" class="text-[10px] font-semibold text-slate-500">25 min Deep Study Session</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span id="pomoClock" class="font-mono text-sm font-black px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">25:00</span>
+          <button onclick="togglePomodoro()" id="pomoBtn" class="tap-effect px-3 py-1.5 rounded-xl bg-apex text-white text-xs font-extrabold">Start</button>
+          <button onclick="resetPomodoro()" class="tap-effect px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold" title="Reset"><i class="fa-solid fa-rotate-right"></i></button>
+        </div>
+      </div>
+
+      <!-- One-Shot Lectures -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div class="flex items-center justify-between gap-2">
           <div>
             <div class="flex items-center gap-2">
               <i class="fa-brands fa-youtube text-red-600 text-xl"></i>
-              <h2 id="lectureSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">
-                One-Shot Lectures (11th)
-              </h2>
+              <h2 id="lectureSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">One-Shot Lectures (11th)</h2>
             </div>
-            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
-              आपकी क्लास (<span class="currentClassText font-bold text-apex">11th</span>) के अनुसार क्यूरेटेड YouTube लेक्चर्स
-            </p>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">आपकी क्लास (<span class="currentClassText font-bold text-apex">11th</span>) के अनुसार लेक्चर्स</p>
           </div>
-          <button onclick="openModal('addLectureModal')" class="tap-effect px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold shadow-sm shrink-0">
-            + Add Lecture
-          </button>
+          <button onclick="openModal('addLectureModal')" class="tap-effect px-3 py-2 rounded-xl bg-red-600 text-white text-xs font-extrabold shadow-sm shrink-0">+ Add Lecture</button>
         </div>
 
-        <!-- Subject Filter Pills for Lectures -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1" id="lectureSubjectTabs">
-          <button onclick="filterLectures('All')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-extrabold bg-apex text-white" data-sub="All">All</button>
-          <button onclick="filterLectures('Physics')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Physics">Physics</button>
-          <button onclick="filterLectures('Chemistry')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Chemistry">Chemistry</button>
-          <button onclick="filterLectures('Biology')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Biology">Biology</button>
-          <button onclick="filterLectures('Mathematics')" class="lec-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" data-sub="Mathematics">Mathematics</button>
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+          <button onclick="filterLectures('All')" class="lec-filter-btn px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-apex text-white whitespace-nowrap tap-effect" data-sub="All">All</button>
+          <button onclick="filterLectures('Physics')" class="lec-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Physics">Physics</button>
+          <button onclick="filterLectures('Chemistry')" class="lec-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Chemistry">Chemistry</button>
+          <button onclick="filterLectures('Biology')" class="lec-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Biology">Biology</button>
+          <button onclick="filterLectures('Mathematics')" class="lec-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Mathematics">Mathematics</button>
         </div>
 
-        <div id="lecturesContainer" class="space-y-4"></div>
+        <div class="relative">
+          <input type="text" id="lectureSearchInput" oninput="renderLectures()" placeholder="लेक्चर सर्च करें (जैसे: MOT, Vectors)..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 ring-apex border border-slate-200 dark:border-slate-700" />
+          <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+
+        <div id="lecturesContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
       </div>
 
-      <!-- PDF & NOTES LIBRARY SECTION (Dynamic 11th / 12th) -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+      <!-- PDF & Notes -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div class="flex items-center justify-between gap-2">
           <div>
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-file-pdf text-rose-500 text-lg"></i>
-              <h2 id="notesSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">
-                PDF & Notes Library (11th)
-              </h2>
+              <h2 id="notesSectionTitle" class="text-base font-extrabold text-slate-900 dark:text-white">PDF & Notes Library (11th)</h2>
             </div>
-            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
-              क्लास <span class="currentClassText font-bold text-apex">11th</span> के हस्तलिखित नोट्स, फॉर्मूला शीट और PDF
-            </p>
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">क्लास <span class="currentClassText font-bold text-apex">11th</span> के हस्तलिखित नोट्स और PDF</p>
           </div>
-                <!-- ==================== CONTINUATION FROM SUBJECT FILTER BUTTONS ==================== -->
-      
-      <!-- Search Bar for Lectures -->
-      <div class="relative mb-3">
-        <input type="text" id="lectureSearchInput" oninput="renderLectures()" placeholder="लेक्चर या टॉपिक सर्च करें (जैसे: Mole Concept, Vectors)..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 ring-apex border border-slate-200 dark:border-slate-700">
-        <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          <button onclick="openModal('addNoteModal')" class="tap-effect px-3 py-2 rounded-xl bg-apex text-white text-xs font-extrabold shadow-sm shrink-0">+ Add PDF</button>
+        </div>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+          <button onclick="filterNotes('All')" class="note-filter-btn px-3 py-1 rounded-full text-xs font-extrabold bg-apex text-white whitespace-nowrap tap-effect" data-sub="All">All Notes</button>
+          <button onclick="filterNotes('Physics')" class="note-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Physics">Physics</button>
+          <button onclick="filterNotes('Chemistry')" class="note-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Chemistry">Chemistry</button>
+          <button onclick="filterNotes('Biology')" class="note-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Biology">Biology</button>
+          <button onclick="filterNotes('Mathematics')" class="note-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect" data-sub="Mathematics">Mathematics</button>
+        </div>
+
+        <div id="notesContainer" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CBT TESTS & PYQ -->
+    <section id="tab-tests" class="tab-page space-y-4">
+      <div id="testSelectorView">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3.5">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-extrabold flex items-center gap-2">
+                <i class="fas fa-laptop-code text-apex"></i> CBT Test Arena
+              </h2>
+              <p class="text-[11px] text-slate-500">NEET, JEE और PYQ के रियल एग्जाम पैटर्न (+4 / -1)</p>
+            </div>
+            <div class="flex gap-1.5">
+              <button onclick="openModal('customTestModal')" class="tap-effect text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 rounded-xl font-extrabold">
+                <i class="fa-solid fa-sliders text-apex mr-1"></i>Custom
+              </button>
+              <button onclick="openModal('addQuestionModal')" class="tap-effect text-[11px] bg-apex text-white px-3 py-1.5 rounded-xl font-extrabold">+ Add Qs</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="selectExamMode('NEET')" id="modeBtn-NEET" class="exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect">
+              <div class="text-lg mb-0.5">🩺</div>
+              <div class="font-extrabold text-xs text-apex">NEET UG</div>
+              <div class="text-[10px] text-slate-500">PCB • +4 / -1</div>
+            </button>
+            <button onclick="selectExamMode('JEE')" id="modeBtn-JEE" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
+              <div class="text-lg mb-0.5">⚙️</div>
+              <div class="font-extrabold text-xs">JEE Main</div>
+              <div class="text-[10px] text-slate-500">PCM • +4 / -1</div>
+            </button>
+            <button onclick="selectExamMode('PYQ')" id="modeBtn-PYQ" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
+              <div class="text-lg mb-0.5">📜</div>
+              <div class="font-extrabold text-xs">PYQ Bank</div>
+              <div class="text-[10px] text-slate-500">Past Papers</div>
+            </button>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1.5">सब्जेक्ट चुनें:</label>
+            <div id="testSubjectPills" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+          </div>
+
+          <div id="availableTestsList" class="space-y-2.5"></div>
+        </div>
       </div>
 
-      <!-- Lectures Grid Container -->
-      <div id="lecturesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
-    </div>
-  </section>
+      <!-- Active Test Runner -->
+      <div id="activeTestView" class="hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-md">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-3">
+            <div>
+              <span id="liveTestBadge" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-700">NEET</span>
+              <h3 id="liveTestTitle" class="text-xs font-extrabold mt-1">Full Mock Test</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="bg-slate-900 text-white dark:bg-slate-800 px-3 py-1.5 rounded-xl font-mono text-xs font-extrabold flex items-center gap-1.5">
+                <i class="fa-regular fa-clock text-amber-400"></i>
+                <span id="testTimerDisplay">15:00</span>
+              </div>
+              <button onclick="confirmSubmitTest()" class="bg-rose-600 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl tap-effect">Submit</button>
+            </div>
+          </div>
 
-  <!-- ==================== 2. TESTS TAB (CBT: NEET, JEE, PYQ, CHAPTERWISE) ==================== -->
-  <section id="tab-tests" class="tab-page px-3.5 pt-3">
-    
-    <!-- Exam Selection View -->
-    <div id="testSelectorView">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <span id="liveQCounter" class="text-xs font-extrabold text-slate-500">Question 1 of 10</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+4</span>
+              <span class="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">-1</span>
+              <button onclick="showQuestionHint()" class="px-2.5 h-8 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 text-[11px] font-extrabold flex items-center gap-1 tap-effect">
+                <i class="fa-regular fa-lightbulb"></i> Hint
+              </button>
+              <button onclick="toggleBookmarkCurrentQ()" id="liveBookmarkBtn" class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 tap-effect">
+                <i class="fas fa-bookmark text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="liveQuestionText" class="text-sm font-bold leading-relaxed bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700 mb-3">Loading...</div>
+          <div id="liveHintBox" class="hidden text-xs bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-800 p-2.5 rounded-xl mb-3 font-semibold"></div>
+          <div id="liveOptionsContainer" class="space-y-2.5 mb-4"></div>
+
+          <div id="liveQuestionPalette" class="flex gap-1.5 overflow-x-auto no-scrollbar py-2 border-t border-slate-200 dark:border-slate-800 mb-3"></div>
+
+          <div class="flex items-center justify-between gap-2">
+            <button onclick="prevTestQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold tap-effect"><i class="fas fa-arrow-left mr-1"></i> Prev</button>
+            <button onclick="clearCurrentAnswer()" class="px-3 py-2 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 tap-effect">Clear</button>
+            <button onclick="nextTestQuestion()" class="px-4 py-2 rounded-xl bg-apex text-white text-xs font-bold tap-effect">Save & Next <i class="fas fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Result Summary -->
+      <div id="testResultView" class="hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm mb-4">
+          <div class="text-center pb-4 border-b border-slate-200 dark:border-slate-800">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-2 text-xl">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h3 class="text-base font-extrabold">Test Result Analysis</h3>
+            <div class="grid grid-cols-4 gap-2 mt-4">
+              <div class="bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl">
+                <div class="text-[10px] text-slate-500 font-bold">SCORE</div>
+                <div id="resScore" class="text-sm font-extrabold text-apex mt-0.5">0/40</div>
+              </div>
+              <div class="bg-emerald-50 p-2.5 rounded-xl">
+                <div class="text-[10px] text-emerald-600 font-bold">CORRECT</div>
+                <div id="resCorrect" class="text-sm font-extrabold text-emerald-600 mt-0.5">0</div>
+              </div>
+              <div class="bg-rose-50 p-2.5 rounded-xl">
+                <div class="text-[10px] text-rose-600 font-bold">WRONG</div>
+                <div id="resWrong" class="text-sm font-extrabold text-rose-600 mt-0.5">0</div>
+              </div>
+              <div class="bg-amber-50 p-2.5 rounded-xl">
+                <div class="text-[10px] text-amber-600 font-bold">ACCURACY</div>
+                <div id="resAccuracy" class="text-sm font-extrabold text-amber-600 mt-0.5">0%</div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-2 mt-3.5">
+              <button onclick="shareResult('whatsapp')" class="tap-effect flex-1 py-2 px-3 rounded-xl bg-emerald-600 text-white text-xs font-extrabold flex items-center justify-center gap-1.5"><i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp</button>
+              <button onclick="shareResult('telegram')" class="tap-effect flex-1 py-2 px-3 rounded-xl bg-sky-500 text-white text-xs font-extrabold flex items-center justify-center gap-1.5"><i class="fa-brands fa-telegram text-sm"></i> Telegram</button>
+            </div>
+            <button onclick="exitTestToMenu()" class="mt-2.5 w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold tap-effect">Back to Tests</button>
+          </div>
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mt-4 mb-2.5">Detailed Solutions</h4>
+          <div id="resultSolutionsList" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: DOUBTS & COMMUNITY -->
+    <section id="tab-doubts" class="tab-page space-y-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
         <div class="flex items-center justify-between mb-3">
           <div>
-            <h2 class="text-base font-extrabold flex items-center gap-2">
-              <i class="fas fa-laptop-code text-apex"></i> CBT Test Arena
-            </h2>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">NEET, JEE और PYQ के रियल एग्जाम पैटर्न प्रैक्टिस सेट्स</p>
+            <h2 class="text-base font-extrabold flex items-center gap-2"><i class="fas fa-comments text-apex"></i> Study Discussion & Doubts</h2>
+            <p class="text-[11px] text-slate-500">अपना सवाल या फोटो पूछें और साथी छात्रों की मदद करें</p>
           </div>
-          <button onclick="openAddQuestionModal()" class="admin-only hidden text-[11px] bg-apex text-white px-3 py-1.5 rounded-xl font-bold tap-effect">
-            + Add Qs
-          </button>
         </div>
 
-        <!-- Mode Selector (JEE / NEET / PYQ) -->
-        <div class="grid grid-cols-3 gap-2 mb-4">
-          <button onclick="selectExamMode('NEET')" id="modeBtn-NEET" class="exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect">
-            <div class="text-lg mb-0.5">🩺</div>
-            <div class="font-extrabold text-xs text-apex">NEET UG</div>
-            <div class="text-[10px] text-slate-500">PCB • +4 / -1</div>
-          </button>
-          <button onclick="selectExamMode('JEE')" id="modeBtn-JEE" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
-            <div class="text-lg mb-0.5">⚙️</div>
-            <div class="font-extrabold text-xs">JEE Main</div>
-            <div class="text-[10px] text-slate-500">PCM • +4 / -1</div>
-          </button>
-          <button onclick="selectExamMode('PYQ')" id="modeBtn-PYQ" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
-            <div class="text-lg mb-0.5">📜</div>
-            <div class="font-extrabold text-xs">PYQ Bank</div>
-            <div class="text-[10px] text-slate-500">Past Papers</div>
-          </button>
+        <div class="space-y-2.5 mb-3.5 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200/70">
+          <div class="flex gap-2">
+            <select id="doubtSubjectSelect" class="text-xs font-bold bg-white dark:bg-slate-800 border rounded-lg px-2.5 py-1.5">
+              <option value="Chemistry">Chemistry</option>
+              <option value="Physics">Physics</option>
+              <option value="Biology">Biology</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="General">General</option>
+            </select>
+            <input type="text" id="doubtAuthorInput" placeholder="आपका नाम" class="flex-1 text-xs bg-white dark:bg-slate-800 border rounded-lg px-3 py-1.5" />
+          </div>
+          <textarea id="doubtTextInput" rows="2" placeholder="अपना सवाल या फॉर्मूला लिखें..." class="w-full text-xs bg-white dark:bg-slate-800 border rounded-lg p-2.5"></textarea>
+
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button type="button" onclick="insertDoubtEmoji('😀')" class="px-2 py-1 text-xs rounded bg-white border">😀</button>
+            <button type="button" onclick="insertDoubtEmoji('🔥')" class="px-2 py-1 text-xs rounded bg-white border">🔥</button>
+            <button type="button" onclick="insertDoubtEmoji('👍')" class="px-2 py-1 text-xs rounded bg-white border">👍</button>
+            <button type="button" onclick="insertDoubtEmoji('🙏')" class="px-2 py-1 text-xs rounded bg-white border">🙏</button>
+            <button type="button" onclick="insertDoubtEmoji('💡')" class="px-2 py-1 text-xs rounded bg-white border">💡</button>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <label class="tap-effect cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border text-xs font-bold">
+              <i class="fa-solid fa-camera text-apex"></i> फोटो जोड़ें
+              <input type="file" id="doubtPhotoInput" accept="image/*" class="hidden" onchange="previewDoubtPhotoName(this)" />
+            </label>
+            <span id="doubtPhotoName" class="text-[11px] text-slate-400 truncate flex-1"></span>
+            <button onclick="postNewDoubt()" class="bg-apex text-white text-xs font-extrabold px-4 py-2 rounded-xl tap-effect">Post Doubt</button>
+          </div>
         </div>
 
-        <!-- Subject Filter inside Test Mode -->
-        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">सब्जेक्ट चुनें (Select Subject):</label>
-        <div id="testSubjectPills" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-3">
-          <!-- Populated dynamically via JS based on NEET/JEE/PYQ -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2">
+          <button onclick="filterDoubtsBySubject('All')" class="doubt-sub-btn px-3 py-1 rounded-full text-xs font-extrabold bg-apex text-white whitespace-nowrap" data-sub="All">All</button>
+          <button onclick="filterDoubtsBySubject('Chemistry')" class="doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap" data-sub="Chemistry">Chemistry</button>
+          <button onclick="filterDoubtsBySubject('Physics')" class="doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap" data-sub="Physics">Physics</button>
+          <button onclick="filterDoubtsBySubject('Biology')" class="doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap" data-sub="Biology">Biology</button>
+          <button onclick="filterDoubtsBySubject('Mathematics')" class="doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap" data-sub="Mathematics">Mathematics</button>
         </div>
 
-        <!-- Available Test Cards List -->
-        <div id="availableTestsList" class="space-y-2.5"></div>
+        <div id="doubtsFeedContainer" class="space-y-3"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Active CBT Exam Runner View (Hidden until test starts) -->
-    <div id="activeTestView" class="hidden">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-md">
-        <!-- Top Exam Header -->
-        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-3">
-          <div>
-            <span id="liveTestBadge" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">NEET</span>
-            <h3 id="liveTestTitle" class="text-xs font-extrabold mt-1">Full Mock Test</h3>
+    <!-- TAB 4: PROFILE & SETTINGS -->
+    <section id="tab-profile" class="tab-page space-y-3.5">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-3.5">
+          <div class="w-14 h-14 rounded-2xl bg-apex text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
+            <span id="profileAvatarLetter">S</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h2 id="profileNameDisplay" class="text-base font-extrabold truncate">Satyam Kumar</h2>
+            <p id="profileMetaDisplay" class="text-xs text-slate-500 mt-0.5">Roll: 1101 • Target: NEET & JEE</p>
+            <div id="profileSocialLinks" class="flex items-center gap-3 mt-1 text-xs font-bold"></div>
+          </div>
+          <button onclick="openModal('editProfileModal')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-extrabold tap-effect">Edit</button>
+        </div>
+
+        <div class="mt-4 pt-3 border-t flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Class Filter:</span>
+          <div class="flex gap-1.5">
+            <button onclick="changeStudentClass('11th')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-apex text-white" data-cls="11th">11th</button>
+            <button onclick="changeStudentClass('12th')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800" data-cls="12th">12th</button>
+            <button onclick="changeStudentClass('Target')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800" data-cls="Target">Target</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border shadow-sm space-y-3">
+        <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Theme & Controls</h3>
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2.5">
+            <button onclick="setAppThemeColor('#2563eb', '37, 99, 235')" class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white shadow"></button>
+            <button onclick="setAppThemeColor('#7c3aed', '124, 58, 237')" class="w-8 h-8 rounded-full bg-violet-600 border-2 border-white shadow"></button>
+            <button onclick="setAppThemeColor('#059669', '5, 150, 105')" class="w-8 h-8 rounded-full bg-emerald-600 border-2 border-white shadow"></button>
+            <button onclick="setAppThemeColor('#e11d48', '225, 29, 72')" class="w-8 h-8 rounded-full bg-rose-600 border-2 border-white shadow"></button>
           </div>
           <div class="flex items-center gap-2">
-            <div class="bg-slate-900 text-white dark:bg-slate-800 px-3 py-1.5 rounded-xl font-mono text-xs font-extrabold flex items-center gap-1.5">
-              <i class="regular fa-clock text-amber-400"></i>
-              <span id="testTimerDisplay">15:00</span>
-            </div>
-            <button onclick="submitActiveTest()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl tap-effect">
-              Submit
-            </button>
+            <button onclick="installPWA()" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-extrabold">Install App</button>
+            <button onclick="toggleAdminModal()" id="adminLockBtn" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-extrabold">🔒 Admin</button>
           </div>
         </div>
-
-        <!-- Question Progress & Actions -->
-        <div class="flex items-center justify-between mb-2">
-          <span id="liveQCounter" class="text-xs font-extrabold text-slate-500">Question 1 of 10</span>
-          <div class="flex items-center gap-2">
-            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">+4</span>
-            <span class="text-[11px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded">-1</span>
-            <button onclick="toggleBookmarkCurrentQ()" id="liveBookmarkBtn" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 tap-effect" title="Save Question">
-              <i class="fas fa-bookmark text-xs"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Question Text -->
-        <div id="liveQuestionText" class="text-sm font-bold leading-relaxed bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700 mb-3">
-          Loading question...
-        </div>
-
-        <!-- Options Container -->
-        <div id="liveOptionsContainer" class="space-y-2.5 mb-4"></div>
-
-        <!-- Question Palette Pills -->
-        <div id="liveQuestionPalette" class="flex gap-1.5 overflow-x-auto no-scrollbar py-2 border-t border-slate-200 dark:border-slate-800 mb-3"></div>
-
-        <!-- Bottom Prev/Clear/Next Controls -->
-        <div class="flex items-center justify-between gap-2">
-          <button onclick="prevTestQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold tap-effect">
-            <i class="fas fa-arrow-left mr-1"></i> Prev
-          </button>
-          <button onclick="clearCurrentAnswer()" class="px-3 py-2 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/40 tap-effect">
-            Clear
-          </button>
-          <button onclick="nextTestQuestion()" class="px-4 py-2 rounded-xl bg-apex text-white text-xs font-bold tap-effect">
-            Save & Next <i class="fas fa-arrow-right ml-1"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Test Result Summary View -->
-    <div id="testResultView" class="hidden">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm mb-4">
-        <div class="text-center pb-4 border-b border-slate-200 dark:border-slate-800">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-2 text-xl">
-            <i class="fas fa-trophy"></i>
-          </div>
-          <h3 class="text-base font-extrabold">Test Result Analysis</h3>
-          <p id="resultSubTitle" class="text-xs text-slate-500 mt-0.5">Score Card & Detailed Solutions</p>
-          
-          <div class="grid grid-cols-4 gap-2 mt-4">
-            <div class="bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl">
-              <div class="text-[10px] text-slate-500 font-bold">SCORE</div>
-              <div id="resScore" class="text-sm font-extrabold text-apex mt-0.5">0/40</div>
-            </div>
-            <div class="bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl">
-              <div class="text-[10px] text-emerald-600 font-bold">CORRECT</div>
-              <div id="resCorrect" class="text-sm font-extrabold text-emerald-600 mt-0.5">0</div>
-            </div>
-            <div class="bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl">
-              <div class="text-[10px] text-rose-600 font-bold">WRONG</div>
-              <div id="resWrong" class="text-sm font-extrabold text-rose-600 mt-0.5">0</div>
-            </div>
-            <div class="bg-amber-50 dark:bg-amber-950/40 p-2.5 rounded-xl">
-              <div class="text-[10px] text-amber-600 font-bold">ACCURACY</div>
-              <div id="resAccuracy" class="text-sm font-extrabold text-amber-600 mt-0.5">0%</div>
-            </div>
-          </div>
-
-          <button onclick="exitTestToMenu()" class="mt-4 w-full py-2.5 rounded-xl bg-apex text-white text-xs font-extrabold tap-effect">
-            <i class="fas fa-redo mr-1"></i> Back to All Tests
-          </button>
-        </div>
-
-        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mt-4 mb-2.5">Detailed Answer Key & Explanations</h4>
-        <div id="resultSolutionsList" class="space-y-3"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== 3. DOUBTS & COMMUNITY WALL (WITH ONE-LIKE LOCK & SEARCH) ==================== -->
-  <section id="tab-doubts" class="tab-page px-3.5 pt-3">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-3">
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <h2 class="text-base font-extrabold flex items-center gap-2">
-            <i class="fas fa-comments text-apex"></i> Study Discussion & Doubts
-          </h2>
-          <p class="text-[11px] text-slate-500">अपना सवाल पूछें या दूसरे स्टूडेंट्स के डाउट सॉल्व करें</p>
-        </div>
       </div>
 
-      <!-- Post a New Doubt Input -->
-      <div class="space-y-2 mb-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700">
-        <div class="flex gap-2">
-          <select id="doubtSubjectSelect" class="text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none">
-            <option value="Chemistry">Chemistry</option>
-            <option value="Physics">Physics</option>
-            <option value="Biology">Biology</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="General">General</option>
-          </select>
-          <input type="text" id="doubtAuthorInput" placeholder="आपका नाम (Optional)" class="flex-1 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border shadow-sm">
+        <h3 class="text-sm font-extrabold mb-2.5 flex items-center gap-2"><i class="fa-solid fa-chart-line text-apex"></i> Subject Accuracy & History</h3>
+        <div id="subjectProgressContainer" class="space-y-2.5 mb-3"></div>
+        <div id="recentTestsHistoryContainer" class="border-t pt-2.5 space-y-1.5"></div>
+      </div>
+
+      <div id="savedQuestionsSection" class="bg-white dark:bg-slate-900 rounded-2xl p-4 border shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-extrabold flex items-center gap-2"><i class="fas fa-bookmark text-amber-500"></i> Saved Questions</h3>
+          <span id="savedCountBadge" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">0 Saved</span>
         </div>
-        <textarea id="doubtTextInput" rows="2" placeholder="अपना सवाल या फॉर्मूला यहाँ लिखें..." class="w-full text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 focus:outline-none"></textarea>
-        <div class="flex justify-end">
-          <button onclick="postNewDoubt()" class="bg-apex text-white text-xs font-extrabold px-4 py-2 rounded-xl tap-effect">
-            <i class="fas fa-paper-plane mr-1"></i> Post Doubt
-          </button>
-        </div>
+        <div id="savedQuestionsContainer" class="space-y-2.5"></div>
       </div>
+    </section>
 
-      <!-- Search Filter in Doubts -->
-      <div class="relative mb-3">
-        <input type="text" id="doubtSearchInput" oninput="renderDoubts()" placeholder="डाउट या सब्जेक्ट सर्च करें..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold focus:outline-none border border-slate-200 dark:border-slate-700">
-        <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-      </div>
+    <p class="text-center text-xs text-slate-400 font-bold py-5">Created with ❤️ by Satyam • APEX STUDY</p>
+  </main>
 
-      <!-- Doubts Feed Container -->
-      <div id="doubtsFeedContainer" class="space-y-3"></div>
-    </div>
-  </section>
-
-  <!-- ==================== 4. PROFILE, SAVED QS & THEME SETTINGS ==================== -->
-  <section id="tab-profile" class="tab-page px-3.5 pt-3">
-    <!-- User Profile Card -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-3.5">
-      <div class="flex items-center gap-3.5">
-        <div class="w-14 h-14 rounded-2xl bg-apex text-white flex items-center justify-center text-xl font-black shadow-md">
-          <span id="profileAvatarLetter">S</span>
-        </div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2">
-            <h2 id="profileNameDisplay" class="text-base font-extrabold">Aspirant</h2>
-            <span id="profileClassBadge" class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">Class 11th</span>
-          </div>
-          <p id="profileTargetDisplay" class="text-xs text-slate-500 mt-0.5">Target: NEET / JEE Exam</p>
-        </div>
-        <button onclick="editUserProfile()" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold tap-effect">
-          <i class="fas fa-pen mr-1"></i> Edit
-        </button>
-      </div>
-
-      <!-- Class Switcher (11th / 12th / Dropper) -->
-      <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-        <span class="text-xs font-bold text-slate-500">Current Class Filter:</span>
-        <div class="flex gap-1.5">
-          <button onclick="changeStudentClass('11th')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-apex text-white tap-effect" data-cls="11th">11th</button>
-          <button onclick="changeStudentClass('12th')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800 tap-effect" data-cls="12th">12th</button>
-          <button onclick="changeStudentClass('Dropper')" class="class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800 tap-effect" data-cls="Dropper">Target</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Theme Color Customizer -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-3.5">
-      <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2.5">App Theme Color</h3>
-      <div class="flex items-center gap-3">
-        <button onclick="setAppThemeColor('#2563eb', '37, 99, 235')" class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white shadow tap-effect"></button>
-        <button onclick="setAppThemeColor('#7c3aed', '124, 58, 237')" class="w-8 h-8 rounded-full bg-violet-600 border-2 border-white shadow tap-effect"></button>
-        <button onclick="setAppThemeColor('#059669', '5, 150, 105')" class="w-8 h-8 rounded-full bg-emerald-600 border-2 border-white shadow tap-effect"></button>
-        <button onclick="setAppThemeColor('#e11d48', '225, 29, 72')" class="w-8 h-8 rounded-full bg-rose-600 border-2 border-white shadow tap-effect"></button>
-        <button onclick="setAppThemeColor('#ea580c', '234, 88, 12')" class="w-8 h-8 rounded-full bg-orange-600 border-2 border-white shadow tap-effect"></button>
-      </div>
-    </div>
-
-    <!-- Saved / Bookmarked Questions Bank -->
-    <div id="savedQuestionsSection" class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-4">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-extrabold flex items-center gap-2">
-          <i class="fas fa-bookmark text-amber-500"></i> Saved Questions Bank
-        </h3>
-        <span id="savedCountBadge" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">0 Saved</span>
-      </div>
-      <div id="savedQuestionsContainer" class="space-y-2.5"></div>
-    </div>
-  </section>
-
-  <!-- ==================== MODALS (VIDEO PLAYER, ADMIN ADD LECTURE, ADMIN ADD QUESTION) ==================== -->
-  
-  <!-- Video Player Modal -->
+  <!-- MODALS -->
   <div id="videoModal" class="app-modal">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
-      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl border">
+      <div class="flex items-center justify-between px-4 py-3 border-b">
         <h3 id="modalVideoTitle" class="text-xs font-extrabold truncate pr-2">Lecture Player</h3>
-        <button onclick="closeVideoModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 tap-effect">
-          <i class="fas fa-times"></i>
-        </button>
+        <button onclick="closeVideoModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fas fa-times"></i></button>
       </div>
       <div class="yt-card-aspect">
-        <iframe id="modalYoutubeIframe" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <div class="p-3.5 flex items-center justify-between bg-slate-50 dark:bg-slate-900">
-        <span id="modalVideoSubj" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">Subject</span>
-        <button onclick="closeVideoModal()" class="text-xs font-bold text-rose-600 px-3 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/50 tap-effect">Close Player</button>
+        <iframe id="modalYoutubeIframe" src="" title="YouTube" frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
   </div>
 
-  <!-- Admin: Add Lecture Modal -->
   <div id="addLectureModal" class="app-modal">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border border-slate-200 dark:border-slate-800">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-extrabold">Add New YouTube Lecture</h3>
-        <button onclick="closeAddLectureModal()" class="text-slate-400"><i class="fas fa-times"></i></button>
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border space-y-2.5">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Add YouTube Lecture</h3><button onclick="closeModal('addLectureModal')"><i class="fas fa-times"></i></button></div>
+      <input type="text" id="newLecTitle" placeholder="लेक्चर का नाम" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="grid grid-cols-2 gap-2">
+        <select id="newLecSubject" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Biology">Biology</option><option value="Mathematics">Mathematics</option></select>
+        <select id="newLecClass" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="11th">Class 11th</option><option value="12th">Class 12th</option><option value="Target">Target</option></select>
       </div>
-      <div class="space-y-2.5">
-        <input type="text" id="newLecTitle" placeholder="लेक्चर का नाम (e.g., Chemical Bonding One Shot)" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <select id="newLecSubject" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold">
-          <option value="Physics">Physics</option>
-          <option value="Chemistry">Chemistry</option>
-          <option value="Biology">Biology</option>
-          <option value="Mathematics">Mathematics</option>
-        </select>
-        <input type="text" id="newLecUrl" placeholder="YouTube Video URL या Video ID पेस्ट करें" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeAddLectureModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800">Cancel</button>
-          <button onclick="saveNewLecture()" class="px-4 py-2 rounded-xl text-xs font-bold bg-apex text-white">Save Lecture</button>
-        </div>
-      </div>
+      <input type="text" id="newLecUrl" placeholder="YouTube URL या ID" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('addLectureModal')" class="px-4 py-2 rounded-xl text-xs bg-slate-100">Cancel</button><button onclick="saveNewLecture()" class="px-4 py-2 rounded-xl text-xs bg-apex text-white font-extrabold">Save</button></div>
     </div>
   </div>
 
-  <!-- Admin: Add Question Modal -->
+  <div id="addNoteModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border space-y-2.5">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Add PDF Note</h3><button onclick="closeModal('addNoteModal')"><i class="fas fa-times"></i></button></div>
+      <input type="text" id="newNoteTitle" placeholder="नोट्स का नाम" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="grid grid-cols-2 gap-2">
+        <select id="newNoteSubject" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Biology">Biology</option><option value="Mathematics">Mathematics</option></select>
+        <select id="newNoteClass" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="11th">Class 11th</option><option value="12th">Class 12th</option><option value="Target">Target</option></select>
+      </div>
+      <input type="url" id="newNoteUrl" placeholder="PDF Link (https://...)" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('addNoteModal')" class="px-4 py-2 rounded-xl text-xs bg-slate-100">Cancel</button><button onclick="saveNewNote()" class="px-4 py-2 rounded-xl text-xs bg-apex text-white font-extrabold">Save</button></div>
+    </div>
+  </div>
+
   <div id="addQuestionModal" class="app-modal">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border border-slate-200 dark:border-slate-800">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-extrabold">Add Custom Question (NEET / JEE / PYQ)</h3>
-        <button onclick="closeAddQuestionModal()" class="text-slate-400"><i class="fas fa-times"></i></button>
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border space-y-2">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Add Custom Question</h3><button onclick="closeModal('addQuestionModal')"><i class="fas fa-times"></i></button></div>
+      <div class="grid grid-cols-2 gap-2">
+        <select id="newQExam" class="text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="NEET">NEET</option><option value="JEE">JEE</option><option value="PYQ">PYQ</option></select>
+        <select id="newQSubject" class="text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Biology">Biology</option><option value="Mathematics">Mathematics</option></select>
       </div>
-      <div class="space-y-2">
-        <div class="grid grid-cols-2 gap-2">
-          <select id="newQExam" class="text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold">
-            <option value="NEET">NEET</option>
-            <option value="JEE">JEE</option>
-            <option value="PYQ">PYQ</option>
-          </select>
-          <select id="newQSubject" class="text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold">
-            <option value="Physics">Physics</option>
-            <option value="Chemistry">Chemistry</option>
-            <option value="Biology">Biology</option>
-            <option value="Mathematics">Mathematics</option>
-          </select>
-        </div>
-        <textarea id="newQText" rows="2" placeholder="सवाल यहाँ लिखें..." class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"></textarea>
-        <input type="text" id="newQOpt0" placeholder="Option A" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <input type="text" id="newQOpt1" placeholder="Option B" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <input type="text" id="newQOpt2" placeholder="Option C" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <input type="text" id="newQOpt3" placeholder="Option D" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <select id="newQCorrect" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold">
-          <option value="0">सही उत्तर: Option A</option>
-          <option value="1">सही उत्तर: Option B</option>
-          <option value="2">सही उत्तर: Option C</option>
-          <option value="3">सही उत्तर: Option D</option>
-        </select>
-        <input type="text" id="newQExp" placeholder="Solution / Explanation लिखें..." class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeAddQuestionModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800">Cancel</button>
-          <button onclick="saveNewCustomQuestion()" class="px-4 py-2 rounded-xl text-xs font-bold bg-apex text-white">Add Question</button>
-        </div>
-      </div>
+      <textarea id="newQText" rows="2" placeholder="सवाल..." class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border"></textarea>
+      <input type="text" id="newQOpt0" placeholder="Option A" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <input type="text" id="newQOpt1" placeholder="Option B" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <input type="text" id="newQOpt2" placeholder="Option C" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <input type="text" id="newQOpt3" placeholder="Option D" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <select id="newQCorrect" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="0">Option A</option><option value="1">Option B</option><option value="2">Option C</option><option value="3">Option D</option></select>
+      <input type="text" id="newQExp" placeholder="Explanation" class="w-full text-xs p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('addQuestionModal')" class="px-4 py-2 text-xs bg-slate-100 rounded-xl">Cancel</button><button onclick="saveNewCustomQuestion()" class="px-4 py-2 text-xs bg-apex text-white font-extrabold rounded-xl">Add</button></div>
     </div>
   </div>
 
-  <!-- ==================== FIXED BOTTOM NAVIGATION BAR ==================== -->
+  <div id="customTestModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border space-y-3">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Custom Test Generator</h3><button onclick="closeModal('customTestModal')"><i class="fas fa-times"></i></button></div>
+      <select id="custExam" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="ALL">All Combined</option><option value="NEET">NEET</option><option value="JEE">JEE</option><option value="PYQ">PYQ</option></select>
+      <select id="custSubj" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="All">All Subjects</option><option value="Chemistry">Chemistry</option><option value="Physics">Physics</option><option value="Biology">Biology</option><option value="Mathematics">Mathematics</option></select>
+      <div class="grid grid-cols-2 gap-2">
+        <input type="number" id="custCount" value="10" min="1" max="50" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+        <input type="number" id="custSecPerQ" value="60" min="15" max="300" class="text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      </div>
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('customTestModal')" class="px-4 py-2 text-xs bg-slate-100 rounded-xl">Cancel</button><button onclick="launchCustomConfiguredTest()" class="px-4 py-2 text-xs bg-apex text-white font-extrabold rounded-xl">Start ▶</button></div>
+    </div>
+  </div>
+
+  <div id="editProfileModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-4 shadow-2xl border space-y-2.5">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Edit Profile</h3><button onclick="closeModal('editProfileModal')"><i class="fas fa-times"></i></button></div>
+      <input type="text" id="profNameInp" placeholder="नाम" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <select id="profClassInp" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="11th">Class 11th</option><option value="12th">Class 12th</option><option value="Target">Target</option></select>
+      <input type="text" id="profRollInp" placeholder="Roll Number" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('editProfileModal')" class="px-4 py-2 text-xs bg-slate-100 rounded-xl">Cancel</button><button onclick="saveUserProfile()" class="px-4 py-2 text-xs bg-apex text-white font-extrabold rounded-xl">Save</button></div>
+    </div>
+  </div>
+
+  <div id="examDateModal" class="app-modal">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl p-4 shadow-2xl border space-y-2.5">
+      <div class="flex items-center justify-between"><h3 class="text-sm font-extrabold">Exam Countdown</h3><button onclick="closeModal('examDateModal')"><i class="fas fa-times"></i></button></div>
+      <select id="targetExamNameInp" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border font-bold"><option value="NEET UG">NEET UG</option><option value="JEE Main">JEE Main</option></select>
+      <input type="date" id="targetExamDateInp" class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border" />
+      <div class="flex justify-end gap-2 pt-2"><button onclick="closeModal('examDateModal')" class="px-4 py-2 text-xs bg-slate-100 rounded-xl">Cancel</button><button onclick="saveExamDateCountdown()" class="px-4 py-2 text-xs bg-apex text-white font-extrabold rounded-xl">Save</button></div>
+    </div>
+  </div>
+
+  <!-- FIXED BOTTOM NAVBAR -->
   <nav id="bottomNavBar" class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200/80 dark:border-slate-800">
-    <button onclick="switchTab('home')" id="nav-home" class="nav-item-btn active-nav tap-effect">
-      <div class="nav-pill"><i class="fas fa-home"></i></div>
-      <span>Home</span>
-    </button>
-    <button onclick="switchTab('tests')" id="nav-tests" class="nav-item-btn tap-effect">
-      <div class="nav-pill"><i class="fas fa-laptop-medical"></i></div>
-      <span>CBT & PYQ</span>
-    </button>
-    <button onclick="switchTab('doubts')" id="nav-doubts" class="nav-item-btn tap-effect">
-      <div class="nav-pill"><i class="fas fa-comments"></i></div>
-      <span>Doubts</span>
-    </button>
-    <button onclick="switchTab('profile')" id="nav-profile" class="nav-item-btn tap-effect">
-      <div class="nav-pill"><i class="fas fa-user-graduate"></i></div>
-      <span>Profile</span>
-    </button>
+    <button onclick="switchTab('home')" id="nav-home" class="nav-item-btn active-nav tap-effect"><div class="nav-pill"><i class="fas fa-home"></i></div><span>Home</span></button>
+    <button onclick="switchTab('tests')" id="nav-tests" class="nav-item-btn tap-effect"><div class="nav-pill"><i class="fas fa-laptop-medical"></i></div><span>CBT & PYQ</span></button>
+    <button onclick="switchTab('doubts')" id="nav-doubts" class="nav-item-btn tap-effect"><div class="nav-pill"><i class="fas fa-comments"></i></div><span>Doubts</span></button>
+    <button onclick="switchTab('profile')" id="nav-profile" class="nav-item-btn tap-effect"><div class="nav-pill"><i class="fas fa-user-graduate"></i></div><span>Profile</span></button>
   </nav>
 
-  <!-- ==================== COMPLETE APPLICATION JAVASCRIPT ==================== -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // --- 1. MOTIVATIONAL QUOTES ---
     const QUOTES = [
-      { q: '"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"', s: 'सफलता मेहनत मांगती है, बहाने नहीं। उठो और लक्ष्य की तरफ बढ़ो!' },
-      { q: '"जब तक तोड़ेंगे नहीं, तब तक छोड़ेंगे नहीं!"', s: 'हर रोज़ 1% बेहतर बनो, NEET और JEE की रैंक तुम्हारी होगी।' },
-      { q: '"नींद से इतना भी प्यार मत करो कि मंज़िल भी ख्वाब बन जाए।"', s: 'आज की प्रैक्टिस कल के रिजल्ट को तय करती है।' },
-      { q: '"मुश्किलें केवल बेहतरीन लोगों के हिस्से में आती हैं, क्योंकि वही उसे बेहतरीन तरीके से अंजाम देने की ताकत रखते हैं।"', s: 'Revision और PYQ ही सिलेक्शन की असली चाबी हैं।' }
+      { q: '"रख हौसला वो मंजर भी आएगा, प्यासे के पास चलकर समंदर भी आएगा!"', s: 'सफलता मेहनत मांगती है, बहाने नहीं।' },
+      { q: '"जब तक तोड़ेंगे नहीं, तब तक छोड़ेंगे नहीं!"', s: 'हर रोज़ 1% बेहतर बनो, रैंक तुम्हारी होगी।' }
     ];
     let currentQuoteIdx = 0;
 
-    // --- 2. DEFAULT LECTURES DATA ---
     const DEFAULT_LECTURES = [
-      { id: 'lec1', title: 'Chemical Bonding & Molecular Orbital Theory (MOT) One-Shot', subject: 'Chemistry', cls: '11th', ytId: 'dQw4w9WgXcQ', likes: 42 },
-      { id: 'lec2', title: 'Units, Dimensions & Vectors Complete Revision', subject: 'Physics', cls: '11th', ytId: 'M7lc1UVf-VE', likes: 38 },
-      { id: 'lec3', title: 'Cell: The Unit of Life - Full NCERT Line by Line', subject: 'Biology', cls: '11th', ytId: 'ysz5S6PUM-U', likes: 55 },
-      { id: 'lec4', title: 'Complex Numbers & Quadratic Equations - JEE Sprint', subject: 'Mathematics', cls: '11th', ytId: 'jNQXAC9IVRw', likes: 29 },
-      { id: 'lec5', title: 'Organic IUPAC Nomenclature & Isomerism Masterclass', subject: 'Chemistry', cls: '11th', ytId: 'aqz-KE-bpKQ', likes: 64 }
+      { id: 'lec1', title: 'Chemical Bonding & MOT One-Shot', subject: 'Chemistry', cls: '11th', ytId: 'M7lc1UVf-VE', likes: 42 },
+      { id: 'lec2', title: 'Units & Vectors Complete Revision', subject: 'Physics', cls: '11th', ytId: 'ysz5S6PUM-U', likes: 38 },
+      { id: 'lec3', title: 'Cell: The Unit of Life NCERT Line by Line', subject: 'Biology', cls: '11th', ytId: 'aqz-KE-bpKQ', likes: 55 }
     ];
 
-    // --- 3. COMPLETE QUESTION BANK (NEET, JEE & PYQ all populated!) ---
+    const DEFAULT_NOTES = [
+      { id: 'note1', title: 'MOT Bond Order Handwritten Notes', subject: 'Chemistry', cls: '11th', url: 'https://ncert.nic.in' },
+      { id: 'note2', title: 'Kinematics Formula Sheet', subject: 'Physics', cls: '11th', url: 'https://ncert.nic.in' }
+    ];
+
     const DEFAULT_QUESTIONS = [
-      // NEET Questions
-      { id: 'q_n1', exam: 'NEET', subject: 'Chemistry', q: 'Molecular Orbital Theory (MOT) के अनुसार O₂ (ऑक्सीजन अणु) का Bond Order क्या होता है?', options: ['1.0', '2.0', '2.5', '1.5'], answer: 1, exp: 'O₂ में 16 इलेक्ट्रॉन होते हैं। बॉन्डिंग (10) और एंटी-बॉन्डिंग (6) के अनुसार: Bond Order = (10 - 6)/2 = 2.0 (Paramagnetic).' },
-      { id: 'q_n2', exam: 'NEET', subject: 'Chemistry', q: 'क्षारीय धातुओं (Alkali Metals) में किस आयन की जलयोजन ऊर्जा (Hydration Energy) सबसे अधिक होती है?', options: ['Li⁺', 'Na⁺', 'K⁺', 'Cs⁺'], answer: 0, exp: 'Li⁺ का आकार सबसे छोटा होने के कारण इसका आवेश घनत्व उच्चतम होता है, इसलिए इसकी Hydration Energy सबसे अधिक होती है।' },
-      { id: 'q_n3', exam: 'NEET', subject: 'Biology', q: 'कोशिका का "Powerhouse" (ऊर्जा गृह) किसे कहा जाता है जहाँ ATP का निर्माण होता है?', options: ['राइबोसोम (Ribosome)', 'माइटोकॉन्ड्रिया (Mitochondria)', 'लाइसोसोम (Lysosome)', 'गॉल्जी काय (Golgi Body)'], answer: 1, exp: 'माइटोकॉन्ड्रिया में वायवीय श्वसन (Krebs Cycle व Oxidative Phosphorylation) द्वारा ATP का संश्लेषण होता है।' },
-      { id: 'q_n4', exam: 'NEET', subject: 'Biology', q: 'पादप जगत का उभयचर (Amphibians of Plant Kingdom) किन्हें कहा जाता है?', options: ['शैवाल (Algae)', 'ब्रायोफाइटा (Bryophytes)', 'टेरिडोफाइटा (Pteridophytes)', 'जिम्नोस्पर्म (Gymnosperms)'], answer: 1, exp: 'ब्रायोफाइट्स भूमि पर जीवित रहते हैं परंतु निषेचन (Fertilization) के लिए जल पर निर्भर होते हैं।' },
-      { id: 'q_n5', exam: 'NEET', subject: 'Physics', q: 'यदि किसी पिंड का संवेग (Momentum) 50% बढ़ा दिया जाए, तो उसकी गतिज ऊर्जा (Kinetic Energy) कितने प्रतिशत बढ़ जाएगी?', options: ['50%', '100%', '125%', '225%'], answer: 2, exp: 'K = p²/2m. जब p को 1.5p किया जाता है, तो नया K = (1.5)² K = 2.25 K. अतः वृद्धि = (2.25 - 1) × 100 = 125%.' },
-      
-      // JEE Questions
-      { id: 'q_j1', exam: 'JEE', subject: 'Mathematics', q: 'सम्मिश्र संख्या (Complex Number) i⁵⁷ + 1/i¹²⁵ का मान क्या होगा?', options: ['0', '2i', '-2i', '2'], answer: 0, exp: 'i⁵⁷ = i^(4×14 + 1) = i. तथा 1/i¹²⁵ = 1/i^(4×31 + 1) = 1/i = -i. अतः i + (-i) = 0.' },
-      { id: 'q_j2', exam: 'JEE', subject: 'Mathematics', q: 'यदि |z - 4| < |z - 2| है, तो इसका हल क्षेत्र (Solution Region) क्या होगा?', options: ['Re(z) > 0', 'Re(z) > 3', 'Re(z) < 3', 'Re(z) > 2'], answer: 1, exp: 'z = x + iy रखने पर: (x-4)² + y² < (x-2)² + y² => x² - 8x + 16 < x² - 4x + 4 => 12 < 4x => x > 3 यानी Re(z) > 3.' },
-      { id: 'q_j3', exam: 'JEE', subject: 'Physics', q: 'प्रक्षेप्य गति (Projectile Motion) में अधिकतम क्षैतिज परास (Maximum Horizontal Range) के लिए प्रक्षेपण कोण होना चाहिए:', options: ['30°', '45°', '60°', '90°'], answer: 1, exp: 'R = (u² sin2θ)/g. अधिकतम परास के लिए sin2θ = 1 होना चाहिए, अर्थात 2θ = 90° या θ = 45°.' },
-      { id: 'q_j4', exam: 'JEE', subject: 'Chemistry', q: 'Cr (Z = 24) का सही इलेक्ट्रॉनिक विन्यास (Electronic Configuration) क्या है?', options: ['[Ar] 3d⁴ 4s²', '[Ar] 3d⁵ 4s¹', '[Ar] 3d⁶ 4s⁰', '[Ar] 3d³ 4s²'], answer: 1, exp: 'अर्ध-पूरित (Half-filled 3d⁵) उपकोश के अतिरिक्त स्थायित्व के कारण क्रोमियम का विन्यास [Ar] 3d⁵ 4s¹ होता है।' },
-
-      // PYQ (Previous Year Questions)
-      { id: 'q_p1', exam: 'PYQ', subject: 'Chemistry', q: '[NEET PYQ] रदरफोर्ड के अल्फा-कण प्रकीर्णन प्रयोग (α-particle scattering experiment) से किसकी खोज हुई थी?', options: ['इलेक्ट्रॉन', 'प्रोटॉन', 'परमाणु नाभिक (Nucleus)', 'न्यूट्रॉन'], answer: 2, exp: 'रदरफोर्ड के स्वर्ण पन्नी प्रयोग (1911) ने सिद्ध किया कि परमाणु का समस्त धनावेश और द्रव्यमान केंद्र में एक सूक्ष्म नाभिक (Nucleus) में केंद्रित होता है।' },
-      { id: 'q_p2', exam: 'PYQ', subject: 'Biology', q: '[NEET PYQ] द्विपदी नामकरण पद्धति (Binomial Nomenclature) किस वैज्ञानिक द्वारा दी गई थी?', options: ['आर. एच. व्हिटेकर', 'कैरोलस लीनियस (Carolus Linnaeus)', 'अरस्तू', 'चार्ल्स डार्विन'], answer: 1, exp: 'कैरोलस लीनियस ने जीवों के वैज्ञानिक नामकरण की द्विपदी पद्धति (वंश + जाति) प्रतिपादित की थी।' },
-      { id: 'q_p3', exam: 'PYQ', subject: 'Physics', q: '[JEE Main PYQ] गुरुत्वाकर्षण नियतांक (Universal Gravitational Constant - G) का विमीय सूत्र (Dimensional Formula) क्या है?', options: ['[M⁻¹ L³ T⁻²]', '[M¹ L³ T⁻²]', '[M⁻¹ L² T⁻²]', '[M⁰ L³ T⁻²]'], answer: 0, exp: 'F = G m₁m₂ / r² => G = F·r² / (m₁m₂) = [M¹L¹T⁻²][L²] / [M²] = [M⁻¹ L³ T⁻²].' },
-      { id: 'q_p4', exam: 'PYQ', subject: 'Mathematics', q: '[JEE Main PYQ] यदि ω इकाई का एक अवास्तविक घनमूल (Cube root of unity) है, तो 1 + ω + ω² का मान क्या होगा?', options: ['1', '-1', '0', '3'], answer: 2, exp: 'इकाई के घनमूलों का योग सदैव शून्य होता है: 1 + ω + ω² = 0 तथा ω³ = 1.' }
+      { id: 'q1', exam: 'NEET', subject: 'Chemistry', q: 'MOT के अनुसार O2 का Bond Order क्या है?', options: ['1.0', '2.0', '2.5', '1.5'], answer: 1, exp: 'Bond Order = (10 - 6)/2 = 2.0' },
+      { id: 'q2', exam: 'NEET', subject: 'Biology', q: 'कोशिका का Powerhouse किसे कहते हैं?', options: ['Ribosome', 'Mitochondria', 'Lysosome', 'Golgi'], answer: 1, exp: 'Mitochondria में ATP बनता है।' }
     ];
 
-    // --- 4. DEFAULT DOUBTS ---
     const DEFAULT_DOUBTS = [
-      { id: 'd1', author: 'Satyam Kumar', subject: 'Chemistry', text: 'O₂⁺ और O₂⁻ में से किसका Bond Order ज़्यादा होता है? कोई शॉर्ट ट्रिक बताओ!', time: '2 hours ago', likes: 12 },
-      { id: 'd2', author: 'Rohit Sharma', subject: 'Physics', text: 'NLM में Pseudo Force कब लगाते हैं? लिफ्ट वाले सवालों में कन्फ्यूजन होता है।', time: '5 hours ago', likes: 8 }
+      { id: 'd1', author: 'Satyam', subject: 'Chemistry', text: 'O2+ और O2- में से किसका Bond Order ज़्यादा है? 🔥', time: '1 hr ago', likes: 5, img: '', replies: [{ by: 'Pavan', text: 'O2+ (2.5) > O2- (1.5)' }] }
     ];
 
-    // --- STATE VARIABLES ---
-    let isAdmin = false;
-    let currentFilterSubj = 'All';
-    let selectedExamMode = 'NEET';
-    let selectedTestSubj = 'All';
+    function esc(str) { return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    function getStorage(k, f) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : f; } catch { return f; } }
+    function setStorage(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { showToast('⚠️ Storage full!'); } }
 
-    // Active CBT Test State
-    let activeQuestions = [];
-    let currentQIndex = 0;
-    let userAnswers = {};
-    let testTimerInterval = null;
-    let remainingSeconds = 900;
+    let isAdmin = false, currentFilterSubj = 'All', currentNoteSubj = 'All', currentDoubtSubj = 'All';
+    let selectedExamMode = 'NEET', selectedTestSubj = 'All';
+    let lecturesData = getStorage('apex_lectures_v4', DEFAULT_LECTURES);
+    let notesData = getStorage('apex_notes_v4', DEFAULT_NOTES);
+    let questionsData = getStorage('apex_questions_v4', DEFAULT_QUESTIONS);
+    let doubtsData = getStorage('apex_doubts_v4', DEFAULT_DOUBTS);
+    let savedQIds = getStorage('apex_saved_qids_v4', []);
+    let likedItemsMap = getStorage('apex_liked_items_v4', {});
+    let userStats = getStorage('apex_user_stats_v4', { testsGiven: 0, bestAccuracy: 0, history: [], subjectMap: {} });
+    let userProfile = getStorage('apex_user_profile_v4', { name: 'Satyam Kumar', cls: '11th', roll: '1101' });
+    let examTarget = getStorage('apex_exam_target_v4', { name: 'NEET UG', date: '2027-05-02' });
+    let streakData = getStorage('apex_streak_v4', { lastDate: '', count: 1 });
+    let feedbacksList = getStorage('apex_feedbacks_v4', []), adminPin = getStorage('apex_admin_pin_v4', '');
 
-    // --- STORAGE HELPERS ---
-    function getStorage(key, fallback) {
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch (e) { return fallback; }
-    }
-    function setStorage(key, val) {
-      try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
-    }
+    let activeQuestions = [], currentQIndex = 0, userAnswers = {}, visitedQuestions = {}, revealedHints = {};
+    let testTimerInterval = null, remainingSeconds = 900, lastResultSummary = { score: 0, maxScore: 0, accuracy: 0 };
+    let pomoSeconds = 25 * 60, pomoRunning = false, pomoTimer = null;
 
-    // Initialize Data
-    let lecturesData = getStorage('apex_lectures_v2', DEFAULT_LECTURES);
-    let questionsData = getStorage('apex_questions_v2', DEFAULT_QUESTIONS);
-    let doubtsData = getStorage('apex_doubts_v2', DEFAULT_DOUBTS);
-    let savedQIds = getStorage('apex_saved_qids_v2', []);
-    // One-User-One-Like Set (Prevents unlimited likes!)
-    let likedItemsMap = getStorage('apex_liked_items_v2', {});
-    let userStats = getStorage('apex_user_stats_v2', { testsGiven: 0, bestAccuracy: 0 });
-    let userProfile = getStorage('apex_user_profile_v2', { name: 'Satyam Kumar', cls: '11th', target: 'NEET & JEE Aspirant' });
-
-    // --- TOAST NOTIFICATION ---
     function showToast(msg) {
       const box = document.getElementById('toastBox');
       if (!box) return;
       box.textContent = msg;
       box.style.display = 'block';
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { box.style.display = 'none'; }, 2400);
+      clearTimeout(window._t);
+      window._t = setTimeout(() => { box.style.display = 'none'; }, 2500);
     }
 
-    // --- TAB NAVIGATION ---
-    function switchTab(tabId) {
+    function openModal(id) { document.getElementById(id)?.classList.add('active-modal'); }
+    function closeModal(id) { document.getElementById(id)?.classList.remove('active-modal'); }
+
+    function switchTab(id) {
       document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active-page'));
-      const target = document.getElementById('tab-' + tabId);
-      if (target) target.classList.add('active-page');
-
+      document.getElementById('tab-' + id)?.classList.add('active-page');
       document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active-nav'));
-      const activeBtn = document.getElementById('nav-' + tabId);
-      if (activeBtn) activeBtn.classList.add('active-nav');
-
-      if (tabId === 'tests') renderTestArena();
-      if (tabId === 'doubts') renderDoubts();
-      if (tabId === 'profile') renderProfileAndSaved();
+      document.getElementById('nav-' + id)?.classList.add('active-nav');
+      if (id === 'home') { renderLectures(); renderNotes(); }
+      if (id === 'tests') renderTestArena();
+      if (id === 'doubts') renderDoubts();
+      if (id === 'profile') renderProfileAndSaved();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- DARK MODE & THEME ---
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      html.classList.toggle('dark');
-      const isDark = html.classList.contains('dark');
-      setStorage('apex_dark_mode', isDark);
-      const icon = document.getElementById('themeToggleIcon');
-      if (icon) icon.className = isDark ? 'fas fa-sun text-amber-400' : 'fas fa-moon text-slate-700';
+    function initStreakAndCountdown() {
+      const today = new Date().toLocaleDateString('en-CA');
+      if (streakData.lastDate !== today) {
+        const yest = new Date(Date.now() - 86400000).toLocaleDateString('en-CA');
+        streakData.count = streakData.lastDate === yest ? streakData.count + 1 : 1;
+        streakData.lastDate = today;
+        setStorage('apex_streak_v4', streakData);
+      }
+      document.getElementById('streakDaysText').textContent = streakData.count;
+      updateExamCountdownUI();
     }
 
+    function openExamDateModal() {
+      document.getElementById('targetExamNameInp').value = examTarget.name || 'NEET UG';
+      document.getElementById('targetExamDateInp').value = examTarget.date || '2027-05-02';
+      openModal('examDateModal');
+    }
+    function saveExamDateCountdown() {
+      examTarget = { name: document.getElementById('targetExamNameInp').value, date: document.getElementById('targetExamDateInp').value };
+      setStorage('apex_exam_target_v4', examTarget);
+      updateExamCountdownUI();
+      closeModal('examDateModal');
+      showToast('📅 Countdown updated!');
+    }
+    function updateExamCountdownUI() {
+      const diff = Math.max(0, Math.ceil((new Date(examTarget.date) - Date.now()) / 86400000));
+      document.getElementById('examCountdownBadge').textContent = `${examTarget.name}: ${diff}d left`;
+    }
+
+    function updatePomoUI() {
+      const m = String(Math.floor(pomoSeconds / 60)).padStart(2, '0');
+      const s = String(pomoSeconds % 60).padStart(2, '0');
+      document.getElementById('pomoClock').textContent = `${m}:${s}`;
+    }
+    function togglePomodoro() {
+      const btn = document.getElementById('pomoBtn');
+      if (pomoRunning) {
+        clearInterval(pomoTimer); pomoRunning = false; btn.textContent = 'Resume';
+      } else {
+        pomoRunning = true; btn.textContent = 'Pause';
+        pomoTimer = setInterval(() => {
+          if (pomoSeconds > 0) { pomoSeconds--; updatePomoUI(); }
+          else { clearInterval(pomoTimer); pomoRunning = false; pomoSeconds = 25*60; updatePomoUI(); btn.textContent = 'Start'; showToast('🎉 25 min completed!'); }
+        }, 1000);
+      }
+    }
+    function resetPomodoro() { clearInterval(pomoTimer); pomoRunning = false; pomoSeconds = 25*60; updatePomoUI(); document.getElementById('pomoBtn').textContent = 'Start'; }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+      setStorage('apex_dark_mode_v4', document.documentElement.classList.contains('dark'));
+    }
     function setAppThemeColor(hex, rgb) {
       document.documentElement.style.setProperty('--theme-color', hex);
       document.documentElement.style.setProperty('--theme-rgb', rgb);
-      setStorage('apex_theme_color', { hex, rgb });
-      showToast('🎨 Theme color updated!');
+      setStorage('apex_theme_color_v4', { hex, rgb });
+      showToast('🎨 Theme updated!');
     }
 
-    // --- ADMIN MODE ---
-    function toggleAdminMode() {
-      isAdmin = !isAdmin;
-      document.querySelectorAll('.admin-only').forEach(el => {
-        el.classList.toggle('hidden', !isAdmin);
-      });
-      const badge = document.getElementById('adminToggleBtn');
-      if (badge) {
-        badge.className = isAdmin
-          ? 'text-[11px] font-extrabold px-2.5 py-1 rounded-xl bg-emerald-600 text-white tap-effect'
-          : 'text-[11px] font-extrabold px-2.5 py-1 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 tap-effect';
-      }
-      showToast(isAdmin ? '🔓 Admin Mode Activated (Add Lectures/Qs enabled)' : '🔒 Admin Mode Off');
+    function toggleAdminModal() {
+      if (isAdmin) { isAdmin = false; updateAdminUI(); showToast('🔒 Admin OFF'); return; }
+      const pin = prompt('Enter Admin PIN (Default e.g. 1234 or your set PIN):') || '';
+      if (!adminPin) { adminPin = pin.trim(); setStorage('apex_admin_pin_v4', adminPin); isAdmin = true; updateAdminUI(); showToast('🔓 Admin ON'); }
+      else if (pin.trim() === adminPin) { isAdmin = true; updateAdminUI(); showToast('🔓 Admin ON'); }
+      else showToast('❌ Wrong PIN!');
+    }
+    function updateAdminUI() {
+      document.getElementById('headerAdminBadge').classList.toggle('hidden', !isAdmin);
+      renderLectures(); renderNotes(); renderDoubts();
     }
 
-    // --- MOTIVATION QUOTE ROTATOR ---
     function nextQuote() {
       currentQuoteIdx = (currentQuoteIdx + 1) % QUOTES.length;
-      const qEl = document.getElementById('quoteText');
-      const sEl = document.getElementById('quoteSub');
-      if (qEl) qEl.textContent = QUOTES[currentQuoteIdx].q;
-      if (sEl) sEl.textContent = QUOTES[currentQuoteIdx].s;
+      document.getElementById('quoteMainText').textContent = QUOTES[currentQuoteIdx].q;
+      document.getElementById('quoteSubText').textContent = QUOTES[currentQuoteIdx].s;
     }
 
-    // --- LECTURES SECTION (WITH SEARCH & SINGLE LIKE LOCK) ---
-    function filterLectures(subj) {
-      currentFilterSubj = subj;
-      document.querySelectorAll('.subj-filter-btn').forEach(btn => {
-        if (btn.dataset.subj === subj) {
-          btn.className = 'subj-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-apex text-white whitespace-nowrap tap-effect';
-        } else {
-          btn.className = 'subj-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap tap-effect';
-        }
-      });
-      renderLectures();
+    function toggleUserClassQuick() {
+      const order = ['11th', '12th', 'Target'];
+      changeStudentClass(order[(order.indexOf(userProfile.cls) + 1) % order.length]);
     }
-
-    function renderLectures() {
-      const container = document.getElementById('lecturesContainer');
-      if (!container) return;
-      const searchVal = (document.getElementById('lectureSearchInput')?.value || '').toLowerCase().trim();
-
-      const filtered = lecturesData.filter(item => {
-        const matchSubj = currentFilterSubj === 'All' || item.subject === currentFilterSubj;
-        const matchSearch = !searchVal || item.title.toLowerCase().includes(searchVal) || item.subject.toLowerCase().includes(searchVal);
-        return matchSubj && matchSearch;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-slate-400 font-bold">कोई लेक्चर नहीं मिला। दूसरा कीवर्ड सर्च करें!</div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(lec => {
-        const isLiked = !!likedItemsMap['lec_' + lec.id];
-        return `
-          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex flex-col">
-            <div onclick="openVideoModal('${lec.ytId}', '${lec.title.replace(/'/g, "\\'")}', '${lec.subject}')" class="yt-card-aspect cursor-pointer group">
-              <img src="https://img.youtube.com/vi/${lec.ytId}/hqdefault.jpg" alt="${lec.title}">
-              <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/45 transition">
-                <div class="w-12 h-12 rounded-full bg-apex text-white flex items-center justify-center shadow-lg">
-                  <i class="fas fa-play ml-0.5"></i>
-                </div>
-              </div>
-              <span class="absolute top-2.5 left-2.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-900/80 text-white backdrop-blur">${lec.subject}</span>
-            </div>
-            <div class="p-3 flex-1 flex flex-col justify-between">
-              <h4 class="text-xs font-extrabold leading-snug line-clamp-2 mb-2">${lec.title}</h4>
-              <div class="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-                <button onclick="toggleSingleLike('lec_${lec.id}', 'lecture', '${lec.id}')" class="flex items-center gap-1.5 text-xs font-extrabold ${isLiked ? 'text-rose-600' : 'text-slate-500'} tap-effect">
-                  <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i>
-                  <span>${lec.likes || 0}</span>
-                </button>
-                <button onclick="openVideoModal('${lec.ytId}', '${lec.title.replace(/'/g, "\\'")}', '${lec.subject}')" class="text-[11px] font-extrabold text-apex tap-effect">
-                  Watch Now <i class="fas fa-arrow-right ml-0.5"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // --- ONE-USER-ONE-LIKE SYSTEM (Fixes Unlimited Like Bug!) ---
-    function toggleSingleLike(likeKey, type, id) {
-      const alreadyLiked = !!likedItemsMap[likeKey];
-      if (type === 'lecture') {
-        const item = lecturesData.find(l => l.id === id);
-        if (!item) return;
-        if (alreadyLiked) {
-          item.likes = Math.max(0, (item.likes || 1) - 1);
-          delete likedItemsMap[likeKey];
-          showToast('💔 Like removed');
-        } else {
-          item.likes = (item.likes || 0) + 1;
-          likedItemsMap[likeKey] = true;
-          showToast('❤️ Liked lecture!');
-        }
-        setStorage('apex_lectures_v2', lecturesData);
-        setStorage('apex_liked_items_v2', likedItemsMap);
-        renderLectures();
-      } else if (type === 'doubt') {
-        const item = doubtsData.find(d => d.id === id);
-        if (!item) return;
-        if (alreadyLiked) {
-          item.likes = Math.max(0, (item.likes || 1) - 1);
-          delete likedItemsMap[likeKey];
-        } else {
-          item.likes = (item.likes || 0) + 1;
-          likedItemsMap[likeKey] = true;
-          showToast('👍 Upvoted doubt!');
-        }
-        setStorage('apex_doubts_v2', doubtsData);
-        setStorage('apex_liked_items_v2', likedItemsMap);
-        renderDoubts();
-      }
-    }
-
-    // --- VIDEO MODAL ---
-    function openVideoModal(ytId, title, subj) {
-      document.getElementById('modalVideoTitle').textContent = title;
-      document.getElementById('modalVideoSubj').textContent = subj;
-      document.getElementById('modalYoutubeIframe').src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
-      document.getElementById('videoModal').classList.add('active-modal');
-    }
-    function closeVideoModal() {
-      document.getElementById('modalYoutubeIframe').src = '';
-      document.getElementById('videoModal').classList.remove('active-modal');
-    }
-
-    // --- ADMIN ADD LECTURE ---
-    function openAddLectureModal() { document.getElementById('addLectureModal').classList.add('active-modal'); }
-    function closeAddLectureModal() { document.getElementById('addLectureModal').classList.remove('active-modal'); }
-    function extractYouTubeID(url) {
-      const reg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-      const match = url.match(reg);
-      return match ? match[1] : (url.length === 11 ? url : 'M7lc1UVf-VE');
-    }
-    function saveNewLecture() {
-      const title = document.getElementById('newLecTitle').value.trim();
-      const subject = document.getElementById('newLecSubject').value;
-      const rawUrl = document.getElementById('newLecUrl').value.trim();
-      if (!title || !rawUrl) return showToast('⚠️ कृपया नाम और YouTube लिंक भरें!');
-      const ytId = extractYouTubeID(rawUrl);
-      lecturesData.unshift({ id: 'lec_' + Date.now(), title, subject, cls: userProfile.cls, ytId, likes: 1 });
-      setStorage('apex_lectures_v2', lecturesData);
-      closeAddLectureModal();
-      renderLectures();
-      showToast('✅ नया लेक्चर जुड़ गया!');
-    }
-
-    // --- 2. CBT TEST ARENA (NEET, JEE & PYQ ALL WORKING!) ---
-    function selectExamMode(mode) {
-      selectedExamMode = mode;
-      selectedTestSubj = 'All';
-      ['NEET', 'JEE', 'PYQ'].forEach(m => {
-        const btn = document.getElementById('modeBtn-' + m);
-        if (!btn) return;
-        if (m === mode) {
-          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect';
-        } else {
-          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect';
-        }
-      });
-      renderTestArena();
-    }
-
-    function selectTestSubject(subj) {
-      selectedTestSubj = subj;
-      renderTestArena();
-    }
-
-    function renderTestArena() {
-      const pillsBox = document.getElementById('testSubjectPills');
-      const listBox = document.getElementById('availableTestsList');
-      if (!pillsBox || !listBox) return;
-
-      // Relevant subjects per exam
-      const subjects = selectedExamMode === 'NEET'
-        ? ['All', 'Biology', 'Chemistry', 'Physics']
-        : selectedExamMode === 'JEE'
-        ? ['All', 'Mathematics', 'Physics', 'Chemistry']
-        : ['All', 'Chemistry', 'Physics', 'Biology', 'Mathematics'];
-
-      pillsBox.innerHTML = subjects.map(s => `
-        <button onclick="selectTestSubject('${s}')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap tap-effect ${selectedTestSubj === s ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">
-          ${s === 'All' ? 'All Subjects (' + selectedExamMode + ')' : s}
-        </button>
-      `).join('');
-
-      // Filter questions for this exam and subject
-      const matchingQs = questionsData.filter(q => {
-        const examMatch = q.exam === selectedExamMode;
-        const subjMatch = selectedTestSubj === 'All' || q.subject === selectedTestSubj;
-        return examMatch && subjMatch;
-      });
-
-      listBox.innerHTML = `
-        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-apex text-white">${selectedExamMode}</span>
-              <span class="text-xs font-extrabold">${selectedTestSubj === 'All' ? 'Full Combined Mock Test' : selectedTestSubj + ' Chapter Practice'}</span>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-1">Questions: <b>${matchingQs.length}</b> • Marking: +4 / -1 • Instant Solution</p>
-          </div>
-          <button onclick="startCBTTest('${selectedExamMode}', '${selectedTestSubj}')" class="bg-apex text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow tap-effect">
-            Start Test <i class="fas fa-play ml-1"></i>
-          </button>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/60 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-600 text-white">ALL-IN-ONE</span>
-              <span class="text-xs font-extrabold">Mega Grand Test (NEET + JEE + PYQ)</span>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-1">Questions: <b>${questionsData.length}</b> • Complete Revision Mix</p>
-          </div>
-          <button onclick="startCBTTest('ALL', 'All')" class="bg-amber-600 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow tap-effect">
-            Start Mix
-          </button>
-        </div>
-      `;
-    }
-
-    function startCBTTest(examMode, subj) {
-      activeQuestions = questionsData.filter(q => {
-        const mExam = examMode === 'ALL' || q.exam === examMode;
-        const mSubj = subj === 'All' || q.subject === subj;
-        return mExam && mSubj;
-      });
-
-      if (activeQuestions.length === 0) {
-        return showToast('⚠️ इस सेक्शन में अभी प्रश्न नहीं हैं!');
-      }
-
-      currentQIndex = 0;
-      userAnswers = {};
-      remainingSeconds = activeQuestions.length * 90; // 1.5 min per question
-
-      document.getElementById('testSelectorView').classList.add('hidden');
-      document.getElementById('testResultView').classList.add('hidden');
-      document.getElementById('activeTestView').classList.remove('hidden');
-
-      document.getElementById('liveTestBadge').textContent = examMode;
-      document.getElementById('liveTestTitle').textContent = `${examMode} - ${subj} Practice Test`;
-
-      clearInterval(testTimerInterval);
-      updateTimerUI();
-      testTimerInterval = setInterval(() => {
-        remainingSeconds--;
-        updateTimerUI();
-        if (remainingSeconds <= 0) {
-          clearInterval(testTimerInterval);
-          submitActiveTest();
-        }
-      }, 1000);
-
-      renderCurrentQuestion();
-    }
-
-    function updateTimerUI() {
-      const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
-      const secs = String(remainingSeconds % 60).padStart(2, '0');
-      const el = document.getElementById('testTimerDisplay');
-      if (el) el.textContent = `${mins}:${secs}`;
-    }
-
-    function renderCurrentQuestion() {
-      const qObj = activeQuestions[currentQIndex];
-      if (!qObj) return;
-
-      document.getElementById('liveQCounter').textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length} (${qObj.subject})`;
-      document.getElementById('liveQuestionText').textContent = qObj.q;
-
-      // Update Bookmark Icon
-      const bmBtn = document.getElementById('liveBookmarkBtn');
-      const isSaved = savedQIds.includes(qObj.id);
-      if (bmBtn) {
-        bmBtn.className = isSaved
-          ? 'w-8 h-8 rounded-lg border border-amber-400 bg-amber-50 dark:bg-amber-950 text-amber-500 flex items-center justify-center tap-effect'
-          : 'w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 tap-effect';
-      }
-
-      // Render Options
-      const optsBox = document.getElementById('liveOptionsContainer');
-      const selectedAns = userAnswers[qObj.id];
-      const labels = ['A', 'B', 'C', 'D'];
-
-      optsBox.innerHTML = qObj.options.map((optText, idx) => {
-        const isSelected = selectedAns === idx;
-        return `
-          <button onclick="selectOption(${idx})" class="w-full text-left p-3 rounded-xl border-2 transition flex items-center gap-3 tap-effect ${isSelected ? 'border-apex bg-blue-50/70 dark:bg-slate-800 font-extrabold' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/40 font-semibold'}">
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold ${isSelected ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">${labels[idx]}</span>
-            <span class="text-xs flex-1">${optText}</span>
-          </button>
-        `;
-      }).join('');
-
-      // Render Palette
-      const paletteBox = document.getElementById('liveQuestionPalette');
-      paletteBox.innerHTML = activeQuestions.map((item, idx) => {
-        const answered = userAnswers[item.id] !== undefined;
-        const isCurr = idx === currentQIndex;
-        let cls = 'bg-slate-100 dark:bg-slate-800 text-slate-600';
-        if (answered) cls = 'bg-emerald-600 text-white';
-        if (isCurr) cls += ' ring-2 ring-apex';
-        return `<button onclick="jumpToQuestion(${idx})" class="w-8 h-8 rounded-lg text-xs font-extrabold flex-shrink-0 ${cls}">${idx + 1}</button>`;
-      }).join('');
-    }
-
-    function selectOption(optIdx) {
-      const qObj = activeQuestions[currentQIndex];
-      userAnswers[qObj.id] = optIdx;
-      renderCurrentQuestion();
-    }
-
-    function clearCurrentAnswer() {
-      const qObj = activeQuestions[currentQIndex];
-      delete userAnswers[qObj.id];
-      renderCurrentQuestion();
-    }
-
-    function nextTestQuestion() {
-      if (currentQIndex < activeQuestions.length - 1) {
-        currentQIndex++;
-        renderCurrentQuestion();
-      } else {
-        showToast('यह आखिरी सवाल है। टेस्ट पूरा करने के लिए Submit दबाएं!');
-      }
-    }
-
-    function prevTestQuestion() {
-      if (currentQIndex > 0) {
-        currentQIndex--;
-        renderCurrentQuestion();
-      }
-    }
-
-    function jumpToQuestion(idx) {
-      currentQIndex = idx;
-      renderCurrentQuestion();
-    }
-
-    function toggleBookmarkCurrentQ() {
-      const qObj = activeQuestions[currentQIndex];
-      if (!qObj) return;
-      const idx = savedQIds.indexOf(qObj.id);
-      if (idx > -1) {
-        savedQIds.splice(idx, 1);
-        showToast('🗑️ Removed from Saved Questions');
-      } else {
-        savedQIds.push(qObj.id);
-        showToast('🔖 Question Saved to Bank!');
-      }
-      setStorage('apex_saved_qids_v2', savedQIds);
-      updateHomeStatsUI();
-      renderCurrentQuestion();
-    }
-
-    function submitActiveTest() {
-      clearInterval(testTimerInterval);
-      let correct = 0;
-      let wrong = 0;
-
-      activeQuestions.forEach(q => {
-        const uAns = userAnswers[q.id];
-        if (uAns !== undefined) {
-          if (uAns === q.answer) correct++;
-          else wrong++;
-        }
-      });
-
-      const totalScore = (correct * 4) - (wrong * 1);
-      const maxScore = activeQuestions.length * 4;
-      const attempted = correct + wrong;
-      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
-
-      // Save Stats
-      userStats.testsGiven = (userStats.testsGiven || 0) + 1;
-      if (accuracy > (userStats.bestAccuracy || 0)) {
-        userStats.bestAccuracy = accuracy;
-      }
-      setStorage('apex_user_stats_v2', userStats);
-      updateHomeStatsUI();
-
-      // Show Result View
-      document.getElementById('activeTestView').classList.add('hidden');
-      document.getElementById('testResultView').classList.remove('hidden');
-
-      document.getElementById('resScore').textContent = `${totalScore}/${maxScore}`;
-      document.getElementById('resCorrect').textContent = correct;
-      document.getElementById('resWrong').textContent = wrong;
-      document.getElementById('resAccuracy').textContent = `${accuracy}%`;
-
-      const labels = ['A', 'B', 'C', 'D'];
-      const solList = document.getElementById('resultSolutionsList');
-      solList.innerHTML = activeQuestions.map((q, i) => {
-        const uAns = userAnswers[q.id];
-        const isCorrect = uAns === q.answer;
-        const statusBadge = uAns === undefined
-          ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Skipped</span>`
-          : isCorrect
-          ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">Correct (+4)</span>`
-          : `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-rose-100 text-rose-700">Wrong (-1)</span>`;
-
-        return `
-          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-xs font-extrabold text-apex">Q${i + 1}. ${q.subject}</span>
-              ${statusBadge}
-            </div>
-            <p class="text-xs font-bold mb-2">${q.q}</p>
-            <div class="text-[11px] space-y-1 mb-2">
-              <div class="font-bold text-emerald-600">✔ सही उत्तर: (${labels[q.answer]}) ${q.options[q.answer]}</div>
-              ${uAns !== undefined && !isCorrect ? `<div class="font-bold text-rose-500">✖ आपका उत्तर: (${labels[uAns]})${q.options[uAns]}</div>` : ''}
-            </div>
-            <div class="text-[11px] bg-blue-50/70 dark:bg-slate-800 p-2.5 rounded-lg border border-blue-200/60 dark:border-slate-700 text-slate-600 dark:text-slate-300">
-              <b>💡 Solution:</b> ${q.exp}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function exitTestToMenu() {
-      document.getElementById('activeTestView').classList.add('hidden');
-      document.getElementById('testResultView').classList.add('hidden');
-      document.getElementById('testSelectorView').classList.remove('hidden');
-      renderTestArena();
-    }
-
-    // --- ADMIN ADD CUSTOM QUESTION ---
-    function openAddQuestionModal() { document.getElementById('addQuestionModal').classList.add('active-modal'); }
-    function closeAddQuestionModal() { document.getElementById('addQuestionModal').classList.remove('active-modal'); }
-    function saveNewCustomQuestion() {
-      const exam = document.getElementById('newQExam').value;
-      const subject = document.getElementById('newQSubject').value;
-      const q = document.getElementById('newQText').value.trim();
-      const o0 = document.getElementById('newQOpt0').value.trim();
-      const o1 = document.getElementById('newQOpt1').value.trim();
-      const o2 = document.getElementById('newQOpt2').value.trim();
-      const o3 = document.getElementById('newQOpt3').value.trim();
-      const ans = parseInt(document.getElementById('newQCorrect').value, 10);
-      const exp = document.getElementById('newQExp').value.trim() || 'Standard NCERT concept.';
-
-      if (!q || !o0 || !o1 || !o2 || !o3) {
-        return showToast('⚠️ कृपया सवाल और चारों विकल्प भरें!');
-      }
-
-      questionsData.unshift({
-        id: 'q_custom_' + Date.now(),
-        exam, subject, q,
-        options: [o0, o1, o2, o3],
-        answer: ans,
-        exp
-      });
-      setStorage('apex_questions_v2', questionsData);
-      closeAddQuestionModal();
-      renderTestArena();
-      showToast('✅ नया सवाल टेस्ट बैंक में जुड़ गया!');
-    }
-
-    // --- 3. DOUBTS WALL ---
-    function postNewDoubt() {
-      const subj = document.getElementById('doubtSubjectSelect').value;
-      const author = document.getElementById('doubtAuthorInput').value.trim() || userProfile.name;
-      const text = document.getElementById('doubtTextInput').value.trim();
-      if (!text) return showToast('⚠️ कृपया अपना डाउट लिखें!');
-
-      doubtsData.unshift({
-        id: 'd_' + Date.now(),
-        author,
-        subject: subj,
-        text,
-        time: 'Just now',
-        likes: 0
-      });
-      setStorage('apex_doubts_v2', doubtsData);
-      document.getElementById('doubtTextInput').value = '';
-      renderDoubts();
-      showToast('✅ आपका डाउट पोस्ट हो गया!');
-    }
-
-    function renderDoubts() {
-      const box = document.getElementById('doubtsFeedContainer');
-      if (!box) return;
-      const q = (document.getElementById('doubtSearchInput')?.value || '').toLowerCase().trim();
-
-      const filtered = doubtsData.filter(d => !q || d.text.toLowerCase().includes(q) || d.subject.toLowerCase().includes(q));
-      if (filtered.length === 0) {
-        box.innerHTML = `<div class="text-center py-6 text-xs text-slate-400 font-bold">कोई डाउट नहीं मिला।</div>`;
-        return;
-      }
-
-      box.innerHTML = filtered.map(d => {
-        const isLiked = !!likedItemsMap['doubt_' + d.id];
-        return `
-          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700">
-            <div class="flex items-center justify-between mb-1.5">
-              <div class="flex items-center gap-2">
-                <span class="w-6 h-6 rounded-full bg-apex text-white text-[11px] font-extrabold flex items-center justify-center">${d.author[0].toUpperCase()}</span>
-                <span class="text-xs font-extrabold">${d.author}</span>
-                <span class="text-[10px] text-slate-400">• ${d.time}</span>
-              </div>
-              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">${d.subject}</span>
-            </div>
-            <p class="text-xs leading-relaxed mb-2.5">${d.text}</p>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-              <button onclick="toggleSingleLike('doubt_${d.id}', 'doubt', '${d.id}')" class="text-xs font-extrabold flex items-center gap-1.5 ${isLiked ? 'text-apex' : 'text-slate-500'} tap-effect">
-                <i class="${isLiked ? 'fas' : 'far'} fa-thumbs-up"></i> Helpful (${d.likes || 0})
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // --- 4. PROFILE & SAVED QUESTIONS ---
-    function openSavedQuestionsModal() {
-      switchTab('profile');
-      const sec = document.getElementById('savedQuestionsSection');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function renderProfileAndSaved() {
-      document.getElementById('profileNameDisplay').textContent = userProfile.name;
-      document.getElementById('profileAvatarLetter').textContent = userProfile.name[0].toUpperCase();
-      document.getElementById('profileClassBadge').textContent = 'Class ' + userProfile.cls;
-      const headerCls = document.getElementById('headerClassBadge');
-      if (headerCls) headerCls.textContent = 'Class ' + userProfile.cls;
-
-      const savedList = questionsData.filter(q => savedQIds.includes(q.id));
-      document.getElementById('savedCountBadge').textContent = `${savedList.length} Saved`;
-
-      const container = document.getElementById('savedQuestionsContainer');
-      const labels = ['A', 'B', 'C', 'D'];
-      if (savedList.length === 0) {
-        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400 font-bold">आपने अभी कोई सवाल बुकमार्क नहीं किया है। टेस्ट देते समय 🔖 आइकन दबाकर सवाल सेव करें!</div>`;
-        return;
-      }
-
-      container.innerHTML = savedList.map(q => `
-        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-apex text-white">${q.exam} • ${q.subject}</span>
-            <button onclick="removeSavedQuestion('${q.id}')" class="text-xs text-rose-500 font-bold"><i class="fas fa-trash"></i></button>
-          </div>
-          <p class="text-xs font-bold mb-1.5">${q.q}</p>
-          <div class="text-[11px] font-extrabold text-emerald-600 mb-1">✔ Answer: (${labels[q.answer]}) ${q.options[q.answer]}</div>
-          <div class="text-[11px] text-slate-500 dark:text-slate-400"><b>Solution:</b> ${q.exp}</div>
-        </div>
-      `).join('');
-    }
-
-    function removeSavedQuestion(qId) {
-      savedQIds = savedQIds.filter(id => id !== qId);
-      setStorage('apex_saved_qids_v2', savedQIds);
-      updateHomeStatsUI();
-      renderProfileAndSaved();
-      showToast('🗑️ सवाल हटा दिया गया');
-    }
-
-    function editUserProfile() {
-      const newName = prompt('अपना नाम लिखें:', userProfile.name);
-      if (newName && newName.trim()) {
-        userProfile.name = newName.trim();
-        setStorage('apex_user_profile_v2', userProfile);
-        renderProfileAndSaved();
-        showToast('✅ प्रोफाइल अपडेट हो गई!');
-      }
-    }
-
     function changeStudentClass(cls) {
       userProfile.cls = cls;
-      setStorage('apex_user_profile_v2', userProfile);
-      document.querySelectorAll('.class-switch-btn').forEach(btn => {
-        btn.className = btn.dataset.cls === cls
-          ? 'class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-apex text-white tap-effect'
-          : 'class-switch-btn px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800 tap-effect';
-      });
-      renderProfileAndSaved();
-      showToast(`🎓 Class switched to ${cls}`);
+      setStorage('apex_user_profile_v4', userProfile);
+      document.getElementById('headerClassBadge').textContent = cls;
+      document.querySelectorAll('.currentClassText').forEach(el => el.textContent = cls);
+      renderLectures(); renderNotes();
     }
 
-    function updateHomeStatsUI() {
-      const tEl = document.getElementById('statTestsGiven');
-      const aEl = document.getElementById('statBestAccuracy');
-      const sEl = document.getElementById('statSavedCount');
-      if (tEl) tEl.textContent = userStats.testsGiven || 0;
-      if (aEl) aEl.textContent = (userStats.bestAccuracy || 0) + '%';
-      if (sEl) sEl.textContent = savedQIds.length;
-    }
-
-    // --- INITIALIZE ON LOAD ---
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = getStorage('apex_theme_color', null);
-      if (savedTheme) setAppThemeColor(savedTheme.hex, savedTheme.rgb);
-
-      const isDark = getStorage('apex_dark_mode', false);
-      if (isDark) document.documentElement.classList.add('dark');
-
-      updateHomeStatsUI();
+    function filterLectures(sub) {
+      currentFilterSubj = sub;
       renderLectures();
-      renderTestArena();
-      renderDoubts();
-      renderProfileAndSaved();
-    });
-  </script>
-</body>
-</html>
-
-          <button onclick="openModal
-                  <!-- ==================== CONTINUATION FROM SUBJECT FILTER BUTTONS ==================== -->
+    }
+    function renderLectures() {
+      const box = document.getElementById('lecturesContainer');
+      if (!box) return;
+      const search = (document.getElementById('lectureSearchInput')?.value || '').toLowerCase();
+      const list = lecturesData.filter(l => (userProfile.cls === 'Target' || l.cls === 'Target' || l.cls === userProfile.cls) && (currentFilterSubj === 'All' || l.subject === currentFilterSubj) && (!search || l.title.toLowerCase().includes(search)));
       
-      <!-- Search Bar for Lectures -->
-      <div class="relative mb-3">
-        <input type="text" id="lectureSearchInput" oninput="renderLectures()" placeholder="लेक्चर या टॉपिक सर्च करें (जैसे: Mole Concept, Vectors)..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 ring-apex border border-slate-200 dark:border-slate-700">
-        <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-      </div>
-
-      <!-- Lectures Grid Container -->
-      <div id="lecturesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
-    </div>
-  </section>
-
-  <!-- ==================== 2. TESTS TAB (CBT: NEET, JEE, PYQ, CHAPTERWISE) ==================== -->
-  <section id="tab-tests" class="tab-page px-3.5 pt-3">
-    
-    <!-- Exam Selection View -->
-    <div id="testSelectorView">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-4">
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <h2 class="text-base font-extrabold flex items-center gap-2">
-              <i class="fas fa-laptop-code text-apex"></i> CBT Test Arena
-            </h2>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">NEET, JEE और PYQ के रियल एग्जाम पैटर्न प्रैक्टिस सेट्स</p>
+      box.innerHTML = list.length === 0 ? `<div class="col-span-full text-center py-6 text-xs text-slate-400">कोई लेक्चर नहीं मिला।</div>` : list.map(l => `
+        <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl overflow-hidden border shadow-sm flex flex-col">
+          <div onclick="openVideo('${l.ytId}', '${esc(l.title)}')" class="yt-card-aspect cursor-pointer relative">
+            <img src="https://img.youtube.com/vi/${l.ytId}/hqdefault.jpg" alt="thumb" />
+            <div class="absolute inset-0 bg-black/30 flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-apex text-white flex items-center justify-center"><i class="fas fa-play"></i></div></div>
           </div>
-          <button onclick="openAddQuestionModal()" class="admin-only hidden text-[11px] bg-apex text-white px-3 py-1.5 rounded-xl font-bold tap-effect">
-            + Add Qs
-          </button>
+          <div class="p-3 flex-1 flex flex-col justify-between">
+            <h4 class="text-xs font-extrabold mb-2">${esc(l.title)}</h4>
+            <div class="flex items-center justify-between pt-2 border-t text-xs">
+              <span class="text-slate-500">${l.subject}</span>
+              ${isAdmin ? `<button onclick="deleteLecture('${l.id}')" class="text-rose-500"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+          </div>
         </div>
-
-        <!-- Mode Selector (JEE / NEET / PYQ) -->
-        <div class="grid grid-cols-3 gap-2 mb-4">
-          <button onclick="selectExamMode('NEET')" id="modeBtn-NEET" class="exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect">
-            <div class="text-lg mb-0.5">🩺</div>
-            <div class="font-extrabold text-xs text-apex">NEET UG</div>
-            <div class="text-[10px] text-slate-500">PCB • +4 / -1</div>
-          </button>
-          <button onclick="selectExamMode('JEE')" id="modeBtn-JEE" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
-            <div class="text-lg mb-0.5">⚙️</div>
-            <div class="font-extrabold text-xs">JEE Main</div>
-            <div class="text-[10px] text-slate-500">PCM • +4 / -1</div>
-          </button>
-          <button onclick="selectExamMode('PYQ')" id="modeBtn-PYQ" class="exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect">
-            <div class="text-lg mb-0.5">📜</div>
-            <div class="font-extrabold text-xs">PYQ Bank</div>
-            <div class="text-[10px] text-slate-500">Past Papers</div>
-          </button>
-        </div>
-
-        <!-- Subject Filter inside Test Mode -->
-        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">सब्जेक्ट चुनें (Select Subject):</label>
-        <div id="testSubjectPills" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-3">
-          <!-- Populated dynamically via JS based on NEET/JEE/PYQ -->
-        </div>
-
-        <!-- Available Test Cards List -->
-        <div id="availableTestsList" class="space-y-2.5"></div>
-      </div>
-    </div>
-
-    <!-- Active CBT Exam Runner View (Hidden until test starts) -->
-    <div id="activeTestView" class="hidden">`)
-      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800`).join('');
-    }
-
-    function saveNewNote() {
-      const title = document.getElementById('newNoteTitle').value.trim();
-      const subject = document.getElementById('newNoteSubject').value;
-      const cls = document.getElementById('newNoteClass').value;
-      const url = document.getElementById('newNoteUrl').value.trim();
-      if (!title || !url) return showToast('⚠️ कृपया नोट्स का नाम और PDF लिंक भरें!');
-
-      notesData.unshift({
-        id: 'note_' + Date.now(),
-        title,
-        subject,
-        cls,
-        url
-      });
-      setStorage('apex_notes_v4', notesData);
-      document.getElementById('newNoteTitle').value = '';
-      document.getElementById('newNoteUrl').value = '';
-      closeModal('addNoteModal');
-      renderNotes();
-      showToast('📄 नया PDF नोट जुड़ गया!');
-    }
-
-    function deleteNote(id) {
-      notesData = notesData.filter(n => n.id !== id);
-      setStorage('apex_notes_v4', notesData);
-      renderNotes();
-      showToast('🗑️ PDF नोट हटा दिया गया');
-    }
-
-    // --- SINGLE LIKE SYSTEM (1 USER = 1 LIKE PER ITEM) ---
-    function toggleSingleLike(likeKey, type, itemId) {
-      const alreadyLiked = !!likedItemsMap[likeKey];
-      if (type === 'lecture') {
-        const item = lecturesData.find(l => l.id === itemId);
-        if (!item) return;
-        item.likes = Math.max(0, (item.likes || 0) + (alreadyLiked ? -1 : 1));
-        likedItemsMap[likeKey] = !alreadyLiked;
-        setStorage('apex_lectures_v4', lecturesData);
-        setStorage('apex_liked_items_v4', likedItemsMap);
-        renderLectures();
-      } else if (type === 'doubt') {
-        const item = doubtsData.find(d => d.id === itemId);
-        if (!item) return;
-        item.likes = Math.max(0, (item.likes || 0) + (alreadyLiked ? -1 : 1));
-        likedItemsMap[likeKey] = !alreadyLiked;
-        setStorage('apex_doubts_v4', doubtsData);
-        setStorage('apex_liked_items_v4', likedItemsMap);
-        renderDoubts();
-      }
-    }
-
-    // ==================== CBT TEST ARENA (NEET / JEE / PYQ) ====================
-    function selectExamMode(mode) {
-      selectedExamMode = mode;
-      selectedTestSubj = 'All';
-
-      ['NEET', 'JEE', 'PYQ'].forEach(m => {
-        const btn = document.getElementById('modeBtn-' + m);
-        if (!btn) return;
-        if (m === mode) {
-          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-apex bg-blue-50/60 dark:bg-slate-800 text-center tap-effect';
-        } else {
-          btn.className = 'exam-mode-btn p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 text-center tap-effect';
-        }
-      });
-      renderTestArena();
-    }
-
-    function selectTestSubject(subj) {
-      selectedTestSubj = subj;
-      renderTestArena();
-    }
-
-    function renderTestArena() {
-      const pillsBox = document.getElementById('testSubjectPills');
-      const listBox = document.getElementById('availableTestsList');
-      if (!pillsBox || !listBox) return;
-
-      const subjects = selectedExamMode === 'NEET'
-        ? ['All', 'Biology', 'Chemistry', 'Physics']
-        : selectedExamMode === 'JEE'
-        ? ['All', 'Mathematics', 'Physics', 'Chemistry']
-        : ['All', 'Chemistry', 'Physics', 'Biology', 'Mathematics'];
-
-      pillsBox.innerHTML = subjects.map(s => `
-        <button onclick="selectTestSubject('${s}')" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap tap-effect ${selectedTestSubj === s ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">
-          ${s === 'All' ? 'All Subjects' : s}
-        </button>
       `).join('');
+    }
+    function openVideo(id, title) {
+      document.getElementById('modalVideoTitle').textContent = title;
+      document.getElementById('modalYoutubeIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+      openModal('videoModal');
+    }
+    function closeVideoModal() { document.getElementById('modalYoutubeIframe').src = ''; closeModal('videoModal'); }
+    function saveNewLecture() {
+      const title = document.getElementById('newLecTitle').value.trim();
+      const ytId = document.getElementById('newLecUrl').value.trim().slice(-11);
+      if (!title || !ytId) return showToast('⚠️ Fill all fields!');
+      lecturesData.unshift({ id: 'l_' + Date.now(), title, subject: document.getElementById('newLecSubject').value, cls: document.getElementById('newLecClass').value, ytId, likes: 1 });
+      setStorage('apex_lectures_v4', lecturesData); closeModal('addLectureModal'); renderLectures(); showToast('✅ Saved!');
+    }
+    function deleteLecture(id) { lecturesData = lecturesData.filter(l => l.id !== id); setStorage('apex_lectures_v4', lecturesData); renderLectures(); }
 
-      const matchingQs = questionsData.filter(q => {
-        const matchExam = q.exam === selectedExamMode;
-        const matchSub = selectedTestSubj === 'All' || q.subject === selectedTestSubj;
-        return matchExam && matchSub;
-      });
-
-      const allModeQs = questionsData.filter(q => selectedTestSubj === 'All' || q.subject === selectedTestSubj);
-
-      listBox.innerHTML = `
-        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-3">
-          <div>
-            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">${selectedExamMode} SPECIAL</span>
-            <h4 class="text-xs font-extrabold mt-1">${selectedExamMode} ${selectedTestSubj === 'All' ? 'Full Mock Test' : selectedTestSubj + ' Chapter Test'}</h4>
-            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">${matchingQs.length} Questions • +4 / -1 Marking • Instant Solution</p>
-          </div>
-          <button onclick="startTestSession('${selectedExamMode}', '${selectedTestSubj}', '${selectedExamMode} ${selectedTestSubj} Mock Test', 0, 60)" class="tap-effect px-4 py-2 rounded-xl bg-apex text-white text-xs font-extrabold shrink-0">
-            Start Test ▶
-          </button>
+    function filterNotes(sub) { currentNoteSubj = sub; renderNotes(); }
+    function renderNotes() {
+      const box = document.getElementById('notesContainer');
+      if (!box) return;
+      const list = notesData.filter(n => (userProfile.cls === 'Target' || n.cls === 'Target' || n.cls === userProfile.cls) && (currentNoteSubj === 'All' || n.subject === currentNoteSubj));
+      box.innerHTML = list.length === 0 ? `<div class="text-center py-4 text-xs text-slate-400">कोई PDF नहीं है।</div>` : list.map(n => `
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border flex items-center justify-between">
+          <div><h4 class="text-xs font-extrabold">${esc(n.title)}</h4><p class="text-[10px] text-slate-500">${n.subject}</p></div>
+          <a href="${n.url}" target="_blank" class="px-3 py-1.5 rounded-xl bg-apex text-white text-[11px] font-bold">Open PDF</a>
         </div>
-
-        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-3">
-          <div>
-            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">COMBINED BOOSTER</span>
-            <h4 class="text-xs font-extrabold mt-1">All-in-One Rank Booster (${selectedTestSubj})</h4>
-            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">${allModeQs.length} Mixed Questions (NEET + JEE + PYQ)</p>
-          </div>
-          <button onclick="startTestSession('ALL', '${selectedTestSubj}', 'Combined Rank Booster', 0, 60)" class="tap-effect px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-extrabold shrink-0">
-            Start ▶
-          </button>
-        </div>
-      `;
+      `).join('');
+    }
+    function saveNewNote() {
+      notesData.unshift({ id: 'n_' + Date.now(), title: document.getElementById('newNoteTitle').value, subject: document.getElementById('newNoteSubject').value, cls: document.getElementById('newNoteClass').value, url: document.getElementById('newNoteUrl').value });
+      setStorage('apex_notes_v4', notesData); closeModal('addNoteModal'); renderNotes(); showToast('✅ Saved!');
     }
 
-    function launchCustomConfiguredTest() {
-      const exam = document.getElementById('custExam').value;
-      const subj = document.getElementById('custSubj').value;
-      const count = Math.max(1, parseInt(document.getElementById('custCount').value, 10) || 10);
-      const secPerQ = Math.max(15, parseInt(document.getElementById('custSecPerQ').value, 10) || 60);
-      closeModal('customTestModal');
-      startTestSession(exam, subj, `Custom ${exam} (${subj}) Test`, count, secPerQ);
+    // CBT & Test Arena
+    function selectExamMode(m) { selectedExamMode = m; selectedTestSubj = 'All'; renderTestArena(); }
+    function selectTestSubject(s) { selectedTestSubj = s; renderTestArena(); }
+    function renderTestArena() {
+      const pills = document.getElementById('testSubjectPills'), list = document.getElementById('availableTestsList');
+      if (!pills || !list) return;
+      const subjs = selectedExamMode === 'NEET' ? ['All', 'Biology', 'Chemistry', 'Physics'] : ['All', 'Chemistry', 'Physics', 'Mathematics'];
+      pills.innerHTML = subjs.map(s => `<button onclick="selectTestSubject('${s}')" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap ${selectedTestSubj === s ? 'bg-apex text-white' : 'bg-slate-100'}">${s}</button>`).join('');
+      list.innerHTML = `<div class="p-3.5 rounded-2xl bg-slate-50 border flex items-center justify-between"><div><h4 class="text-xs font-extrabold">${selectedExamMode} Mock Test</h4><p class="text-[11px] text-slate-500">+4 / -1 Marking</p></div><button onclick="startTest('${selectedExamMode}', '${selectedTestSubj}')" class="px-4 py-2 rounded-xl bg-apex text-white text-xs font-extrabold">Start ▶</button></div>`;
     }
 
-    function startTestSession(examMode, subjFilter, customTitle, qLimit = 0, secPerQ = 60) {
-      let pool = questionsData.filter(q => {
-        const mExam = examMode === 'ALL' || q.exam === examMode;
-        const mSubj = subjFilter === 'All' || q.subject === subjFilter;
-        return mExam && mSubj;
-      });
-
-      if (pool.length === 0) {
-        return showToast('⚠️ इस फिल्टर में अभी कोई प्रश्न नहीं है! "+ Add Qs" से जोड़ें।');
-      }
-
-      // Shuffle copy for fresh practice
-      pool = [...pool].sort(() => Math.random() - 0.5);
-      if (qLimit > 0 && pool.length > qLimit) {
-        pool = pool.slice(0, qLimit);
-      }
-
-      activeQuestions = pool;
-      currentQIndex = 0;
-      userAnswers = {};
-      visitedQuestions = { 0: true };
-      revealedHints = {};
-      remainingSeconds = activeQuestions.length * (secPerQ || 60);
-
+    function startTest(exam, sub) {
+      activeQuestions = questionsData.filter(q => (exam === 'ALL' || q.exam === exam) && (sub === 'All' || q.subject === sub));
+      if (activeQuestions.length === 0) return showToast('⚠️ No questions found!');
+      currentQIndex = 0; userAnswers = {}; remainingSeconds = activeQuestions.length * 60;
       document.getElementById('testSelectorView').classList.add('hidden');
       document.getElementById('testResultView').classList.add('hidden');
       document.getElementById('activeTestView').classList.remove('hidden');
-
-      document.getElementById('liveTestBadge').textContent = examMode;
-      document.getElementById('liveTestTitle').textContent = customTitle;
-
-      renderCurrentQuestion();
+      renderCurrentQ();
       startTestTimer();
     }
-
-    function renderCurrentQuestion() {
-      const qObj = activeQuestions[currentQIndex];
-      if (!qObj) return;
-      visitedQuestions[currentQIndex] = true;
-
-      document.getElementById('liveQCounter').textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length} (${qObj.subject})`;
-      document.getElementById('liveQuestionText').textContent = qObj.q;
-
-      // Hint Box state
-      const hintBox = document.getElementById('liveHintBox');
-      if (revealedHints[currentQIndex]) {
-        const hintSnippet = qObj.exp ? qObj.exp.split('.')[0] + '...' : 'ध्यान से फॉर्मूला और यूनिट जाँचें।';
-        hintBox.innerHTML = `💡 <b>Hint:</b> ${esc(hintSnippet)}`;
-        hintBox.classList.remove('hidden');
-      } else {
-        hintBox.classList.add('hidden');
-      }
-
-      // Bookmark button state
-      const bmBtn = document.getElementById('liveBookmarkBtn');
-      const isSaved = savedQIds.includes(qObj.id);
-      if (bmBtn) {
-        bmBtn.className = isSaved
-          ? 'w-8 h-8 rounded-lg border border-amber-400 bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-amber-500 tap-effect'
-          : 'w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 tap-effect';
-      }
-
-      // Render Options
-      const optsBox = document.getElementById('liveOptionsContainer');
-      const labels = ['A', 'B', 'C', 'D'];
-      optsBox.innerHTML = qObj.options.map((opt, idx) => {
-        const selected = userAnswers[currentQIndex] === idx;
-        return `
-          <button onclick="selectOption(${idx})" class="w-full text-left p-3 rounded-xl border-2 transition flex items-center gap-3 tap-effect ${selected ? 'border-apex bg-blue-50/70 dark:bg-slate-800 font-extrabold' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold'}">
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${selected ? 'bg-apex text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">${labels[idx]}</span>
-            <span class="text-xs leading-snug">${esc(opt)}</span>
-          </button>
-        `;
-      }).join('');
-
-      // Render Palette Pills
-      const palBox = document.getElementById('liveQuestionPalette');
-      palBox.innerHTML = activeQuestions.map((_, idx) => {
-        const isCurrent = idx === currentQIndex;
-        const isAns = userAnswers[idx] !== undefined;
-        const isVis = !!visitedQuestions[idx];
-        let cls = 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
-        if (isAns) cls = 'bg-emerald-600 text-white';
-        else if (isVis) cls = 'bg-amber-500 text-white';
-        return `
-          <button onclick="jumpToQuestion(${idx})" class="w-8 h-8 rounded-lg text-xs font-extrabold shrink-0 tap-effect ${cls} ${isCurrent ? 'ring-2 ring-offset-1 ring-blue-500' : ''}">
-            ${idx + 1}
-          </button>
-        `;
-      }).join('');
+    function renderCurrentQ() {
+      const q = activeQuestions[currentQIndex];
+      document.getElementById('liveQCounter').textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length}`;
+      document.getElementById('liveQuestionText').textContent = q.q;
+      document.getElementById('liveHintBox').classList.add('hidden');
+      document.getElementById('liveOptionsContainer').innerHTML = q.options.map((opt, i) => `
+        <button onclick="selectOpt(${i})" class="w-full text-left p-3 rounded-xl border-2 flex items-center gap-3 ${userAnswers[currentQIndex] === i ? 'border-apex bg-blue-50 font-bold' : 'bg-white'}">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs bg-slate-100">${['A','B','C','D'][i]}</span>
+          <span class="text-xs">${esc(opt)}</span>
+        </button>
+      `).join('');
     }
-
-    function selectOption(optIdx) {
-      userAnswers[currentQIndex] = optIdx;
-      renderCurrentQuestion();
-    }
-
+    function selectOpt(i) { userAnswers[currentQIndex] = i; renderCurrentQ(); }
     function showQuestionHint() {
-      revealedHints[currentQIndex] = true;
-      renderCurrentQuestion();
+      const h = document.getElementById('liveHintBox');
+      h.textContent = `💡 Hint: ${activeQuestions[currentQIndex].exp}`;
+      h.classList.remove('hidden');
     }
-
-    function clearCurrentAnswer() {
-      delete userAnswers[currentQIndex];
-      renderCurrentQuestion();
-    }
-
-    function prevTestQuestion() {
-      if (currentQIndex > 0) {
-        currentQIndex--;
-        renderCurrentQuestion();
-      }
-    }
-
-    function nextTestQuestion() {
-      if (currentQIndex < activeQuestions.length - 1) {
-        currentQIndex++;
-        renderCurrentQuestion();
-      } else {
-        showToast('ℹ️ यह अंतिम प्रश्न है। सबमिट करने के लिए Submit दबाएँ।');
-      }
-    }
-
-    function jumpToQuestion(idx) {
-      currentQIndex = idx;
-      renderCurrentQuestion();
-    }
-
-    function toggleBookmarkCurrentQ() {
-      const qObj = activeQuestions[currentQIndex];
-      if (!qObj) return;
-      const idx = savedQIds.indexOf(qObj.id);
-      if (idx === -1) {
-        savedQIds.push(qObj.id);
-        showToast('🔖 प्रश्न Saved Bank में सेव हो गया!');
-      } else {
-        savedQIds.splice(idx, 1);
-        showToast('🗑️ प्रश्न Saved Bank से हटा दिया गया');
-      }
-      setStorage('apex_saved_qids_v4', savedQIds);
-      updateHomeStatsUI();
-      renderCurrentQuestion();
-    }
-
+    function clearCurrentAnswer() { delete userAnswers[currentQIndex]; renderCurrentQ(); }
+    function prevTestQuestion() { if (currentQIndex > 0) { currentQIndex--; renderCurrentQ(); } }
+    function nextTestQuestion() { if (currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderCurrentQ(); } }
     function startTestTimer() {
       clearInterval(testTimerInterval);
-      updateTestTimerDisplay();
       testTimerInterval = setInterval(() => {
         if (remainingSeconds > 0) {
           remainingSeconds--;
-          updateTestTimerDisplay();
-        } else {
-          clearInterval(testTimerInterval);
-          showToast('⏰ समय समाप्त! आपका टेस्ट ऑटो-सबमिट हो रहा है...');
-          finishAndEvaluateTest();
-        }
+          document.getElementById('testTimerDisplay').textContent = `${String(Math.floor(remainingSeconds/60)).padStart(2,'0')}:${String(remainingSeconds%60).padStart(2,'0')}`;
+        } else { finishTest(); }
       }, 1000);
     }
-
-    function updateTestTimerDisplay() {
-      const m = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
-      const s = String(remainingSeconds % 60).padStart(2, '0');
-      const el = document.getElementById('testTimerDisplay');
-      if (el) el.textContent = `${m}:${s}`;
-    }
-
-    function confirmSubmitTest() {
-      const answeredCount = Object.keys(userAnswers).length;
-      const ok = confirm(`आपने ${activeQuestions.length} में से ${answeredCount} प्रश्नों के उत्तर दिए हैं। क्या आप टेस्ट सबमिट करना चाहते हैं?`);
-      if (ok) finishAndEvaluateTest();
-    }
-
-    function finishAndEvaluateTest() {
+    function confirmSubmitTest() { if (confirm('Submit test?')) finishTest(); }
+    function finishTest() {
       clearInterval(testTimerInterval);
-      let correct = 0;
-      let wrong = 0;
-      let unattempted = 0;
-
-      if (!userStats.subjectMap) userStats.subjectMap = {};
-
-      const solutionsHTML = activeQuestions.map((q, idx) => {
-        const uAns = userAnswers[idx];
-        const isCorrect = uAns === q.answer;
-        const isSkipped = uAns === undefined;
-
-        if (!userStats.subjectMap[q.subject]) {
-          userStats.subjectMap[q.subject] = { correct: 0, total: 0 };
-        }
-
-        if (isSkipped) {
-          unattempted++;
-        } else if (isCorrect) {
-          correct++;
-          userStats.subjectMap[q.subject].correct++;
-          userStats.subjectMap[q.subject].total++;
-        } else {
-          wrong++;
-          userStats.subjectMap[q.subject].total++;
-        }
-
-        const statusBadge = isSkipped
-          ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Skipped (0)</span>'
-          : isCorrect
-          ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">Correct (+4)</span>'
-          : '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">Wrong (-1)</span>';
-
-        return `
-          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-[11px] font-extrabold text-slate-400">Q.${idx + 1} • ${esc(q.subject)}</span>
-              ${statusBadge}
-            </div>
-            <p class="text-xs font-bold">${esc(q.q)}</p>
-            <p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">✔ सही उत्तर: ${esc(q.options[q.answer])}</p>
-            ${!isSkipped && !isCorrect ? `<p class="text-[11px] font-semibold text-rose-500">✖ आपका उत्तर: ${esc(q.options[uAns])}</p>` : ''}
-            <div class="text-[11px] text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200/60 dark:border-slate-800 mt-1">
-              <b>Solution:</b> ${esc(q.exp)}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      const totalScore = (correct * 4) - (wrong * 1);
-      const maxScore = activeQuestions.length * 4;
-      const attempted = correct + wrong;
-      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
-
-      // Save Stats & History
-      userStats.testsGiven = (userStats.testsGiven || 0) + 1;
-      if (accuracy > (userStats.bestAccuracy || 0)) {
-        userStats.bestAccuracy = accuracy;
-      }
-      if (!Array.isArray(userStats.history)) userStats.history = [];
-      userStats.history.unshift({
-        title: document.getElementById('liveTestTitle').textContent || 'CBT Mock Test',
-        score: `${totalScore}/${maxScore}`,
-        accuracy: `${accuracy}%`,
-        date: new Date().toLocaleDateString('hi-IN')
+      let correct = 0, wrong = 0;
+      activeQuestions.forEach((q, i) => {
+        if (userAnswers[i] === q.answer) correct++;
+        else if (userAnswers[i] !== undefined) wrong++;
       });
-      userStats.history = userStats.history.slice(0, 8);
+      const score = (correct * 4) - wrong;
+      const max = activeQuestions.length * 4;
+      const acc = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+      
+      userStats.testsGiven++;
+      userStats.bestAccuracy = Math.max(userStats.bestAccuracy, acc);
+      userStats.history.unshift({ title: 'Mock Test', score: `${score}/${max}`, accuracy: `${acc}%`, date: new Date().toLocaleDateString() });
       setStorage('apex_user_stats_v4', userStats);
-      updateHomeStatsUI();
 
-      lastResultSummary = {
-        score: totalScore,
-        maxScore,
-        accuracy,
-        exam: document.getElementById('liveTestTitle').textContent || 'APEX CBT Test'
-      };
-
-      // Update Result View DOM
       document.getElementById('activeTestView').classList.add('hidden');
       document.getElementById('testResultView').classList.remove('hidden');
-
-      document.getElementById('resScore').textContent = `${totalScore}/${maxScore}`;
+      document.getElementById('resScore').textContent = `${score}/${max}`;
       document.getElementById('resCorrect').textContent = correct;
       document.getElementById('resWrong').textContent = wrong;
-      document.getElementById('resAccuracy').textContent = `${accuracy}%`;
-      document.getElementById('resultSolutionsList').innerHTML = solutionsHTML;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('resAccuracy').textContent = `${acc}%`;
+      document.getElementById('resultSolutionsList').innerHTML = activeQuestions.map((q, i) => `
+        <div class="p-3 rounded-xl bg-slate-50 border text-xs">
+          <b>Q${i+1}:</b> ${esc(q.q)}<br/><span class="text-emerald-600 font-bold">Ans: ${q.options[q.answer]}</span>
+        </div>
+      `).join('');
     }
-
-    function shareResult(platform) {
-      const text = `🏆 *APEX STUDY CBT Result*\n📚 Test: ${lastResultSummary.exam}\n🎯 Score: ${lastResultSummary.score}/${lastResultSummary.maxScore}\n⚡ Accuracy: ${lastResultSummary.accuracy}%\n🔥 Towards the Peak!`;
-      const encoded = encodeURIComponent(text);
-      if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encoded}`, '_blank');
-      } else {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encoded}`, '_blank');
-      }
+    function exitTestToMenu() { document.getElementById('testResultView').classList.add('hidden'); document.getElementById('testSelectorView').classList.remove('hidden'); }
+    function shareResult(p) {
+      const text = `🏆 APEX STUDY Score: ${document.getElementById('resScore').textContent}`;
+      window.open(p === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(text)}` : `https://t.me/share/url?text=${encodeURIComponent(text)}`, '_blank');
     }
-
-    function exitTestToMenu() {
-      clearInterval(testTimerInterval);
-      document.getElementById('activeTestView').classList.add('hidden');
-      document.getElementById('testResultView').classList.add('hidden');
-      document.getElementById('testSelectorView').classList.remove('hidden');
-      renderTestArena();
-    }
-
     function saveNewCustomQuestion() {
-      const exam = document.getElementById('newQExam').value;
-      const subject = document.getElementById('newQSubject').value;
-      const q = document.getElementById('newQText').value.trim();
-      const o0 = document.getElementById('newQOpt0').value.trim();
-      const o1 = document.getElementById('newQOpt1').value.trim();
-      const o2 = document.getElementById('newQOpt2').value.trim();
-      const o3 = document.getElementById('newQOpt3').value.trim();
-      const answer = parseInt(document.getElementById('newQCorrect').value, 10);
-      const exp = document.getElementById('newQExp').value.trim() || 'सही विकल्प का चयन अवधारणा के अनुसार किया गया है।';
+      questionsData.unshift({ id: 'q_' + Date.now(), exam: document.getElementById('newQExam').value, subject: document.getElementById('newQSubject').value, q: document.getElementById('newQText').value, options: [document.getElementById('newQOpt0').value, document.getElementById('newQOpt1').value, document.getElementById('newQOpt2').value, document.getElementById('newQOpt3').value], answer: parseInt(document.getElementById('newQCorrect').value), exp: document.getElementById('newQExp').value });
+      setStorage('apex_questions_v4', questionsData); closeModal('addQuestionModal'); showToast('✅ Question added!');
+    }
+    function launchCustomConfiguredTest() {
+      closeModal('customTestModal');
+      startTest(document.getElementById('custExam').value, document.getElementById('custSubj').value);
+    }
 
-      if (!q || !o0 || !o1 || !o2 || !o3) {
-        return showToast('⚠️ कृपया प्रश्न और चारों विकल्प (A, B, C, D) भरें!');
+    // Doubts
+    function insertDoubtEmoji(e) { document.getElementById('doubtTextInput').value += e; }
+    let pendingPhoto = '';
+    function previewDoubtPhotoName(inp) {
+      const f = inp.files?.[0];
+      if (f) {
+        document.getElementById('doubtPhotoName').textContent = f.name;
+        const r = new FileReader();
+        r.onload = e => { pendingPhoto = e.target.result; };
+        r.readAsDataURL(f);
       }
-
-      questionsData.unshift({
-        id: 'q_custom_' + Date.now(),
-        exam,
-        subject,
-        q,
-        options: [o0, o1, o2, o3],
-        answer,
-        exp
-      });
-      setStorage('apex_questions_v4', questionsData);
-
-      ['newQText', 'newQOpt0', 'newQOpt1', 'newQOpt2', 'newQOpt3', 'newQExp'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      closeModal('addQuestionModal');
-      renderTestArena();
-      showToast('✅ नया प्रश्न सफलतापूर्वक जुड़ गया!');
     }
-
-    // ==================== DOUBTS & COMMUNITY WALL ====================
-    function insertDoubtEmoji(emoji) {
-      const box = document.getElementById('doubtTextInput');
-      if (!box) return;
-      box.value += emoji;
-      box.focus();
-    }
-
-    let pendingDoubtPhotoBase64 = '';
-    function previewDoubtPhotoName(input) {
-      const file = input.files && input.files[0];
-      const label = document.getElementById('doubtPhotoName');
-      if (!file) {
-        pendingDoubtPhotoBase64 = '';
-        if (label) label.textContent = '';
-        return;
-      }
-      if (label) label.textContent = `📷 ${file.name}`;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        // Compress image via canvas to avoid localStorage quota issues
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxW = 600;
-          const scale = Math.min(1, maxW / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          pendingDoubtPhotoBase64 = canvas.toDataURL('image/jpeg', 0.72);
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
     function postNewDoubt() {
-      const subject = document.getElementById('doubtSubjectSelect').value;
-      const author = document.getElementById('doubtAuthorInput').value.trim() || userProfile.name || 'Student';
       const text = document.getElementById('doubtTextInput').value.trim();
-
-      if (!text && !pendingDoubtPhotoBase64) {
-        return showToast('⚠️ कृपया अपना डाउट लिखें या फोटो चुनें!');
-      }
-
-      doubtsData.unshift({
-        id: 'd_' + Date.now(),
-        author,
-        subject,
-        text: text || '📷 [Photo Doubt Attached]',
-        time: 'Just now',
-        likes: 1,
-        img: pendingDoubtPhotoBase64 || '',
-        replies: []
-      });
-
+      if (!text && !pendingPhoto) return showToast('⚠️ Enter doubt or photo!');
+      doubtsData.unshift({ id: 'd_' + Date.now(), author: document.getElementById('doubtAuthorInput').value || 'Student', subject: document.getElementById('doubtSubjectSelect').value, text, time: 'Just now', likes: 1, img: pendingPhoto, replies: [] });
       setStorage('apex_doubts_v4', doubtsData);
-      document.getElementById('doubtTextInput').value = '';
-      document.getElementById('doubtPhotoInput').value = '';
-      document.getElementById('doubtPhotoName').textContent = '';
-      pendingDoubtPhotoBase64 = '';
-
-      renderDoubts();
-      showToast('💬 आपका डाउट पोस्ट हो गया!');
+      document.getElementById('doubtTextInput').value = ''; document.getElementById('doubtPhotoName').textContent = ''; pendingPhoto = '';
+      renderDoubts(); showToast('💬 Posted!');
     }
-
-    function filterDoubtsBySubject(subj) {
-      currentDoubtSubj = subj;
-      document.querySelectorAll('.doubt-sub-btn').forEach(btn => {
-        if (btn.dataset.sub === subj) {
-          btn.className = 'doubt-sub-btn px-3 py-1 rounded-full text-xs font-extrabold bg-apex text-white whitespace-nowrap';
-        } else {
-          btn.className = 'doubt-sub-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap';
-        }
-      });
-      renderDoubts();
-    }
-
+    function filterDoubtsBySubject(s) { currentDoubtSubj = s; renderDoubts(); }
     function renderDoubts() {
       const feed = document.getElementById('doubtsFeedContainer');
       if (!feed) return;
-      const q = (document.getElementById('doubtSearchInput')?.value || '').toLowerCase().trim();
-
-      const filtered = doubtsData.filter(d => {
-        const mSub = currentDoubtSubj === 'All' || d.subject === currentDoubtSubj;
-        const mSearch = !q || d.text.toLowerCase().includes(q) || d.author.toLowerCase().includes(q) || d.subject.toLowerCase().includes(q);
-        return mSub && mSearch;
-      });
-
-      if (filtered.length === 0) {
-        feed.innerHTML = `<div class="text-center py-6 text-xs text-slate-400 font-bold">कोई डाउट नहीं मिला। पहला सवाल आप पूछें!</div>`;
-        return;
-      }
-
-      feed.innerHTML = filtered.map(d => {
-        const isLiked = !!likedItemsMap['doubt_' + d.id];
-        const repliesHTML = (d.replies || []).map((r, rIdx) => `
-          <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/70 dark:border-slate-800 text-xs flex items-start justify-between gap-2">
-            <div>
-              <span class="font-extrabold text-apex">${esc(r.by)}:</span>
-              <span class="text-slate-700 dark:text-slate-300 ml-1">${esc(r.text)}</span>
-            </div>
-            ${isAdmin ? `<button onclick="deleteDoubtReply('${d.id}', ${rIdx})" class="text-[10px] text-rose-500"><i class="fas fa-times"></i></button>` : ''}
-          </div>
-        `).join('');
-
-        return `
-          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-apex text-white flex items-center justify-center text-xs font-extrabold">
-                  ${esc((d.author || 'S')[0].toUpperCase())}
-                </div>
-                <div>
-                  <h4 class="text-xs font-extrabold">${esc(d.author)}</h4>
-                  <p class="text-[10px] text-slate-400 font-semibold">${esc(d.time)} • <span class="text-apex font-bold">${esc(d.subject)}</span></p>
-                </div>
-              </div>
-              ${isAdmin ? `<button onclick="deleteDoubt('${d.id}')" class="text-xs text-rose-500 px-2 py-1"><i class="fas fa-trash"></i></button>` : ''}
-            </div>
-
-            <p class="text-xs font-semibold leading-relaxed">${esc(d.text)}</p>
-            ${d.img ? `<img src="${d.img}" alt="Doubt attachment" class="rounded-xl max-h-60 w-auto border border-slate-200 dark:border-slate-700" />` : ''}
-
-            <div class="flex items-center gap-4 pt-1 text-xs font-bold text-slate-500">
-              <button onclick="toggleSingleLike('doubt_${d.id}', 'doubt', '${d.id}')" class="flex items-center gap-1.5 ${isLiked ? 'text-rose-600' : ''} tap-effect">
-                <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> <span>${d.likes || 0}</span>
-              </button>
-              <span><i class="far fa-comment mr-1"></i> ${(d.replies || []).length} Replies</span>
-            </div>
-
-            <div class="space-y-1.5 pt-1">${repliesHTML}</div>
-
-            <div class="flex gap-1.5 pt-1">
-              <input type="text" id="replyInp_${d.id}" placeholder="अपना उत्तर या एक्सप्लेनेशन लिखें..." class="flex-1 text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none" />
-              <button onclick="addDoubtReply('${d.id}')" class="px-3 py-1.5 rounded-xl bg-apex text-white text-xs font-extrabold tap-effect">
-                Reply
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+      const list = doubtsData.filter(d => currentDoubtSubj === 'All' || d.subject === currentDoubtSubj);
+      feed.innerHTML = list.length === 0 ? `<div class="text-center text-xs text-slate-400 py-4">कोई डाउट नहीं है।</div>` : list.map(d => `
+        <div class="p-3.5 rounded-2xl bg-slate-50 border space-y-2">
+          <div class="flex items-center justify-between"><h4 class="text-xs font-extrabold">${esc(d.author)} <span class="text-[10px] text-apex font-normal">(${d.subject})</span></h4><span class="text-[10px] text-slate-400">${d.time}</span></div>
+          <p class="text-xs font-semibold">${esc(d.text)}</p>
+          ${d.img ? `<img src="${d.img}" class="rounded-xl max-h-48" />` : ''}
+          <div class="space-y-1">${(d.replies || []).map(r => `<div class="bg-white p-2 rounded-lg text-xs border"><b>${esc(r.by)}:</b> ${esc(r.text)}</div>`).join('')}</div>
+          <div class="flex gap-1 pt-1"><input type="text" id="rep_${d.id}" placeholder="Reply..." class="flex-1 text-xs px-2 py-1 border rounded-lg bg-white" /><button onclick="addRep('${d.id}')" class="px-3 py-1 bg-apex text-white text-xs font-bold rounded-lg">Reply</button></div>
+        </div>
+      `).join('');
+    }
+    function addRep(id) {
+      const inp = document.getElementById('rep_' + id);
+      if (!inp?.value.trim()) return;
+      const d = doubtsData.find(x => x.id === id);
+      if (d) { d.replies.push({ by: userProfile.name, text: inp.value.trim() }); setStorage('apex_doubts_v4', doubtsData); renderDoubts(); }
     }
 
-    function addDoubtReply(doubtId) {
-      const inp = document.getElementById('replyInp_' + doubtId);
-      if (!inp || !inp.value.trim()) return;
-      const d = doubtsData.find(item => item.id === doubtId);
-      if (!d) return;
-      if (!Array.isArray(d.replies)) d.replies = [];
-      d.replies.push({
-        by: userProfile.name || 'Student',
-        text: inp.value.trim()
-      });
-      setStorage('apex_doubts_v4', doubtsData);
-      renderDoubts();
-      showToast('✅ आपका उत्तर जुड़ गया!');
-    }
-
-    function deleteDoubt(id) {
-      doubtsData = doubtsData.filter(d => d.id !== id);
-      setStorage('apex_doubts_v4', doubtsData);
-      renderDoubts();
-      showToast('🗑️ डाउट हटा दिया गया');
-    }
-
-    function deleteDoubtReply(doubtId, rIdx) {
-      const d = doubtsData.find(item => item.id === doubtId);
-      if (!d || !Array.isArray(d.replies)) return;
-      d.replies.splice(rIdx, 1);
-      setStorage('apex_doubts_v4', doubtsData);
-      renderDoubts();
-    }
-
-    // ==================== PROFILE, PROGRESS, SAVED QS & FEEDBACK ====================
+    // Profile & Saved
     function updateHomeStatsUI() {
-      const tEl = document.getElementById('statTestsGiven');
-      const aEl = document.getElementById('statBestAccuracy');
-      const sEl = document.getElementById('statSavedQs');
-      if (tEl) tEl.textContent = userStats.testsGiven || 0;
-      if (aEl) aEl.textContent = (userStats.bestAccuracy || 0) + '%';
-      if (sEl) sEl.textContent = savedQIds.length;
+      document.getElementById('statTestsGiven').textContent = userStats.testsGiven || 0;
+      document.getElementById('statBestAccuracy').textContent = (userStats.bestAccuracy || 0) + '%';
+      document.getElementById('statSavedQs').textContent = savedQIds.length;
     }
-
-    function openSavedQuestionsModal() {
-      switchTab('profile');
-      setTimeout(() => {
-        const sec = document.getElementById('savedQuestionsSection');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
-      }, 120);
-    }
-
+    function openSavedQuestionsModal() { switchTab('profile'); }
     function saveUserProfile() {
-      const name = document.getElementById('profNameInp').value.trim() || 'Student';
-      const cls = document.getElementById('profClassInp').value || '11th';
-      const roll = document.getElementById('profRollInp').value.trim() || '—';
-      const mobile = document.getElementById('profMobileInp').value.trim();
-      const tg = document.getElementById('profTgInp').value.trim();
-      const ig = document.getElementById('profIgInp').value.trim();
-
-      if (mobile && !/^\d{10}$/.test(mobile)) {
-        return showToast('⚠️ कृपया सही 10-अंकों का मोबाइल नंबर डालें!');
-      }
-
-      userProfile = { name, cls, roll, mobile, tg, ig };
+      userProfile.name = document.getElementById('profNameInp').value || userProfile.name;
+      userProfile.cls = document.getElementById('profClassInp').value;
+      userProfile.roll = document.getElementById('profRollInp').value;
       setStorage('apex_user_profile_v4', userProfile);
-      closeModal('editProfileModal');
-      changeStudentClass(cls);
-      renderProfileAndSaved();
-      showToast('✅ प्रोफ़ाइल अपडेट हो गई!');
+      closeModal('editProfileModal'); changeStudentClass(userProfile.cls); renderProfileAndSaved(); showToast('✅ Profile saved!');
     }
-
     function renderProfileAndSaved() {
-      const av = document.getElementById('profileAvatarLetter');
-      const nm = document.getElementById('profileNameDisplay');
-      const cb = document.getElementById('profileClassBadge');
-      const mt = document.getElementById('profileMetaDisplay');
-      const sl = document.getElementById('profileSocialLinks');
-
-      if (av) av.textContent = (userProfile.name || 'S')[0].toUpperCase();
-      if (nm) nm.textContent = userProfile.name || 'Student';
-      if (cb) cb.textContent = userProfile.cls === 'Target' ? 'Target Batch' : `Class ${userProfile.cls}`;
-      if (mt) mt.textContent = `Roll: ${userProfile.roll || '—'} ${userProfile.mobile ? '• 📱 ' + userProfile.mobile : ''}`;
-
-      if (sl) {
-        let linksHTML = '';
-        if (userProfile.tg) linksHTML += `<a href="${esc(userProfile.tg)}" target="_blank" rel="noopener" class="text-sky-500"><i class="fa-brands fa-telegram"></i> Telegram</a>`;
-        if (userProfile.ig) linksHTML += `<a href="${esc(userProfile.ig)}" target="_blank" rel="noopener" class="text-pink-500"><i class="fa-brands fa-instagram"></i> Instagram</a>`;
-        sl.innerHTML = linksHTML;
-      }
-
-      // Subject-wise Accuracy Progress Bars
-      const progBox = document.getElementById('subjectProgressContainer');
-      if (progBox) {
-        const subjs = ['Chemistry', 'Physics', 'Biology', 'Mathematics'];
-        const map = userStats.subjectMap || {};
-        progBox.innerHTML = subjs.map(s => {
-          const entry = map[s] || { correct: 0, total: 0 };
-          const pct = entry.total > 0 ? Math.round((entry.correct / entry.total) * 100) : 0;
-          return `
-            <div>
-              <div class="flex justify-between text-xs font-bold mb-1">
-                <span>${s}</span>
-                <span class="text-apex">${pct}% (${entry.correct}/${entry.total})</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <div class="h-full bg-apex rounded-full transition-all" style="width: ${pct}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      // Recent Tests History
-      const histBox = document.getElementById('recentTestsHistoryContainer');
-      if (histBox) {
-        const hist = userStats.history || [];
-        if (hist.length === 0) {
-          histBox.innerHTML = `<p class="text-[11px] text-slate-400 font-semibold">अभी तक कोई टेस्ट हिस्ट्री नहीं है।</p>`;
-        } else {
-          histBox.innerHTML = `<p class="text-[10px] font-extrabold uppercase text-slate-400 mb-1">Recent Test History</p>` +
-            hist.slice(0, 4).map(h => `
-              <div class="flex items-center justify-between text-xs py-1">
-                <span class="font-bold truncate pr-2">${esc(h.title)} <span class="text-[10px] text-slate-400">(${esc(h.date)})</span></span>
-                <span class="font-extrabold text-emerald-600 shrink-0">${esc(h.score)} • ${esc(h.accuracy)}</span>
-              </div>
-            `).join('');
-        }
-      }
-
-      // Saved Questions List
-      const savedBadge = document.getElementById('savedCountBadge');
-      const savedBox = document.getElementById('savedQuestionsContainer');
-      if (savedBadge) savedBadge.textContent = `${savedQIds.length} Saved`;
-
-      if (savedBox) {
-        const savedList = questionsData.filter(q => savedQIds.includes(q.id));
-        if (savedList.length === 0) {
-          savedBox.innerHTML = `<p class="text-xs text-slate-400 font-semibold py-2">कोई बुकमार्क प्रश्न नहीं है। टेस्ट के दौरान 🔖 आइकन दबाकर सेव करें।</p>`;
-        } else {
-          savedBox.innerHTML = savedList.map(q => `
-            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">${esc(q.exam)} • ${esc(q.subject)}</span>
-                <button onclick="removeSavedQuestion('${q.id}')" class="text-xs text-rose-500 font-bold"><i class="fas fa-trash"></i></button>
-              </div>
-              <p class="text-xs font-bold">${esc(q.q)}</p>
-              <p class="text-[11px] font-extrabold text-emerald-600">✔ उत्तर: ${esc(q.options[q.answer])}</p>
-              <p class="text-[11px] text-slate-500">${esc(q.exp)}</p>
-            </div>
-          `).join('');
-        }
-      }
-
-      // Feedback Counter
-      const fbCount = document.getElementById('feedbackCountText');
-      if (fbCount) {
-        fbCount.textContent = feedbacksList.length > 0 ? `कुल प्राप्त सुझाव: ${feedbacksList.length}` : '';
-      }
+      document.getElementById('profileNameDisplay').textContent = userProfile.name;
+      document.getElementById('profileMetaDisplay').textContent = `Roll: ${userProfile.roll || '—'} • Class ${userProfile.cls}`;
+      document.getElementById('savedCountBadge').textContent = `${savedQIds.length} Saved`;
+      document.getElementById('savedQuestionsContainer').innerHTML = savedQIds.length === 0 ? `<p class="text-xs text-slate-400">कोई बुकमार्क प्रश्न नहीं है।</p>` : questionsData.filter(q => savedQIds.includes(q.id)).map(q => `<div class="p-3 rounded-xl bg-slate-50 border text-xs"><p class="font-bold">${esc(q.q)}</p><span class="text-emerald-600 font-bold">Ans: ${q.options[q.answer]}</span></div>`).join('');
     }
 
-    function removeSavedQuestion(qId) {
-      savedQIds = savedQIds.filter(id => id !== qId);
-      setStorage('apex_saved_qids_v4', savedQIds);
-      updateHomeStatsUI();
-      renderProfileAndSaved();
-      showToast('🗑️ प्रश्न Saved Bank से हटा दिया गया');
-    }
-
-    function submitFeedback() {
-      const inp = document.getElementById('feedbackInput');
-      if (!inp || !inp.value.trim()) return showToast('⚠️ कृपया अपना सुझाव लिखें!');
-      feedbacksList.unshift({
-        by: userProfile.name || 'Student',
-        text: inp.value.trim(),
-        time: new Date().toLocaleString('hi-IN')
-      });
-      setStorage('apex_feedbacks_v4', feedbacksList);
-      inp.value = '';
-      renderProfileAndSaved();
-      showToast('🙏 धन्यवाद! आपका फीडबैक सेव हो गया।');
-    }
-
-    // --- PWA INSTALL SUPPORT ---
-    let deferredInstallPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredInstallPrompt = e;
-    });
-
-    function installPWA() {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
-      } else {
-        showToast('📲 ब्राउज़र मेनू (⋮) में जाकर "Add to Home Screen" चुनें!');
-      }
-    }
-
-    // ==================== INITIALIZE APP ON LOAD ====================
     window.addEventListener('DOMContentLoaded', () => {
-      // 1. Restore Dark Mode
-      const savedDark = getStorage('apex_dark_mode_v4', false);
-      if (savedDark) {
-        document.documentElement.classList.add('dark');
-        const icon = document.getElementById('themeToggleIcon');
-        if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
-      }
-
-      // 2. Restore Theme Color
-      const savedTheme = getStorage('apex_theme_color_v4', null);
-      if (savedTheme && savedTheme.hex && savedTheme.rgb) {
-        document.documentElement.style.setProperty('--theme-color', savedTheme.hex);
-        document.documentElement.style.setProperty('--theme-rgb', savedTheme.rgb);
-        const meta = document.getElementById('metaThemeColor');
-        if (meta) meta.setAttribute('content', savedTheme.hex);
-      }
-
-      // 3. Init Streak, Countdown & Pomodoro
-      initStreakAndCountdown();
-      updatePomoUI();
-      updateHomeStatsUI();
-
-      // 4. Sync Class Filter & Render All Tabs
+      if (getStorage('apex_dark_mode_v4', false)) document.documentElement.classList.add('dark');
+      const theme = getStorage('apex_theme_color_v4', null);
+      if (theme) setAppThemeColor(theme.hex, theme.rgb);
+      initStreakAndCountdown(); updateHomeStatsUI();
       changeStudentClass(userProfile.cls || '11th');
-      renderTestArena();
-      renderDoubts();
-      renderProfileAndSaved();
     });
   </script>
 </body>
 </html>
-
-        
-        
-            
